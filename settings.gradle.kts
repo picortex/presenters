@@ -43,5 +43,7 @@ val tmp = 1
 
 rootProject.name = "picortex"
 
-includeSubs("presenters", ".", "core", "mock")
+// dependencies
 includeSubs("krono", "../krono", "api")
+
+includeSubs("presenters", ".", "core", "mock", "krono")

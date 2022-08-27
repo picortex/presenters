@@ -4,7 +4,6 @@ package presenters.fields
 
 import krono.LocalDate
 import presenters.fields.internal.AbstractRangeValuedField
-import presenters.fields.internal.AbstractSingleValuedField
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.reflect.KProperty

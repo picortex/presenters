@@ -1,24 +1,14 @@
-package forms
-
 import expect.expect
 import koncurrent.Later
-import koncurrent.later.catch
-import koncurrent.later.then
-//import koncurrent.later.await
 import kotlinx.coroutines.test.runTest
 import live.expect
-import live.toHaveGoneThrough1
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
 import presenters.forms.*
 import presenters.forms.FormState.*
 import presenters.forms.fields.dateRange
-import presenters.forms.fields.email
-import presenters.forms.fields.number
 import presenters.forms.fields.text
 import viewmodel.ScopeConfig
-import viewmodel.ViewModel
-import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
 class FormWithDateRangeTest {

@@ -1,5 +1,3 @@
-package date
-
 import expect.expect
 import kotlinx.datetime.*
 import presenters.date.DateFormatter

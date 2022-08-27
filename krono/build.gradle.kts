@@ -14,12 +14,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(kotlinx.serialization.json)
-                api(asoft.viewmodel.core)
-                api(asoft.koncurrent.later.core)
-                api(asoft.identifier.core)
-                api(asoft.kash.core)
-                api(asoft.kotlinx.collections.interoperable)
+                api(projects.presentersCore)
+                api(projects.kronoApi)
             }
         }
 

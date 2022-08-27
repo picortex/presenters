@@ -1,5 +1,3 @@
-package fields.dates
-
 import expect.expect
 import expect.toBe
 import krono.LocalDate
