@@ -17,4 +17,14 @@ data class Loading<out D>(
     override val asLoading: Loading<D> get() = this
     override val asSuccess: Success<D> get() = error(0)
     override val asFailure: Failure<D> get() = error(0)
+
+    override fun <R> map(transformer: (D) -> R): LazyState<R> = try {
+        if (data != null) {
+            Loading(message, transformer(data))
+        } else {
+            Loading(message, null)
+        }
+    } catch (err: Throwable) {
+        Failure(err)
+    }
 }

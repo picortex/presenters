@@ -20,4 +20,5 @@ data class Success<out D>(
     override val asFailure: Failure<D> get() = error(0)
 
     override fun <R> map(transformer: (D) -> R) = Success(transformer(data))
+    override fun catch(resolver: (Throwable) -> @UnsafeVariance D): Result<D> = this
 }

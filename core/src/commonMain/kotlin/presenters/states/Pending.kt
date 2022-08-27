@@ -16,4 +16,6 @@ object Pending : LazyState<Nothing> {
 
     override val data: Nothing? = null
     override fun toString(): String = "Pending"
+
+    override fun <R> map(transformer: (Nothing) -> R): LazyState<R> = this
 }
