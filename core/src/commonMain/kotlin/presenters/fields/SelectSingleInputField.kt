@@ -15,9 +15,8 @@ class SelectSingleInputField<T : Any>(
     override val label: String = name.replaceFirstChar { it.uppercase() },
     override val defaultValue: T? = SingleValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    override val validator: ((T?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) : AbstractSingleValuedField<T>(name, label, defaultValue, isReadonly, isRequired, validator) {
+    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
+) : AbstractSingleValuedField<T>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
     val optionLabels get() = options.map { it.label }.toInteroperableList()
     val optionValues get() = options.map { it.value }.toInteroperableList()
 

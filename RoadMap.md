@@ -1,5 +1,0 @@
-- [ ] Migrate dropdown into a ValuedField
-- [ ] Create a single select input field
-- [ ] Create a multi select input field
-- [ ] Add a list of countries with the easy information you can find
-- [ ] Add location input

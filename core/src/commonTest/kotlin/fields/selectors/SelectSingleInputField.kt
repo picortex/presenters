@@ -2,9 +2,6 @@ package fields.selectors
 
 import expect.expect
 import kotlinx.collections.interoperable.toInteroperableList
-import live.expect
-import live.toHaveGoneThrough1
-import presenters.fields.InputFieldState
 import presenters.fields.Option
 import presenters.fields.SelectSingleInputField
 import kotlin.test.Test
@@ -60,6 +57,7 @@ class SelectSingleInputFieldTest {
             mapper = { Option(label = it.name) },
             isRequired = true
         )
+
         color.selectedItem(Color.Green)
         expect(color.value).toBe(Color.Green)
 
