@@ -45,5 +45,6 @@ rootProject.name = "picortex"
 
 // dependencies
 includeSubs("krono", "../krono", "api")
+includeSubs("geo", "../geo", "core")
 
-includeSubs("presenters", ".", "core", "mock", "krono")
+includeSubs("presenters", ".", "core", "mock", "krono", "geo")
