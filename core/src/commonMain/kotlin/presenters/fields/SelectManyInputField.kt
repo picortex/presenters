@@ -3,30 +3,30 @@
 
 package presenters.fields
 
+import kotlinx.collections.interoperable.*
 import kotlin.js.JsExport
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.toInteroperableList
 import presenters.fields.internal.AbstractSingleValuedField
+import kotlin.collections.Collection
+import kotlin.collections.listOf
 
-class SelectSingleInputField<T : Any>(
+class SelectManyInputField<T : Any>(
     override val name: String,
     internal val items: Collection<T>,
     internal val mapper: (T) -> Option,
     override val label: String = name.replaceFirstChar { it.uppercase() },
-    override val defaultValue: T? = SingleValuedField.DEFAULT_VALUE,
+    override val defaultValue: List<T>? = SingleValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
-) : AbstractSingleValuedField<T>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
+) : AbstractSingleValuedField<List<T>>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
     val optionLabels get() = options.map { it.label }.toInteroperableList()
     val optionValues get() = options.map { it.value }.toInteroperableList()
 
-    private var selectedValue: String? = null
-        get() = field ?: defaultValue?.let(mapper)?.value
+    private val selectedValues = mutableSetOf<String>()
 
     val options: List<Option>
         get() = items.map {
             val o = mapper(it)
-            if (o.value == selectedValue) o.copy(selected = true) else o
+            if (selectedValues.contains(o.value)) o.copy(selected = true) else o
         }.toInteroperableList()
 
     val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toInteroperableList()
@@ -36,8 +36,11 @@ class SelectSingleInputField<T : Any>(
     fun selectOption(o: Option) = selectValue(o.value)
 
     fun selectValue(v: String) {
-        selectedValue = v
-        value = items.find { mapper(it).value == v }
+        selectedValues.add(v)
+        value = items.filter {
+            val o = mapper(it)
+            selectedValues.contains(o.value)
+        }.toInteroperableList()
     }
 
     fun selectLabel(l: String) {
@@ -45,15 +48,15 @@ class SelectSingleInputField<T : Any>(
         if (opt != null) selectOption(opt)
     }
 
-    fun selectedItem(item: T) = selectOption(mapper(item))
+    fun selectItem(item: T) = selectOption(mapper(item))
 
     fun unselect() {
-        selectedValue = null
+        selectedValues.clear()
         value = null
     }
 
-    override fun validate(value: T?) {
-        if (isRequired && value == null) {
+    override fun validate(value: List<T>?) {
+        if (isRequired && value.isNullOrEmpty()) {
             throw IllegalArgumentException("$label is required")
         }
     }
