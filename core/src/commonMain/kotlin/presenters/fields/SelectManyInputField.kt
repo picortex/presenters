@@ -33,24 +33,40 @@ class SelectManyInputField<T : Any>(
 
     val selected get() = options.firstOrNull { it.selected }
 
+    private fun updateValue() {
+        val selectedItems = items.filter {
+            val o = mapper(it)
+            selectedValues.contains(o.value)
+        }.toInteroperableList()
+        value = if (selectedItems.isEmpty()) null else selectedItems
+    }
+
+    fun selectItem(item: T) = selectValue(mapper(item).value)
+
     fun selectOption(o: Option) = selectValue(o.value)
 
     fun selectValue(v: String) {
         selectedValues.add(v)
-        value = items.filter {
-            val o = mapper(it)
-            selectedValues.contains(o.value)
-        }.toInteroperableList()
+        updateValue()
     }
 
+    private fun findOptionWithLabel(l: String) = options.find { it.label == l }
     fun selectLabel(l: String) {
-        val opt = items.map(mapper).find { it.label == l }
-        if (opt != null) selectOption(opt)
+        findOptionWithLabel(l)?.let { selectValue(it.value) }
     }
 
-    fun selectItem(item: T) = selectOption(mapper(item))
+    fun unselectOption(o: Option) = unselectValue(o.value)
 
-    fun unselect() {
+    fun unselectValue(v: String) {
+        selectedValues.remove(v)
+        updateValue()
+    }
+
+    fun unselectLabel(l: String) {
+        findOptionWithLabel(l)?.let { unselectValue(it.value) }
+    }
+
+    fun unselectAll() {
         selectedValues.clear()
         value = null
     }
