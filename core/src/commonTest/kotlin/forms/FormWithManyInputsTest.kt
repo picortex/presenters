@@ -20,6 +20,7 @@ import kotlin.test.Test
 
 class FormWithManyInputsTest {
 
+    @Serializable
     enum class Color {
         Red, Green, Blue
     }

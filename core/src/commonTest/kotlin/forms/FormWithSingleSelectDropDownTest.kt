@@ -3,6 +3,7 @@ package forms
 import expect.expect
 import expect.toBe
 import koncurrent.Later
+import kotlinx.serialization.Serializable
 import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
@@ -15,6 +16,7 @@ import presenters.forms.fields.selectSingle
 import kotlin.test.Test
 
 class FormWithSingleSelectDropDownTest {
+    @Serializable
     enum class Color {
         Red, Green, Blue
     }
