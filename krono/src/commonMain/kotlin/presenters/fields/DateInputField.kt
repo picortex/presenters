@@ -2,7 +2,9 @@
 
 package presenters.fields
 
+import kotlinx.serialization.SerializationStrategy
 import krono.LocalDate
+import krono.LocalDateIsoSerializer
 import presenters.fields.internal.AbstractSingleValuedField
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -35,6 +37,7 @@ class DateInputField(
         validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, pattern, maxDate, minDate, validator)
 
+    override val serializer: SerializationStrategy<LocalDate> by lazy { LocalDateIsoSerializer }
     var isoString: String?
         get() = value?.toIsoString()
         set(iso) = if (iso == null) {

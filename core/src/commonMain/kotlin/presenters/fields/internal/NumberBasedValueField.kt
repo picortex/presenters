@@ -2,6 +2,8 @@
 
 package presenters.fields.internal
 
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.ValuedField.Companion.DEFAULT_VALIDATOR
@@ -27,7 +29,6 @@ abstract class NumberBasedValueField<N : Number>(
     }
 
     abstract var stringValue: String
-
     abstract fun increment(step: N? = this.step)
 
     abstract fun decrement(step: N? = this.step)

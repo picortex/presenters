@@ -2,7 +2,9 @@
 
 package presenters.fields
 
+import kotlinx.serialization.SerializationStrategy
 import krono.LocalDate
+import krono.LocalDateIsoSerializer
 import presenters.fields.internal.AbstractRangeValuedField
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -29,6 +31,7 @@ class DateRangeInputField(
         validator: ((Range<LocalDate>?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
     ) : this(name.name, label, defaultValue, limit, isReadonly, isRequired, validator)
 
+    override val serializer: SerializationStrategy<Range<LocalDate>> by lazy { Range.serializer(LocalDateIsoSerializer) }
     var startIsoString: String?
         get() = start?.toIsoString()
         set(iso) = if (iso == null) {

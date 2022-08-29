@@ -6,12 +6,14 @@ package presenters.fields
 import kotlin.js.JsExport
 import kotlinx.collections.interoperable.List
 import kotlinx.collections.interoperable.toInteroperableList
+import kotlinx.serialization.SerializationStrategy
 import presenters.fields.internal.AbstractSingleValuedField
 
 class SelectSingleInputField<T : Any>(
     override val name: String,
     internal val items: Collection<T>,
     internal val mapper: (T) -> Option,
+    override val serializer: SerializationStrategy<T>,
     override val label: String = name.replaceFirstChar { it.uppercase() },
     override val defaultValue: T? = SingleValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,

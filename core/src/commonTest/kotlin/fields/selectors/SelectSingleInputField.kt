@@ -2,12 +2,14 @@ package fields.selectors
 
 import expect.expect
 import kotlinx.collections.interoperable.toInteroperableList
+import kotlinx.serialization.Serializable
 import presenters.fields.Option
 import presenters.fields.SelectSingleInputField
 import kotlin.test.Test
 import kotlin.test.fail
 
 class SelectSingleInputFieldTest {
+    @Serializable
     enum class Color {
         Red, Green, Blue
     }
@@ -17,7 +19,8 @@ class SelectSingleInputFieldTest {
         val color = SelectSingleInputField(
             name = "color",
             items = Color.values().toInteroperableList(),
-            mapper = { Option(label = it.name) }
+            mapper = { Option(label = it.name) },
+            serializer = Color.serializer()
         )
         color.selectValue("Red")
         expect(color.value).toBe(Color.Red)
@@ -28,7 +31,8 @@ class SelectSingleInputFieldTest {
         val color = SelectSingleInputField(
             name = "color",
             items = Color.values().toInteroperableList(),
-            mapper = { Option(label = it.name) }
+            mapper = { Option(label = it.name) },
+            serializer = Color.serializer()
         )
         color.selectedItem(Color.Green)
         expect(color.value).toBe(Color.Green)
@@ -39,7 +43,8 @@ class SelectSingleInputFieldTest {
         val color = SelectSingleInputField(
             name = "color",
             items = Color.values().toInteroperableList(),
-            mapper = { Option(label = it.name) }
+            mapper = { Option(label = it.name) },
+            serializer = Color.serializer()
         )
         color.selectedItem(Color.Green)
         expect(color.value).toBe(Color.Green)
@@ -55,6 +60,7 @@ class SelectSingleInputFieldTest {
             name = "color",
             items = Color.values().toInteroperableList(),
             mapper = { Option(label = it.name) },
+            serializer = Color.serializer(),
             isRequired = true
         )
 

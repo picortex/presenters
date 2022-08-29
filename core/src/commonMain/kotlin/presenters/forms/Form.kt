@@ -4,6 +4,7 @@ package presenters.forms
 
 import koncurrent.Later
 import koncurrent.later.catch
+import kotlinx.serialization.json.JsonObject
 import presenters.actions.GenericAction
 import presenters.actions.SimpleAction
 import presenters.collections.*
@@ -40,17 +41,8 @@ open class Form<out F : Fields, in P>(
 
     fun exit() = cancel()
 
-    override fun validate() = fields.validate()
-
-    fun clear() {
-        fields.clearAll()
-        ui.value = FormState.Fillable
-    }
-
-    @JsName("send")
-    fun submit() = try {
-        ui.value = FormState.Validating
-        validate()
+    override fun validate() {
+        fields.validate()
         val invalids = fields.allInvalid
         if (invalids.isNotEmpty()) {
             val message = simpleTableOf(invalids) {
@@ -64,8 +56,21 @@ open class Form<out F : Fields, in P>(
             val terminator = "input" + if (size > 1) "s" else ""
             throw IllegalArgumentException("You have $size invalid $terminator", invalidFields)
         }
-        val values = fields.valuesInJson
+    }
+
+    fun clear() {
+        fields.clearAll()
+        ui.value = FormState.Fillable
+    }
+
+    @JsName("send")
+    fun submit() = try {
+        ui.value = FormState.Validating
+        validate()
+        val values = fields.encodedValuesToJson(codec)
         ui.value = FormState.Submitting(values)
+        val params = codec.decodeFromString(JsonObject.serializer(), values)
+        println(params)
         submit.invoke(codec.decodeFromString(config.serializer, values)).then {
             ui.value = FormState.Submitted
             if (config.exitOnSubmitted) cancel()

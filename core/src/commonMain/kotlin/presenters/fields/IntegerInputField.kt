@@ -4,6 +4,8 @@
 package presenters.fields
 
 
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.serializer
 import presenters.fields.internal.NumberBasedValueField
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -39,6 +41,8 @@ class IntegerInputField(
         validator: ((Int?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator)
 
+
+    override val serializer: SerializationStrategy<Int> by lazy { Int.serializer() }
     override var stringValue: String
         get() = value.toString()
         set(v) = try {

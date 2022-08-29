@@ -4,6 +4,8 @@
 package presenters.fields
 
 
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.serializer
 import presenters.fields.internal.NumberBasedValueField
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -46,6 +48,8 @@ class DoubleInputField(
         } finally {
 
         }
+
+    override val serializer: SerializationStrategy<Double> by lazy { Double.serializer() }
 
     override fun increment(step: Double?) {
         value = (value ?: 0.0) + (step ?: DEFAULT_STEP)

@@ -4,6 +4,8 @@
 package presenters.fields
 
 import kotlinx.collections.interoperable.*
+import kotlinx.collections.interoperable.serializers.ListSerializer
+import kotlinx.serialization.SerializationStrategy
 import kotlin.js.JsExport
 import presenters.fields.internal.AbstractSingleValuedField
 import kotlin.collections.Collection
@@ -13,6 +15,7 @@ class SelectManyInputField<T : Any>(
     override val name: String,
     internal val items: Collection<T>,
     internal val mapper: (T) -> Option,
+    override val serializer: SerializationStrategy<List<T>>,
     override val label: String = name.replaceFirstChar { it.uppercase() },
     override val defaultValue: List<T>? = SingleValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
@@ -41,22 +44,23 @@ class SelectManyInputField<T : Any>(
         value = if (selectedItems.isEmpty()) null else selectedItems
     }
 
-    fun selectItem(item: T) = selectValue(mapper(item).value)
+    fun addSelectedItem(item: T) = addSelectedValue(mapper(item).value)
 
-    fun selectOption(o: Option) = selectValue(o.value)
+    fun addSelectedOption(o: Option) = addSelectedValue(o.value)
 
-    fun selectValue(v: String) {
+    fun addSelectedValue(v: String) {
         selectedValues.add(v)
         updateValue()
     }
 
     private fun findOptionWithLabel(l: String) = options.find { it.label == l }
-    fun selectLabel(l: String) {
-        findOptionWithLabel(l)?.let { selectValue(it.value) }
+    fun addSelectLabel(l: String) {
+        findOptionWithLabel(l)?.let { addSelectedValue(it.value) }
     }
 
     fun unselectOption(o: Option) = unselectValue(o.value)
 
+    fun unselectItem(i: T) = unselectValue(mapper(i).value)
     fun unselectValue(v: String) {
         selectedValues.remove(v)
         updateValue()
@@ -69,6 +73,22 @@ class SelectManyInputField<T : Any>(
     fun unselectAll() {
         selectedValues.clear()
         value = null
+    }
+
+    fun toggleSelectedValue(v: String) {
+        if (selectedValues.contains(v)) {
+            unselectValue(v)
+        } else {
+            addSelectedValue(v)
+        }
+    }
+
+    fun toggleSelectedOption(o: Option) = toggleSelectedValue(o.value)
+
+    fun toggleSelectedItem(i: T) = toggleSelectedValue(mapper(i).value)
+
+    fun toggleSelectedLabel(l: String) {
+        findOptionWithLabel(l)?.let { toggleSelectedValue(it.value) }
     }
 
     override fun validate(value: List<T>?) {

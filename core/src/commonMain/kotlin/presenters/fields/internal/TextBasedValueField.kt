@@ -2,6 +2,8 @@
 
 package presenters.fields.internal
 
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.ValuedField.Companion.DEFAULT_VALIDATOR
@@ -23,6 +25,8 @@ abstract class TextBasedValueField(
         val DEFAULT_MAX_LENGTH: Int? = null
         val DEFAULT_MIN_LENGTH: Int? = null
     }
+
+    override val serializer: SerializationStrategy<String> by lazy { String.serializer() }
 
     override fun validate(value: String?) {
         if (isRequired && value.isNullOrBlank()) {

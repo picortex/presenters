@@ -58,7 +58,7 @@ class FormWithMultiSelectDropDownTest {
 
         form.fields.apply {
             name.value = "John"
-            color.selectItem(Color.Blue)
+            color.addSelectedItem(Color.Blue)
         }
 
         form.submit()
@@ -73,8 +73,8 @@ class FormWithMultiSelectDropDownTest {
 
         form.fields.apply {
             name.value = "John"
-            color.selectItem(Color.Blue)
-            color.selectItem(Color.Red)
+            color.addSelectedItem(Color.Blue)
+            color.addSelectedItem(Color.Red)
         }
 
         form.submit()

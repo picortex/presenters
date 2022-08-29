@@ -30,6 +30,8 @@ kotlin {
                 implementation(asoft.live.test)
                 implementation(projects.presentersMock)
                 implementation(asoft.koncurrent.primitives.mock)
+                implementation(projects.presentersKrono)
+                implementation(projects.presentersGeo)
             }
         }
     }
