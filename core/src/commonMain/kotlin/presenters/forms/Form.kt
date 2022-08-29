@@ -69,8 +69,6 @@ open class Form<out F : Fields, in P>(
         validate()
         val values = fields.encodedValuesToJson(codec)
         ui.value = FormState.Submitting(values)
-        val params = codec.decodeFromString(JsonObject.serializer(), values)
-        println(params)
         submit.invoke(codec.decodeFromString(config.serializer, values)).then {
             ui.value = FormState.Submitted
             if (config.exitOnSubmitted) cancel()

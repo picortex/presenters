@@ -6,21 +6,15 @@ package presenters.forms
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
-import kotlinx.serialization.serializer
 import presenters.fields.InputField
 import presenters.fields.InputFieldState
 import presenters.fields.SingleValuedField
-import presenters.fields.internal.TextBasedValueField
+import presenters.fields.ValuedField
 import kotlin.js.JsExport
 
 open class Fields(internal val cache: MutableMap<String, InputField> = mutableMapOf()) {
 
     internal val all get() = cache.values
-
-    internal val valuesAsObjects
-        get() = valuesToBeSubmitted.associate {
-            it.name to it.value
-        }.toMap()
 
     fun encodedValuesToJson(codec: StringFormat) = valuesToBeSubmitted.associate {
         it.name to it
@@ -29,23 +23,14 @@ open class Fields(internal val cache: MutableMap<String, InputField> = mutableMa
         """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.value)}"""
     }
 
-    internal val valuesInJson
-        get() = valuesToBeSubmitted.associate {
-            it.name to it
-        }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, field) ->
-            val v = when (field) {
-                is TextBasedValueField -> """"${field.value}""""
-                else -> field.value
-            }
-            """${"\n"}    "$key": $v"""
-        }
-
     internal val allInvalid get() = valuesToBeSubmitted.filter { it.feedback.value is InputFieldState.Error }
 
-    private val valueFields get() = cache.values.filterIsInstance<SingleValuedField<*>>()
+    private val singleValueFields get() = valueFields.filterIsInstance<SingleValuedField<*>>()
+
+    private val valueFields get() = cache.values.filterIsInstance<ValuedField>()
 
     internal val valuesToBeSubmitted
-        get() = valueFields.filterNot {
+        get() = singleValueFields.filterNot {
             !it.isRequired && (it.value == null || it.value.toString().isBlank())
         }
 
