@@ -11,8 +11,8 @@ import presenters.fields.internal.AbstractSingleValuedField
 
 class SelectSingleInputField<T : Any>(
     override val name: String,
-    internal val items: Collection<T>,
-    internal val mapper: (T) -> Option,
+    val items: Collection<T>,
+    val mapper: (T) -> Option,
     override val serializer: SerializationStrategy<T>,
     override val label: String = name.replaceFirstChar { it.uppercase() },
     override val defaultValue: T? = SingleValuedField.DEFAULT_VALUE,
@@ -22,8 +22,12 @@ class SelectSingleInputField<T : Any>(
     val optionLabels get() = options.map { it.label }.toInteroperableList()
     val optionValues get() = options.map { it.value }.toInteroperableList()
 
-    private var selectedValue: String? = null
+    var selectedValue: String? = null
         get() = field ?: defaultValue?.let(mapper)?.value
+
+    val selectedItem: T? get() = items.firstOrNull { mapper(it).value == selectedValue }
+
+    val selectedOption: Option? get() = selectedItem?.let(mapper)?.copy(selected = true)
 
     val options: List<Option>
         get() = items.map {
@@ -47,7 +51,7 @@ class SelectSingleInputField<T : Any>(
         if (opt != null) selectOption(opt)
     }
 
-    fun selectedItem(item: T) = selectOption(mapper(item))
+    fun selectItem(item: T) = selectOption(mapper(item))
 
     fun unselect() {
         selectedValue = null

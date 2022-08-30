@@ -13,8 +13,8 @@ import kotlin.collections.listOf
 
 class SelectManyInputField<T : Any>(
     override val name: String,
-    internal val items: Collection<T>,
-    internal val mapper: (T) -> Option,
+    val items: Collection<T>,
+    val mapper: (T) -> Option,
     override val serializer: SerializationStrategy<List<T>>,
     override val label: String = name.replaceFirstChar { it.uppercase() },
     override val defaultValue: List<T>? = SingleValuedField.DEFAULT_VALUE,
@@ -24,7 +24,11 @@ class SelectManyInputField<T : Any>(
     val optionLabels get() = options.map { it.label }.toInteroperableList()
     val optionValues get() = options.map { it.value }.toInteroperableList()
 
-    private val selectedValues = mutableSetOf<String>()
+    val selectedValues = mutableSetOf<String>()
+
+    val selectedItems: List<T> get() = items.filter { selectedValues.contains(mapper(it).value) }.toInteroperableList()
+
+    val selectedOptions get() = selectedItems.map(mapper).toInteroperableList()
 
     val options: List<Option>
         get() = items.map {

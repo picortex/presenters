@@ -34,7 +34,7 @@ class SelectSingleInputFieldTest {
             mapper = { Option(label = it.name) },
             serializer = Color.serializer()
         )
-        color.selectedItem(Color.Green)
+        color.selectItem(Color.Green)
         expect(color.value).toBe(Color.Green)
     }
 
@@ -46,7 +46,7 @@ class SelectSingleInputFieldTest {
             mapper = { Option(label = it.name) },
             serializer = Color.serializer()
         )
-        color.selectedItem(Color.Green)
+        color.selectItem(Color.Green)
         expect(color.value).toBe(Color.Green)
 
         color.unselect()
@@ -64,7 +64,7 @@ class SelectSingleInputFieldTest {
             isRequired = true
         )
 
-        color.selectedItem(Color.Green)
+        color.selectItem(Color.Green)
         expect(color.value).toBe(Color.Green)
 
         color.unselect()

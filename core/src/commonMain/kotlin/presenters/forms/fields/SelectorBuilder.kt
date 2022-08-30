@@ -4,6 +4,7 @@ import presenters.fields.DropDownInputField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
+@Deprecated("In favour of selectSingle")
 inline fun Fields.selector(
     name: String? = null,
     label: String? = name,
@@ -16,6 +17,7 @@ inline fun Fields.selector(
     )
 }
 
+@Deprecated("In favour of selectSingle")
 inline fun Fields.selector(
     name: KProperty<*>,
     label: String? = name.name,
