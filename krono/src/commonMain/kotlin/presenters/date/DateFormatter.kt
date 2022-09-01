@@ -7,6 +7,7 @@ import krono.PureDateTimeFormatter
 
 //typealias DateFormatter = datetime.DateFormatter
 
+@Deprecated("Do not use this anymore")
 class DateFormatter(private val pattern: String) {
     fun format(date: LocalDate) = PureDateFormatter(pattern).formatDate(
         year = date.year,

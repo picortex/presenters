@@ -1,7 +1,7 @@
 [versions]
 foundation = "1.5.3"
 stdlib = "0.2.43"
-root = "2.0.8"
+root = "2.0.11"
 
 
 
@@ -14,7 +14,8 @@ cache-browser = { module = "tz.co.asoft:cache-browser", version.ref = "root" }
 cache-mock = { module = "tz.co.asoft:cache-mock", version.ref = "root" }
 cache-react-native = { module = "tz.co.asoft:cache-react-native", version.ref = "root" }
 
-kash-core = { module = "tz.co.asoft:kash-core", version.ref = "stdlib" }
+kash-currency = { module = "tz.co.asoft:kash-currency", version.ref = "root" }
+kash-money = { module = "tz.co.asoft:kash-money", version.ref = "root" }
 
 kuest-core = { module = "tz.co.asoft:kuest-core", version.ref = "foundation" }
 koncurrent-primitives-core = { module = "tz.co.asoft:koncurrent-primitives-core", version.ref = "root" }

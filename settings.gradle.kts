@@ -43,8 +43,10 @@ val tmp = 1
 
 rootProject.name = "picortex"
 
+includeBuild("../geo/geo-generator")
 // dependencies
 includeSubs("krono", "../krono", "api")
-includeSubs("geo", "../geo", "core")
+
+includeSubs("geo", "../geo", "core", "countries")
 
 includeSubs("presenters", ".", "core", "mock", "krono", "geo")

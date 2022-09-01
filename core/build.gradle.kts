@@ -18,7 +18,7 @@ kotlin {
                 api(asoft.viewmodel.core)
                 api(asoft.koncurrent.later.core)
                 api(asoft.identifier.core)
-                api(asoft.kash.core)
+                api(asoft.kash.money)
                 api(asoft.kotlinx.collections.interoperable)
             }
         }
