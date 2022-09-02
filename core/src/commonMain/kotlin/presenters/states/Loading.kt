@@ -15,8 +15,8 @@ data class Loading<out D>(
     override val isFailure = false
 
     override val asLoading: Loading<D> get() = this
-    override val asSuccess: Success<D> get() = error(0)
-    override val asFailure: Failure<D> get() = error(0)
+    override val asSuccess: Success<D> get() = error("a Loading state can't be casted to Success state")
+    override val asFailure: Failure<D> get() = error("a Loading state can't be casted to Failure state")
 
     override fun <R> map(transformer: (D) -> R): LazyState<R> = try {
         if (data != null) {

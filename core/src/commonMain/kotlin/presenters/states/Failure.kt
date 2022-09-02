@@ -28,8 +28,8 @@ data class Failure<out D>(
     override val isLoading = false
     override val isSuccess = false
     override val isFailure = true
-    override val asLoading: Loading<D> get() = error(0)
 
+    override val asLoading: Loading<D> get() = error(0)
     override val asSuccess: Success<D> get() = error(0)
     override val asFailure: Failure<D> get() = this
     override fun <R> map(transformer: (D) -> R): Failure<R> = if (data != null) {

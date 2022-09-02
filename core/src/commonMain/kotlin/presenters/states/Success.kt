@@ -15,9 +15,9 @@ data class Success<out D>(
     override val isSuccess = true
     override val isFailure = false
 
-    override val asLoading: Loading<D> get() = error(0)
+    override val asLoading: Loading<D> get() = error("a Success state can't be casted into a Loading")
     override val asSuccess: Success<D> get() = this
-    override val asFailure: Failure<D> get() = error(0)
+    override val asFailure: Failure<D> get() = error("a Success state can't be casted into a Failure")
 
     override fun <R> map(transformer: (D) -> R) = Success(transformer(data))
     override fun catch(resolver: (Throwable) -> @UnsafeVariance D): Result<D> = this

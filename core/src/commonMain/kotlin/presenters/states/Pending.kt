@@ -7,12 +7,12 @@ import kotlin.js.JsExport
 object Pending : LazyState<Nothing> {
     override val isPending = true
     override val isLoading = false
-    override val isSuccess = true
+    override val isSuccess = false
     override val isFailure = false
-    override val asLoading: Loading<Nothing> get() = error(0)
 
-    override val asSuccess: Success<Nothing> get() = error(0)
-    override val asFailure: Failure<Nothing> get() = error(0)
+    override val asLoading: Loading<Nothing> get() = error("Pending state can't be casted to a Loading state")
+    override val asSuccess: Success<Nothing> get() = error("Pending state can't be casted to a Success state")
+    override val asFailure: Failure<Nothing> get() = error("Pending state can't be casted to a Failure state")
 
     override val data: Nothing? = null
     override fun toString(): String = "Pending"
