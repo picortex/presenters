@@ -4,36 +4,39 @@ package presenters.forms
 
 import koncurrent.Later
 import koncurrent.later.catch
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.serializer
 import presenters.actions.GenericAction
+import presenters.actions.MutableSimpleAction
 import presenters.actions.SimpleAction
 import presenters.collections.*
 import viewmodel.ViewModel
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-open class Form<out F : Fields, in P>(
-    override val heading: String,
-    override val details: String,
-    override val fields: F,
-    private val config: FormConfig<P>,
+open class Form<out F : Fields, P>(
+    open val heading: String,
+    open val details: String,
+    open val fields: F,
+    open val config: FormConfig<P>,
     initializer: FormActionsBuildingBlock<P>,
-) : ViewModel<FormState>(config.of(FormState.Fillable)), BaseForm<F, P> {
+) : ViewModel<FormState>(config.of(FormState.Fillable)) {
 
     private val builtActions = FormActionsBuilder<P>().apply { initializer() }
 
-    override val cancel = builtActions.actions.firstOrNull {
-        it.name.contentEquals("Cancel", ignoreCase = true)
-    } ?: SimpleAction("Cancel") {}
+    val cancelAction = MutableSimpleAction("Cancel") {
+        val handler = builtActions.actions.firstOrNull {
+            it.name.contentEquals("Cancel", ignoreCase = true)
+        }?.handler ?: { logger.warn("Cancel action of ${this::class.simpleName} was never setup") }
+        handler()
+    }
 
-    override val submit: GenericAction<P> = builtActions.submitAction
+    private val submitAction: GenericAction<P> = builtActions.submitAction
 
     private val codec get() = config.codec
 
-    @JsName("handleCancel")
     fun cancel() {
         try {
-            cancel.invoke()
+            cancelAction.invoke()
         } catch (err: Throwable) {
             ui.value = FormState.Failure(err)
         }
@@ -41,7 +44,7 @@ open class Form<out F : Fields, in P>(
 
     fun exit() = cancel()
 
-    override fun validate() {
+    open fun validate() {
         fields.validate()
         val invalids = fields.allInvalid
         if (invalids.isNotEmpty()) {
@@ -63,13 +66,12 @@ open class Form<out F : Fields, in P>(
         ui.value = FormState.Fillable
     }
 
-    @JsName("send")
     fun submit() = try {
         ui.value = FormState.Validating
         validate()
         val values = fields.encodedValuesToJson(codec)
         ui.value = FormState.Submitting(values)
-        submit.invoke(codec.decodeFromString(config.serializer, values)).then {
+        submitAction.invoke(codec.decodeFromString(config.serializer, values)).then {
             ui.value = FormState.Submitted
             if (config.exitOnSubmitted) cancel()
             it
