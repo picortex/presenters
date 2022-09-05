@@ -1,7 +1,6 @@
 package presenters.forms.fields
 
 import presenters.fields.TextAreaField
-import presenters.fields.SingleValuedField
 import presenters.fields.ValuedField
 import presenters.fields.internal.TextBasedValueField
 import presenters.forms.Fields
@@ -32,8 +31,8 @@ inline fun Fields.textArea(
 }
 
 inline fun Fields.textArea(
-    property: KProperty<*>,
-    label: String? = property.name,
+    name: KProperty<*>,
+    label: String? = name.name,
     hint: String? = label,
     value: String? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
@@ -41,4 +40,4 @@ inline fun Fields.textArea(
     maxLength: Int? = TextBasedValueField.DEFAULT_MAX_LENGTH,
     minLength: Int? = TextBasedValueField.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) = textArea(property.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)
+) = textArea(name.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)

@@ -1,9 +1,7 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
 package presenters.collections.internal
 
 import kotlinx.collections.interoperable.List
+import live.MutableLive
 import presenters.collections.*
 import viewmodel.ViewModelConfig
 import kotlin.js.JsExport
@@ -17,5 +15,4 @@ open class TableImpl<T>(
 ) : PageableImpl<T>(config), Table<T>,
     PaginationManager<T> by paginator,
     SelectionManager<T> by selector,
-    ActionsManager<T> by actionsManager {
-}
+    ActionsManager<T> by actionsManager

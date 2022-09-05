@@ -1,3 +1,4 @@
+@file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE", "OPT_IN_USAGE", "WRONG_EXPORTED_DECLARATION")
 
 package presenters.collections
@@ -13,7 +14,7 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
-@JsExport
+
 /**
  * A model representation of what a Page of data should contain
  */
@@ -58,13 +59,13 @@ interface Page<out T> {
         operator fun <T> invoke(
             items: Collection<T> = iListOf(),
             capacity: Int = items.size,
-            no: Int = 1
+            number: Int = 1
         ): Page<T> = PageImpl(
             items = items.mapIndexed { index, it ->
                 Row(index, it)
             }.toInteroperableList(),
             capacity = capacity,
-            number = no
+            number = number
         )
     }
 }

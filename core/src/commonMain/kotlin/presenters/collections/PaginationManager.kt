@@ -1,3 +1,4 @@
+@file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE", "WRONG_EXPORTED_DECLARATION")
 
 package presenters.collections
@@ -7,7 +8,6 @@ import live.Live
 import presenters.collections.internal.PaginationManagerImpl
 import kotlin.js.JsExport
 
-@JsExport
 interface PaginationManager<out T> {
     val live: Live<PageableState<T>>
     val currentPageOrNull get() = live.value.currentPageOrNull

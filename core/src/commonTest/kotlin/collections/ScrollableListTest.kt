@@ -2,9 +2,13 @@ package collections
 
 import expect.expect
 import koncurrent.SynchronousExecutor
+import kotlinx.coroutines.test.runTest
 import presenters.collections.*
 import live.*
 import live.expect
+import logging.ConsoleAppender
+import logging.LogLevel
+import logging.Logger
 import presenters.collections.CollectionPaginator
 import presenters.collections.PageableState.LoadedPage
 import presenters.collections.PageableState.Loading
@@ -99,5 +103,26 @@ class ScrollableListTest {
         list.select(row = 1)
 
         expect(list.actions).toBeOfSize(2)
+    }
+
+    @Test
+    fun should_be_able_to_load_more_data() = runTest {
+        val config = ViewModelConfig(executor = SynchronousExecutor, logger = Logger())
+        val paginator = CollectionPaginator(Person.List, capacity = 6)
+        val selector = SelectionManager(paginator, config)
+        val actions = actionsOf(selector) {}
+        val list = scrollableListOf(paginator, selector, actions, config)
+
+        list.loadFirstPage()
+        expect(list.items.value).toBeOfSize(6)
+
+        list.loadNextPage()
+        expect(list.items.value).toBeOfSize(12)
+
+        list.refresh()
+        expect(list.items.value).toBeOfSize(12)
+
+        list.loadNextPage()
+        expect(list.items.value).toBeOfSize(18)
     }
 }

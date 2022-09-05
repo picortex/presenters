@@ -22,7 +22,9 @@ class SelectionManagerImpl<T>(
             )
 
             is SelectorState.Item -> Selected.Item(
-                paginator.readPageFromMemory(state.page, paginator.capacity).items.first { row -> row.number == state.number }.item
+                paginator.readPageFromMemory(state.page, paginator.capacity).items.first { row ->
+                    row.number == state.number
+                }.item
             )
 
             is SelectorState.Items -> Selected.Items(

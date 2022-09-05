@@ -14,8 +14,8 @@ import viewmodel.ViewModelConfig
 @PublishedApi
 internal class PaginationManagerImpl<out T>(
     override var capacity: Int,
-    internal val ram: PageableRamInMemory<@UnsafeVariance T> = PageableRamInMemory(),
-    private val onPage: (no: Int, capacity: Int) -> Later<out Page<T>>
+    private val ram: PageableRamInMemory<T> = PageableRamInMemory(),
+    private val onPage: (no: Int, capacity: Int) -> Later<Page<T>>
 ) : ViewModel<PageableState<T>>(ViewModelConfig().of(PageableState.UnLoaded(ram.readOrNull(1, capacity)))), PaginationManager<T> {
 
     override val live: Live<PageableState<T>> get() = ui
@@ -42,7 +42,7 @@ internal class PaginationManagerImpl<out T>(
         is PageableState.UnLoaded -> loadPage(1)
     }
 
-    override fun loadPreviousPage(): Later<out Page<T>> = when (val state = ui.value) {
+    override fun loadPreviousPage(): Later<Page<T>> = when (val state = ui.value) {
         is PageableState.Failure -> Later.reject(Throwable("Can't load next page because paginator is in a failure state"))
         is PageableState.LoadedPage -> when {
             state.page.number > 1 -> loadPage(state.page.number - 1)
@@ -53,7 +53,7 @@ internal class PaginationManagerImpl<out T>(
         is PageableState.UnLoaded -> loadPage(1)
     }
 
-    override fun loadPage(no: Int): Later<out Page<T>> {
+    override fun loadPage(no: Int): Later<Page<T>> {
         val memorizedPage = ram.readOrNull(no, capacity)
         ui.value = PageableState.Loading("Loading", memorizedPage)
         return onPage(no, capacity).finally {
@@ -68,14 +68,14 @@ internal class PaginationManagerImpl<out T>(
         }
     }
 
-    override fun refresh(): Later<out Page<T>> = when (val state = ui.value) {
+    override fun refresh(): Later<Page<T>> = when (val state = ui.value) {
         is PageableState.Failure -> loadPage(1)
         is PageableState.LoadedPage -> loadPage(state.page.number)
         is PageableState.Loading -> Later.reject(Throwable("Can't load next page because paginator is still loading"))
         is PageableState.UnLoaded -> loadPage(1)
     }
 
-    override fun loadFirstPage(): Later<out Page<T>> = loadPage(1)
+    override fun loadFirstPage(): Later<Page<T>> = loadPage(1)
 
-    override fun loadLastPage(): Later<out Page<T>> = loadPage(-1)
+    override fun loadLastPage(): Later<Page<T>> = loadPage(-1)
 }

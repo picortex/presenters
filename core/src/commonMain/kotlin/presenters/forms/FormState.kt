@@ -28,5 +28,5 @@ sealed class FormState {
 
     val asFailure get() = this as Failure
 
-    override fun toString(): String = this::class.simpleName ?: "Unknown"
+    override fun toString(): String = "FormState"
 }
