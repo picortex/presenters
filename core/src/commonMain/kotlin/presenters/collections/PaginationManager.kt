@@ -4,31 +4,33 @@
 package presenters.collections
 
 import koncurrent.Later
+import kotlinx.collections.interoperable.List
 import live.Live
 import presenters.collections.internal.PaginationManagerImpl
 import kotlin.js.JsExport
 
 interface PaginationManager<out T> {
     val live: Live<PageableState<T>>
+    val continuous: List<Row<T>>
     val currentPageOrNull get() = live.value.currentPageOrNull
     var capacity: Int
     fun readPageFromMemory(page: Int, cap: Int): Page<T>
     fun readPageFromMemoryOrNull(page: Int, cap: Int): Page<T>?
     fun writePageToMemory(page: Page<@UnsafeVariance T>): Page<T>?
     fun setPageCapacity(cap: Int)
-    fun refresh(): Later<out Page<T>>
-    fun loadNextPage(): Later<out Page<T>>
-    fun loadPreviousPage(): Later<out Page<T>>
-    fun loadPage(no: Int): Later<out Page<T>>
-    fun loadFirstPage(): Later<out Page<T>>
-    fun loadLastPage(): Later<out Page<T>>
+    fun refresh(): Later<Page<T>>
+    fun loadNextPage(): Later<Page<T>>
+    fun loadPreviousPage(): Later<Page<T>>
+    fun loadPage(no: Int): Later<Page<T>>
+    fun loadFirstPage(): Later<Page<T>>
+    fun loadLastPage(): Later<Page<T>>
 
     companion object {
         val DEFAULT_CAPACITY = 10
 
         operator fun <T> invoke(
             capacity: Int = DEFAULT_CAPACITY,
-            onPage: (no: Int, capacity: Int) -> Later<out Page<T>>
+            onPage: (no: Int, capacity: Int) -> Later<Page<T>>
         ): PaginationManager<T> = PaginationManagerImpl(capacity = capacity, onPage = onPage)
     }
 }

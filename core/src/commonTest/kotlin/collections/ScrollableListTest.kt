@@ -6,8 +6,6 @@ import kotlinx.coroutines.test.runTest
 import presenters.collections.*
 import live.*
 import live.expect
-import logging.ConsoleAppender
-import logging.LogLevel
 import logging.Logger
 import presenters.collections.CollectionPaginator
 import presenters.collections.PageableState.LoadedPage
@@ -114,15 +112,15 @@ class ScrollableListTest {
         val list = scrollableListOf(paginator, selector, actions, config)
 
         list.loadFirstPage()
-        expect(list.items.value).toBeOfSize(6)
+        expect(list.rows).toBeOfSize(6)
 
         list.loadNextPage()
-        expect(list.items.value).toBeOfSize(12)
+        expect(list.rows).toBeOfSize(12)
 
         list.refresh()
-        expect(list.items.value).toBeOfSize(12)
+        expect(list.rows).toBeOfSize(12)
 
         list.loadNextPage()
-        expect(list.items.value).toBeOfSize(18)
+        expect(list.rows).toBeOfSize(18)
     }
 }

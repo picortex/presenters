@@ -4,10 +4,12 @@ import koncurrent.Fulfilled
 import koncurrent.Later
 import koncurrent.Rejected
 import koncurrent.later.finally
+import kotlinx.collections.interoperable.toInteroperableList
 import live.Live
 import presenters.collections.Page
 import presenters.collections.PageableState
 import presenters.collections.PaginationManager
+import presenters.collections.Row
 import viewmodel.ViewModel
 import viewmodel.ViewModelConfig
 
@@ -19,6 +21,17 @@ internal class PaginationManagerImpl<out T>(
 ) : ViewModel<PageableState<T>>(ViewModelConfig().of(PageableState.UnLoaded(ram.readOrNull(1, capacity)))), PaginationManager<T> {
 
     override val live: Live<PageableState<T>> get() = ui
+
+    override val continuous
+        get() = buildList {
+            var i = 1
+            var page = ram.readOrNull(i, capacity)
+            while (page != null) {
+                addAll(page.items.mapIndexed { index, row -> Row(index * i, row.item) })
+                i++
+                page = ram.readOrNull(i, capacity)
+            }
+        }.toInteroperableList()
 
     override fun readPageFromMemory(page: Int, cap: Int): Page<T> = ram.read(page, capacity)
 

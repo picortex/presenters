@@ -8,6 +8,7 @@ import kotlin.js.JsExport
 import kotlin.jvm.JvmField
 
 @JsExport
+@Deprecated("In favour of presenters.states.Case")
 interface Case {
     val message: String
 
@@ -22,11 +23,13 @@ interface Case {
 }
 
 @JsExport
+@Deprecated("In favour of presenters.states.Loading")
 interface Loading : Case {
     val loading: Boolean get() = true // TODO: Check to see if this is still needed in the client side
 }
 
 @JsExport
+@Deprecated("In favour of presenters.states.Failure")
 interface Failure : Case {
     val cause: Throwable?
     val actions: List<SimpleAction>
@@ -39,6 +42,7 @@ interface Failure : Case {
 }
 
 @JsExport
+@Deprecated("In favour of presenters.states.Success")
 interface Success : Case {
     val actions: List<SimpleAction>
     val success get() = true  // TODO: Check to see if this is still needed in the client side

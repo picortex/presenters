@@ -47,7 +47,7 @@ class SelectionManagerImpl<T>(
     }
 
     override fun selectAllItemsInAllPages() {
-        ui.value = SelectorState.AllSelected()
+        ui.value = SelectorState.AllSelected(exceptions = iListOf())
     }
 
     override fun unSelectAllItemsInAllPages() {
