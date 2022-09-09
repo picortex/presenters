@@ -1,9 +1,7 @@
 package presenters.collections.internal
 
-import koncurrent.Fulfilled
 import koncurrent.Later
-import koncurrent.Rejected
-import koncurrent.later.finally
+import koncurrent.later.catch
 import kotlinx.collections.interoperable.toInteroperableList
 import live.Live
 import presenters.collections.Page
@@ -50,51 +48,54 @@ internal class PaginationManagerImpl<out T>(
     }
 
     override fun loadNextPage() = when (val state = ui.value) {
-        is PageableState.Failure -> Later.reject(Throwable("Can't load next page because paginator is in a failure state"))
+        is PageableState.UnLoaded -> loadPage(1)
+        is PageableState.Loading -> Later.reject(LOADING_ERROR)
+        is PageableState.Failure -> loadPage(1) // Later.reject(RESOLVE_ERROR)
         is PageableState.LoadedPage -> when {
             state.page.isEmpty -> Later.resolve(state.page)
             state.page.items.size < state.page.capacity -> Later.resolve(state.page)
             else -> loadPage(state.page.number + 1)
         }
-
-        is PageableState.Loading -> Later.reject(Throwable("Can't load next page because paginator is still loading"))
-        is PageableState.UnLoaded -> loadPage(1)
     }
 
     override fun loadPreviousPage(): Later<Page<T>> = when (val state = ui.value) {
-        is PageableState.Failure -> Later.reject(Throwable("Can't load next page because paginator is in a failure state"))
+        is PageableState.UnLoaded -> loadPage(1)
+        is PageableState.Loading -> Later.reject(LOADING_ERROR)
+        is PageableState.Failure -> loadPage(1) // Later.reject(RESOLVE_ERROR)
         is PageableState.LoadedPage -> when {
             state.page.number > 1 -> loadPage(state.page.number - 1)
-            else -> Later.resolve(state.page)
+            else -> loadPage(1)
         }
-
-        is PageableState.Loading -> Later.reject(Throwable("Can't load next page because paginator is still loading"))
-        is PageableState.UnLoaded -> loadPage(1)
     }
 
     override fun loadPage(no: Int): Later<Page<T>> {
+        if (ui.value is PageableState.Loading) return Later.reject(LOADING_ERROR)
+
         val memorizedPage = ram.readOrNull(no, capacity)
         ui.value = PageableState.Loading("Loading", memorizedPage)
-        return onPage(no, capacity).finally {
-            when (it) {
-                is Fulfilled -> {
-                    ram.write(it.value)
-                    ui.value = PageableState.LoadedPage(it.value)
-                }
-
-                is Rejected -> ui.value = PageableState.Failure(it.cause, page = memorizedPage)
-            }
+        return onPage(no, capacity).then {
+            ram.write(it)
+            ui.value = PageableState.LoadedPage(it)
+            it
+        }.catch {
+            ui.value = PageableState.Failure(it, page = memorizedPage)
+            throw it
         }
     }
 
     override fun refresh(): Later<Page<T>> = when (val state = ui.value) {
+        is PageableState.UnLoaded -> loadPage(1)
+        is PageableState.Loading -> Later.reject(LOADING_ERROR)
         is PageableState.Failure -> loadPage(1)
         is PageableState.LoadedPage -> loadPage(state.page.number)
-        is PageableState.Loading -> Later.reject(Throwable("Can't load next page because paginator is still loading"))
-        is PageableState.UnLoaded -> loadPage(1)
     }
 
     override fun loadFirstPage(): Later<Page<T>> = loadPage(1)
 
     override fun loadLastPage(): Later<Page<T>> = loadPage(-1)
+
+    companion object {
+        val RESOLVE_ERROR = Throwable("Can't resolve page number while paginator is in a failure state")
+        val LOADING_ERROR = Throwable("Can't load page while paginator is still loading")
+    }
 }
