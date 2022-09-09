@@ -210,4 +210,21 @@ class SelectorTest {
 
         expect(selector.selected).toBe<Selected.Item<Person>>()
     }
+
+    @Test
+    fun should_be_able_to_selecte_by_object_instance() {
+        val paginator = CollectionPaginator(Person.List, capacity = 5)
+        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+
+        paginator.loadFirstPage()
+        expect(paginator.currentPageOrNull?.number).toBe(1)
+
+        paginator.loadNextPage()
+        expect(paginator.currentPageOrNull?.number).toBe(2)
+
+        selector.select(Person.List[3])
+        expect(selector.isRowSelectedOnPage(row = 4, page = 1)).toBe(true, "Row 4 / Page 1: was supposed to be selected")
+
+        expect(selector.selected).toBe<Selected.Item<Person>>()
+    }
 }

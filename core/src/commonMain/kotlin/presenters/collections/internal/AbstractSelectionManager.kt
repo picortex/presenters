@@ -29,11 +29,14 @@ abstract class AbstractSelectionManager<T>(
         var rowNumber: Int? = null
         var pageNumber: Int? = null
         paginator.forEachPage { page ->
-            pageNumber = page.number
-            rowNumber = page.items.find { it.item == obj }?.number
-            if (rowNumber != null && pageNumber != null) return@forEachPage
-        }
+            val found = page.items.find { it.item == obj }
+            // If already found, don't keep looking
+            if (rowNumber == null) pageNumber = page.number
 
+            // If already found, don't keep looking
+            if (rowNumber == null) rowNumber = found?.number
+            if (found != null) return@forEachPage // TODO: This doesn't work. Find a way to quickly terminate out of this loop
+        }
         val r = rowNumber
         val p = pageNumber
         return if (r != null && p != null) Position(p, r) else null
