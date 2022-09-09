@@ -24,14 +24,20 @@ internal class PaginationManagerImpl<out T>(
 
     override val continuous
         get() = buildList {
-            var i = 1
-            var page = ram.readOrNull(i, capacity)
-            while (page != null) {
-                addAll(page.items.mapIndexed { index, row -> Row(index * i, row.item) })
-                i++
-                page = ram.readOrNull(i, capacity)
+            forEachPage { page ->
+                addAll(page.items.mapIndexed { index, row -> Row(index * page.number, row.item) })
             }
         }.toInteroperableList()
+
+    override fun forEachPage(block: (Page<T>) -> Unit) {
+        var i = 1
+        var page = ram.readOrNull(i, capacity)
+        while (page != null) {
+            block(page)
+            i++
+            page = ram.readOrNull(i, capacity)
+        }
+    }
 
     override fun readPageFromMemory(page: Int, cap: Int): Page<T> = ram.read(page, capacity)
 

@@ -24,6 +24,7 @@ interface PaginationManager<out T> {
     fun loadPage(no: Int): Later<Page<T>>
     fun loadFirstPage(): Later<Page<T>>
     fun loadLastPage(): Later<Page<T>>
+    fun forEachPage(block: (Page<T>) -> Unit)
 
     companion object {
         val DEFAULT_CAPACITY = 10
