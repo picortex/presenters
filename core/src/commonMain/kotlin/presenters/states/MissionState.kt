@@ -5,7 +5,6 @@ package presenters.states
 
 import kotlin.js.JsExport
 
-@JsExport
 sealed interface MissionState<out T> {
     val data: T?
 

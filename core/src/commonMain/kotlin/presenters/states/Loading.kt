@@ -1,10 +1,10 @@
+@file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE")
 
 package presenters.states
 
 import kotlin.js.JsExport
 
-@JsExport
 data class Loading<out D>(
     val message: String,
     override val data: D? = null,

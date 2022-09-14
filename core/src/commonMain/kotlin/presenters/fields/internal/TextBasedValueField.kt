@@ -28,6 +28,8 @@ abstract class TextBasedValueField(
 
     override val serializer: SerializationStrategy<String> by lazy { String.serializer() }
 
+    val valueOrNullIfEmpty get() = if (value.isNullOrEmpty()) null else value
+
     override fun validate(value: String?) {
         if (isRequired && value.isNullOrBlank()) {
             throw IllegalArgumentException("${label.replaceFirstChar { it.uppercase() }} is required")
