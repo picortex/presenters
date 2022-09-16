@@ -1,3 +1,4 @@
+@file:JsExport
 @file:Suppress("WRONG_EXPORTED_DECLARATION", "NON_EXPORTABLE_TYPE")
 
 package presenters.forms
@@ -16,11 +17,9 @@ import kotlin.jvm.JvmField
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmSynthetic
 
-@JsExport
 interface BaseFormViewModelConfig<F : BaseForm<*, P>, P> : ViewModelConfig {
     val serializer: KSerializer<P>
     val form: F
-    val codec: StringFormat
 
     companion object {
 

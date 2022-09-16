@@ -18,4 +18,8 @@ class PageableRamInMemory<T>(
         map[tokenize(page)] = page
         return page
     }
+
+    override fun wipe() {
+        map.clear()
+    }
 }

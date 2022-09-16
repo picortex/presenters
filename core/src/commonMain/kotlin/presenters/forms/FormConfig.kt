@@ -1,3 +1,4 @@
+@file:JsExport
 @file:Suppress("WRONG_EXPORTED_DECLARATION", "NON_EXPORTABLE_TYPE")
 
 package presenters.forms
@@ -8,9 +9,7 @@ import viewmodel.ViewModelConfig
 import kotlin.js.JsExport
 import kotlin.jvm.JvmField
 
-@JsExport
 interface FormConfig<P> : ViewModelConfig {
-    val codec: StringFormat
     val serializer: KSerializer<P>
     val exitOnSubmitted: Boolean
 
