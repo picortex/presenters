@@ -6,7 +6,7 @@ import presenters.collections.*
 import viewmodel.ViewModelConfig
 import kotlin.js.JsExport
 
-open class TableImpl<T>(
+internal open class TableImpl<T>(
     override val paginator: PaginationManager<T>,
     override val selector: SelectionManager<T>,
     override val actionsManager: ActionsManager<T>,
