@@ -1,7 +1,11 @@
+@file:JsExport
+
 package presenters.actions
 
-abstract class ActionsBuilder<out A, in H> {
-    abstract fun on(name: String, handler: H): A
+import kotlin.js.JsExport
+
+interface ActionsBuilder<out A, in H> {
+    fun on(name: String, handler: H): A
 
     fun onView(handler: H) = on("View", handler)
 
