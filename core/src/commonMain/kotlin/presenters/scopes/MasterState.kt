@@ -14,6 +14,7 @@ import kotlin.js.JsName
 import presenters.cases.Failure as FailureCase
 import presenters.cases.Loading as LoadingCase
 
+@Deprecated("In favour of collections viewmodel")
 sealed class MasterState<out D> : Case {
     data class Loading(
         override val message: String

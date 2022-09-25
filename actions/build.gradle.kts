@@ -14,11 +14,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.presentersActions)
-                api(kotlinx.serialization.json)
-                api(asoft.viewmodel.core)
-                api(asoft.identifier.core)
-                api(asoft.kash.money)
+                api(asoft.koncurrent.later.core)
+                api(asoft.kotlinx.collections.interoperable)
             }
         }
 
@@ -26,11 +23,6 @@ kotlin {
             dependencies {
                 implementation(asoft.expect.coroutines)
                 implementation(asoft.koncurrent.later.coroutines)
-                implementation(asoft.live.test)
-                implementation(projects.presentersMock)
-                implementation(asoft.koncurrent.primitives.mock)
-                implementation(projects.presentersKrono)
-                implementation(projects.presentersGeo)
             }
         }
     }

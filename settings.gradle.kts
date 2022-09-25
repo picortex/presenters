@@ -49,4 +49,4 @@ includeSubs("krono", "../krono", "api")
 
 includeSubs("geo", "../geo", "core", "countries")
 
-includeSubs("presenters", ".", "core", "mock", "krono", "geo")
+includeSubs("presenters", ".", "core", "actions", "mock", "krono", "geo")
