@@ -12,7 +12,7 @@ class PhoneInputValidationTest {
         val phone = PhoneInputField("phone")
         phone.value = "0"
         val exp = expectFailure { phone.validate() }
-        expect(exp.message).toBe("Invalid phone number ")
+        expect(exp.message).toBe("Invalid phone: 0")
     }
 
     @Test
