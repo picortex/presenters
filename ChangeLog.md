@@ -1,7 +1,8 @@
-# Road Map
+# Next
 
-- [ ] Add a list of countries with the easy information you can find
-- [ ] Add location input
+- [ ] Localized presenters-geo & presenters-krono test into their respective modules
+- [x] Add a list of countries with the easy information you can find
+- [x] Add location input
 
 ### 2022-08-30
 
