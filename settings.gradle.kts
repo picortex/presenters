@@ -41,12 +41,25 @@ fun includeSubs(base: String, path: String = base, vararg subs: String) {
 
 val tmp = 1
 
-rootProject.name = "picortex"
+rootProject.name = "asoft"
+
+includeSubs("functions", "../functions", "core")
+includeSubs("expect", "../expect", "core", "coroutines")
+includeSubs("koncurrent-primitives", "../koncurrent/primitives", "core", "coroutines", "mock")
+includeSubs("koncurrent-later", "../koncurrent/later", "core", "coroutines", "test")
+includeSubs("live", "../live", "core", "coroutines", "test")
+includeSubs("cache", "../cache", "api", "file", "test", "mock")
+includeSubs("viewmodel", "../viewmodel", "core")
+includeSubs("identifier", "../identifier", "core")
+includeSubs("formatter", "../formatter", "core")
 
 includeBuild("../geo/geo-generator")
-// dependencies
-includeSubs("krono", "../krono", "api")
-
 includeSubs("geo", "../geo", "core", "countries")
+
+includeBuild("../kash/kash-generator")
+includeSubs("kash", "../kash", "currency", "money")
+// dependencies
+
+includeSubs("krono", "../krono", "api")
 
 includeSubs("presenters", ".", "core", "actions", "mock", "krono", "geo")
