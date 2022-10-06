@@ -15,13 +15,13 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.presentersCore)
-                api(asoft.live.test)
+                api(projects.liveTest)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(asoft.expect.coroutines)
+                implementation(projects.expectCoroutines)
             }
         }
     }

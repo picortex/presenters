@@ -15,20 +15,22 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.presentersActions)
+
+                api(projects.viewmodelCore)
+                api(projects.identifierCore)
+                api(projects.kashMoney)
+
                 api(kotlinx.serialization.json)
-                api(asoft.viewmodel.core)
-                api(asoft.identifier.core)
-                api(asoft.kash.money)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(asoft.expect.coroutines)
-                implementation(asoft.koncurrent.later.coroutines)
-                implementation(asoft.live.test)
+                implementation(projects.expectCoroutines)
+                implementation(projects.koncurrentLaterCoroutines)
+                implementation(projects.koncurrentPrimitivesMock)
+                implementation(projects.liveTest)
                 implementation(projects.presentersMock)
-                implementation(asoft.koncurrent.primitives.mock)
             }
         }
     }
