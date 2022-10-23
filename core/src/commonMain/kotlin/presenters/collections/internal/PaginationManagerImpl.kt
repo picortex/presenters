@@ -15,7 +15,7 @@ import viewmodel.ViewModelConfig
 internal class PaginationManagerImpl<out T>(
     override var capacity: Int,
     private val ram: PageableRamInMemory<T> = PageableRamInMemory(),
-    private val onPage: (no: Int, capacity: Int) -> Later<Page<T>>
+    private var loader: (no: Int, capacity: Int) -> Later<Page<T>>
 ) : ViewModel<PageableState<T>>(ViewModelConfig().of(PageableState.UnLoaded(ram.readOrNull(1, capacity)))), PaginationManager<T> {
 
     override val live: Live<PageableState<T>> get() = ui
@@ -44,6 +44,15 @@ internal class PaginationManagerImpl<out T>(
     override fun writePageToMemory(page: Page<@UnsafeVariance T>): Page<T> = ram.write(page)
 
     override fun wipeMemory() = ram.wipe()
+
+    override fun clearPages() {
+        wipeMemory()
+        ui.value = PageableState.UnLoaded(null)
+    }
+
+    override fun updateLoader(loader: (no: Int, capacity: Int) -> Later<Page<@UnsafeVariance T>>) {
+        this.loader = loader
+    }
 
     override fun setPageCapacity(cap: Int) {
         capacity = cap
@@ -75,7 +84,7 @@ internal class PaginationManagerImpl<out T>(
 
         val memorizedPage = ram.readOrNull(no, capacity)
         ui.value = PageableState.Loading("Loading", memorizedPage)
-        return onPage(no, capacity).then {
+        return loader(no, capacity).then {
             ram.write(it)
             ui.value = PageableState.LoadedPage(it)
             it

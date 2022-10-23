@@ -18,6 +18,8 @@ interface PaginationManager<out T> {
     fun readPageFromMemoryOrNull(page: Int, cap: Int): Page<T>?
     fun writePageToMemory(page: Page<@UnsafeVariance T>): Page<T>?
     fun wipeMemory()
+    fun clearPages()
+    fun updateLoader(loader: (no: Int, capacity: Int) -> Later<Page<@UnsafeVariance T>>)
     fun setPageCapacity(cap: Int)
     fun refresh(): Later<Page<T>>
     fun loadNextPage(): Later<Page<T>>
@@ -32,7 +34,7 @@ interface PaginationManager<out T> {
 
         operator fun <T> invoke(
             capacity: Int = DEFAULT_CAPACITY,
-            onPage: (no: Int, capacity: Int) -> Later<Page<T>>
-        ): PaginationManager<T> = PaginationManagerImpl(capacity = capacity, onPage = onPage)
+            loader: (no: Int, capacity: Int) -> Later<Page<T>>
+        ): PaginationManager<T> = PaginationManagerImpl(capacity = capacity, loader = loader)
     }
 }

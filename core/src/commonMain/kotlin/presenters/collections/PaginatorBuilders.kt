@@ -34,3 +34,5 @@ fun <T> CollectionPaginator(
         }
     }
 }
+
+inline fun <T> PageLoader(noinline loader: (no: Int, capacity: Int) -> Later<T>) = loader
