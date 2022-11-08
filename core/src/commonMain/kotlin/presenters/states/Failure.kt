@@ -32,15 +32,15 @@ data class Failure<out D>(
     override val asLoading: Loading<D> get() = error(0)
     override val asSuccess: Success<D> get() = error(0)
     override val asFailure: Failure<D> get() = this
-    override fun <R> map(transformer: (D) -> R): Failure<R> = if (data != null) {
-        try {
+    override fun <R> map(transformer: (D) -> R): Failure<R> {
+        if (data == null) return Failure(cause, message, null, actions)
+
+        return try {
             Failure(cause, message, transformer(data), actions)
         } catch (err: Throwable) {
             err.addSuppressed(cause)
             Failure(err, err.message ?: message, null, actions)
         }
-    } else {
-        Failure(cause, message, null, actions)
     }
 
     override fun catch(resolver: (Throwable) -> @UnsafeVariance D): Result<D> = try {
