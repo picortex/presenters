@@ -104,8 +104,7 @@ interface SelectionManager<in T> {
         @JvmStatic
         @JvmName("create")
         operator fun <T> invoke(
-            paginator: PaginationManager<T>,
-            config: ViewModelConfig = ViewModelConfig()
-        ): SelectionManager<T> = SelectionManagerImpl(paginator, config)
+            paginator: PaginationManager<T>
+        ): SelectionManager<T> = SelectionManagerImpl(paginator)
     }
 }

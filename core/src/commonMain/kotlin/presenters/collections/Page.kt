@@ -4,9 +4,11 @@
 package presenters.collections
 
 import functions.Function
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.iListOf
-import kotlinx.collections.interoperable.toInteroperableList
+import functions.Function2
+import kollections.List
+import kollections.Collection
+import kollections.iListOf
+import kollections.toIList
 import presenters.collections.internal.PageImpl
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -63,7 +65,7 @@ interface Page<out T> {
         ): Page<T> = PageImpl(
             items = items.mapIndexed { index, it ->
                 Row(index, it)
-            }.toInteroperableList(),
+            }.toIList(),
             capacity = capacity,
             number = number
         )

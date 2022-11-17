@@ -4,7 +4,7 @@ import kotlin.math.max
 
 private fun <D> Table<D>.calculateColSizes(gap: Int): MutableMap<Column<D>, Int> {
     val colSizes = mutableMapOf<Column<D>, Int>()
-    (paginator.live.value.currentPageOrNull ?: Page()).items.forEach { row ->
+    (paginator.page.value.data ?: Page()).items.forEach { row ->
         columns.forEach { col ->
             val text = when (col) {
                 is Column.Select -> (if (isRowSelectedOnCurrentPage(row.number)) "[x]" else "[ ]")
@@ -40,7 +40,7 @@ fun <D> Table<D>.tabulateToString(gap: Int = 4) = buildString {
     }
     appendLine()
     appendLine()
-    (paginator.live.value.currentPageOrNull ?: Page()).items.forEach { row ->
+    (paginator.page.value.data ?: Page()).items.forEach { row ->
         columns.forEach { col ->
             val text = when (col) {
                 is Column.Select -> (if (isRowSelectedOnCurrentPage(row.number)) "[x]" else "[ ]")

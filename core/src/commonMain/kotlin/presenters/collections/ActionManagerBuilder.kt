@@ -1,8 +1,8 @@
 package presenters.collections
 
-import kotlinx.collections.interoperable.toInteroperableList
+import kollections.toIList
 import presenters.actions.SimpleAction
-import kotlinx.collections.interoperable.List
+import kollections.List
 
 class ActionManagerBuilder<T> {
     private var primaryActionsBuilder: MutableList<SimpleAction>.() -> Unit = {}
@@ -36,11 +36,11 @@ class ActionManagerBuilder<T> {
 
     fun buildPrimaryActions() = buildList(primaryActionsBuilder)
 
-    fun buildSingleSelectActions(selected: T) = buildList { singleSelectActionsBuilder(selected) }.toInteroperableList()
+    fun buildSingleSelectActions(selected: T) = buildList { singleSelectActionsBuilder(selected) }.toIList()
 
-    fun buildMultiSelectActions(selected: List<T>) = buildList { multiSelectActionsBuilder(selected) }.toInteroperableList()
+    fun buildMultiSelectActions(selected: List<T>) = buildList { multiSelectActionsBuilder(selected) }.toIList()
 
-    fun buildGlobalSelectActions(state: Selected.Global<T>) = buildList { globalSelectActionsBuilder(state) }.toInteroperableList()
+    fun buildGlobalSelectActions(state: Selected.Global<T>) = buildList { globalSelectActionsBuilder(state) }.toIList()
 
     fun buildActions(selected: Selected<T>) = buildList {
         addAll(buildPrimaryActions())
@@ -50,5 +50,5 @@ class ActionManagerBuilder<T> {
             is Selected.Items -> addAll(buildMultiSelectActions(selected.values))
             is Selected.Global -> addAll(buildGlobalSelectActions(selected))
         }
-    }.toInteroperableList()
+    }.toIList()
 }

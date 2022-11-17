@@ -1,34 +1,31 @@
 package collections
 
 import expect.expect
-import koncurrent.SynchronousExecutor
 import kotlinx.coroutines.test.runTest
-import presenters.collections.*
-import live.*
 import live.expect
-import logging.Logger
+import live.toHaveGoneThrough2
 import presenters.collections.CollectionPaginator
-import presenters.collections.PageableState.LoadedPage
-import presenters.collections.PageableState.Loading
-import viewmodel.ViewModelConfig
+import presenters.collections.SelectionManager
+import presenters.collections.actionsOf
+import presenters.collections.scrollableListOf
+import presenters.states.Loading
+import presenters.states.Success
 import kotlin.test.Test
 
 class ScrollableListTest {
 
     @Test
     fun can_be_assigned_a_paginator() {
-
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val actions = actionsOf(selector) {}
 
-        val list = scrollableListOf(paginator, selector, actions, config)
+        val list = scrollableListOf(paginator, selector, actions)
 
         expect(list.currentPageOrNull?.number).toBe(null)
 
         list.refresh()
-        val (loading) = expect(paginator.live).toHaveGoneThrough2<Loading<*>, LoadedPage<*>>()
+        val (loading) = expect(paginator.page).toHaveGoneThrough2<Loading<*>, Success<*>>()
         expect(loading.message).toBe("Loading")
 
         list.loadNextPage()
@@ -38,12 +35,11 @@ class ScrollableListTest {
 
     @Test
     fun should_be_able_to_select_table_items() {
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val actions = actionsOf(selector) {}
 
-        val list = scrollableListOf(paginator, selector, actions, config)
+        val list = scrollableListOf(paginator, selector, actions)
 
         list.loadFirstPage()
 
@@ -55,12 +51,11 @@ class ScrollableListTest {
 
     @Test
     fun should_be_able_to_select_the_whole_current_page() {
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val actions = actionsOf(selector) {}
 
-        val list = scrollableListOf(paginator, selector, actions, config)
+        val list = scrollableListOf(paginator, selector, actions)
 
         list.loadFirstPage()
 
@@ -70,9 +65,8 @@ class ScrollableListTest {
 
     @Test
     fun should_be_able_to_retrieve_primary_actions() {
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val actions = actionsOf(selector) {
             primary {
                 on("Create Person") { println("Creating Person") }
@@ -95,7 +89,7 @@ class ScrollableListTest {
             }
         }
 
-        val list = scrollableListOf(paginator, selector, actions, config)
+        val list = scrollableListOf(paginator, selector, actions)
 
         list.loadFirstPage()
         list.select(row = 1)
@@ -105,11 +99,10 @@ class ScrollableListTest {
 
     @Test
     fun should_be_able_to_load_more_data() = runTest {
-        val config = ViewModelConfig(executor = SynchronousExecutor, logger = Logger())
         val paginator = CollectionPaginator(Person.List, capacity = 6)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val actions = actionsOf(selector) {}
-        val list = scrollableListOf(paginator, selector, actions, config)
+        val list = scrollableListOf(paginator, selector, actions)
 
         list.loadFirstPage()
         expect(list.rows).toBeOfSize(6)

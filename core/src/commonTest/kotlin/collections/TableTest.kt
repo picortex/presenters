@@ -18,11 +18,10 @@ class TableTest {
 
     @Test
     fun can_be_assigned_a_paginator() {
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, PersonTableColumns(), config)
+        val table = tableOf(paginator, selector, action, PersonTableColumns())
         table.tabulateToConsole()
         expect(table.currentPageOrNull?.number).toBe(null)
 
@@ -38,11 +37,10 @@ class TableTest {
 
     @Test
     fun should_be_able_to_select_table_items() {
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, PersonTableColumns(), config)
+        val table = tableOf(paginator, selector, action, PersonTableColumns())
         table.loadFirstPage()
         table.tabulateToConsole()
 
@@ -56,11 +54,10 @@ class TableTest {
 
     @Test
     fun should_be_able_to_select_the_whole_current_page() {
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, PersonTableColumns(), config)
+        val table = tableOf(paginator, selector, action, PersonTableColumns())
 
         table.loadFirstPage()
         table.tabulateToConsole()
@@ -72,9 +69,8 @@ class TableTest {
 
     @Test
     fun should_be_able_to_retrieve_primary_actions() {
-        val config = ViewModelConfig(executor = SynchronousExecutor)
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, config)
+        val selector = SelectionManager(paginator)
         val actions = actionsOf(selector) {
             primary {
                 on("Create Person") { println("Just create da nigga") }
@@ -84,7 +80,7 @@ class TableTest {
                 on("View ${it.name}") { println("Now viewing ${it.name}") }
             }
         }
-        val table = tableOf(paginator, selector, actions, PersonTableColumns(), config)
+        val table = tableOf(paginator, selector, actions, PersonTableColumns())
 
         table.loadFirstPage()
 

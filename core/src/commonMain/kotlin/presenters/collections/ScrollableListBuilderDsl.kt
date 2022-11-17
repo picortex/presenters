@@ -8,6 +8,5 @@ import kotlin.jvm.JvmSynthetic
 fun <T> scrollableListOf(
     paginator: PaginationManager<T>,
     selector: SelectionManager<T>,
-    actionsManager: ActionsManager<T>,
-    config: ViewModelConfig
-): ScrollableList<T> = ScrollableListImpl(paginator, selector, actionsManager, config)
+    actionsManager: ActionsManager<T>
+): ScrollableList<T> = ScrollableListImpl(paginator, selector, actionsManager)

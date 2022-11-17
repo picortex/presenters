@@ -3,6 +3,7 @@
 package presenters.collections
 
 import koncurrent.Later
+import kollections.toIList
 import koncurrent.SynchronousExecutor
 import presenters.collections.internal.PaginationManagerImpl
 
@@ -13,8 +14,8 @@ inline fun <T> SinglePagePaginator(
 }
 
 inline fun <T> SinglePagePaginator(
-    items: Collection<T>
-): PaginationManager<T> = SinglePagePaginator(Page(items))
+    items: Collection<T>,
+): PaginationManager<T> = SinglePagePaginator(Page(items.toIList()))
 
 fun <T> CollectionPaginator(
     collection: Collection<T>,
@@ -24,9 +25,9 @@ fun <T> CollectionPaginator(
         try {
             val chunked = collection.chunked(cap)
             val page = if (no <= 0) {
-                Page(chunked.last(), cap, chunked.size)
+                Page(chunked.last().toIList(), cap, chunked.size)
             } else {
-                Page(chunked[no - 1], cap, no)
+                Page(chunked[no - 1].toIList(), cap, no)
             }
             resolve(page)
         } catch (err: Throwable) {

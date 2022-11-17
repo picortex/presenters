@@ -1,5 +1,8 @@
 # Next
 
+## Fixed
+- Paginator crash on rapid clicks
+
 ## Added
 - `ConfirmationDialog.cancel()`
 
@@ -12,6 +15,7 @@
 ## Removed
 - `SingleValuedField` in favour of `ValuedField<T>`
 - `ConfirmationState` in favour of `LazyState<Unit>`
+- `kotlinx.collections.interoperable` infavour of `kollections`
 
 ------------------------------------
 # Next

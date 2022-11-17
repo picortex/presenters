@@ -1,6 +1,6 @@
 package presenters.collections.internal
 
-import kotlinx.collections.interoperable.List
+import kollections.List
 import presenters.collections.Row
 
 data class PageImpl<out T>(

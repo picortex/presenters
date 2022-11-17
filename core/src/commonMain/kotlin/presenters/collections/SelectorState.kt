@@ -3,8 +3,7 @@
 
 package presenters.collections
 
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.iListOf
+import kollections.List
 import kotlin.js.JsExport
 
 sealed class SelectorState {

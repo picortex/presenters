@@ -1,7 +1,5 @@
 package presenters.collections.internal
 
-import presenters.collections.*
-import viewmodel.ViewModel
-import viewmodel.ViewModelConfig
+import presenters.collections.Pageable
 
-abstract class PageableImpl<T>(config: ViewModelConfig) : ViewModel<PageableState<T>>(config.of(PageableState.UnLoaded())), Pageable<T>
+abstract class PageableImpl<T> : Pageable<T>

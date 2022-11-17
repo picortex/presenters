@@ -1,6 +1,6 @@
 package presenters.collections.internal
 
-import kotlinx.collections.interoperable.List
+import kollections.List
 import presenters.actions.SimpleAction
 import presenters.collections.ActionsManager
 import presenters.collections.ActionManagerBuilder

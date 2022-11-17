@@ -1,6 +1,6 @@
 package presenters.collections
 
-import kotlinx.collections.interoperable.List
+import kollections.List
 import kotlin.js.JsExport
 
 @JsExport

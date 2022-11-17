@@ -5,9 +5,8 @@ import viewmodel.ViewModel
 import viewmodel.ViewModelConfig
 
 abstract class AbstractSelectionManager<T>(
-    private val paginator: PaginationManager<T>,
-    config: ViewModelConfig
-) : ViewModel<SelectorState>(config.of(SelectorState.NoSelected)), SelectionManager<T> {
+    private val paginator: PaginationManager<T>
+) : SelectionManager<T> {
 
     protected val currentLoadedPage get() = paginator.currentPageOrNull
 

@@ -14,7 +14,7 @@ class SelectorTest {
     @Test
     fun should_select_a_row_by_number() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManager(paginator, ViewModelConfig())
+        val selector = SelectionManager(paginator)
 
         paginator.loadFirstPage()
 
@@ -30,7 +30,7 @@ class SelectorTest {
     @Test
     fun should_select_multiple_rows_by_number() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
 
@@ -43,7 +43,7 @@ class SelectorTest {
     @Test
     fun should_select_multiple_rows_by_number_from_different_pages() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
 
@@ -62,7 +62,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_clear_selection_of_an_item() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
@@ -77,7 +77,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_clear_selection_of_the_current_page_only() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
@@ -105,7 +105,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_clear_selection_from_all_pages() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
@@ -133,7 +133,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_select_all_items_in_the_current_page() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
@@ -159,7 +159,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_select_all_items_from_all_pages() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
@@ -185,7 +185,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_toggle_selection_of_current_page() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
@@ -200,7 +200,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_get_the_selected_item() {
         val paginator = CollectionPaginator(Person.List)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
@@ -214,7 +214,7 @@ class SelectorTest {
     @Test
     fun should_be_able_to_selecte_by_object_instance() {
         val paginator = CollectionPaginator(Person.List, capacity = 5)
-        val selector = SelectionManagerImpl(paginator, ViewModelConfig())
+        val selector = SelectionManagerImpl(paginator)
 
         paginator.loadFirstPage()
         expect(paginator.currentPageOrNull?.number).toBe(1)
