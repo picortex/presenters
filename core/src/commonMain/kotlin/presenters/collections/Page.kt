@@ -6,7 +6,6 @@ package presenters.collections
 import functions.Function
 import functions.Function2
 import kollections.List
-import kollections.Collection
 import kollections.iListOf
 import kollections.toIList
 import presenters.collections.internal.PageImpl
