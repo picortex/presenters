@@ -3,10 +3,10 @@
 package presenters.field
 
 import geo.GeoLocation
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
-import presenters.fields.SingleValuedField
 import presenters.fields.ValuedField
-import presenters.fields.internal.AbstractSingleValuedField
+import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.reflect.KProperty
@@ -16,23 +16,23 @@ class LocationInputField(
     override val name: String,
     override val label: String = name,
     val hint: String = label,
-    override val defaultValue: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
+    override val defaultValue: GeoLocation? = ValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    override val validator: ((GeoLocation?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) : AbstractSingleValuedField<GeoLocation>(name, label, defaultValue, isReadonly, isRequired, validator) {
+    validator: ((GeoLocation?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+) : AbstractValuedField<GeoLocation>(name, label, defaultValue, isReadonly, isRequired, validator) {
     @JsName("_ignore_fromPropery")
     constructor(
         name: KProperty<*>,
         label: String = name.name,
         hint: String = label,
-        defaultValue: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
+        defaultValue: GeoLocation? = ValuedField.DEFAULT_VALUE,
         isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
         isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
         validator: ((GeoLocation?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, validator)
 
-    override val serializer: SerializationStrategy<GeoLocation> by lazy { GeoLocation.serializer() }
+    override val serializer: KSerializer<GeoLocation> by lazy { GeoLocation.serializer() }
 
     var googleApiString: String? = null
 

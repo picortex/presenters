@@ -14,7 +14,7 @@ class RadioInputField(
     override val defaultValue: Boolean? = ValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    override val validator: ((Boolean?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    validator: ((Boolean?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) : BooleanBasedInputField(name, label, defaultValue, isReadonly, isRequired, validator) {
     @JsName("_ignore_fromPropery")
     constructor(

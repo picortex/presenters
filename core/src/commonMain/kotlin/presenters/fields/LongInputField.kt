@@ -3,6 +3,7 @@
 package presenters.fields
 
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.internal.NumberBasedValueField
@@ -20,7 +21,7 @@ class LongInputField(
     override val max: Long? = DEFAULT_MAX,
     override val min: Long? = DEFAULT_MIN,
     override val step: Long = DEFAULT_STEP,
-    override val validator: ((Long?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    validator: ((Long?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) : NumberBasedValueField<Long>(name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator) {
     companion object {
         val DEFAULT_STEP = 1L
@@ -40,7 +41,7 @@ class LongInputField(
         validator: ((Long?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator)
 
-    override val serializer: SerializationStrategy<Long> by lazy { Long.serializer() }
+    override val serializer: KSerializer<Long> by lazy { Long.serializer() }
     override var stringValue: String
         get() = value.toString()
         set(v) = try {

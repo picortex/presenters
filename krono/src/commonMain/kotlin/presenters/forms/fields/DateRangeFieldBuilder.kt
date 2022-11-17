@@ -9,7 +9,7 @@ inline fun Fields.dateRange(
     name: String? = null,
     label: String? = name,
     value: Range<LocalDate>? = ValuedField.DEFAULT_VALUE,
-    limit: Range<LocalDate>? = RangeValuedField.DEFAULT_LIMIT,
+    limit: Range<LocalDate>? = RangeField.DEFAULT_LIMIT,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
     noinline validator: ((Range<LocalDate>?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
@@ -29,7 +29,7 @@ inline fun Fields.dateRange(
     name: KProperty<*>,
     label: String? = name.name,
     value: Range<LocalDate>? = ValuedField.DEFAULT_VALUE,
-    limit: Range<LocalDate>? = RangeValuedField.DEFAULT_LIMIT,
+    limit: Range<LocalDate>? = RangeField.DEFAULT_LIMIT,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
     noinline validator: ((Range<LocalDate>?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR

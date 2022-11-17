@@ -4,6 +4,7 @@
 package presenters.fields
 
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.internal.NumberBasedValueField
@@ -21,7 +22,7 @@ class DoubleInputField(
     override val max: Double? = DEFAULT_MAX,
     override val min: Double? = DEFAULT_MIN,
     override val step: Double = DEFAULT_STEP,
-    override val validator: ((Double?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    validator: ((Double?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) : NumberBasedValueField<Double>(name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator) {
     companion object {
         val DEFAULT_STEP = 1.0
@@ -49,7 +50,7 @@ class DoubleInputField(
 
         }
 
-    override val serializer: SerializationStrategy<Double> by lazy { Double.serializer() }
+    override val serializer: KSerializer<Double> by lazy { Double.serializer() }
 
     override fun increment(step: Double?) {
         value = (value ?: 0.0) + (step ?: DEFAULT_STEP)

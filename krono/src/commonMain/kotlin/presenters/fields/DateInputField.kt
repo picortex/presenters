@@ -2,10 +2,11 @@
 
 package presenters.fields
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import krono.LocalDate
 import krono.LocalDateIsoSerializer
-import presenters.fields.internal.AbstractSingleValuedField
+import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.reflect.KProperty
@@ -15,20 +16,20 @@ class DateInputField(
     override val name: String,
     override val label: String = name,
     val hint: String = label,
-    override val defaultValue: LocalDate? = SingleValuedField.DEFAULT_VALUE,
+    override val defaultValue: LocalDate? = ValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
     val pattern: String = DEFAULT_PATTERN,
     val maxDate: LocalDate? = DEFAULT_MAX_DATE,
     val minDate: LocalDate? = DEFAULT_MIN_DATE,
-    override val validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) : AbstractSingleValuedField<LocalDate>(name, label, defaultValue, isReadonly, isRequired, validator) {
+    validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+) : AbstractValuedField<LocalDate>(name, label, defaultValue, isReadonly, isRequired, validator) {
     @JsName("_ignore_fromPropery")
     constructor(
         name: KProperty<*>,
         label: String = name.name,
         hint: String = label,
-        defaultValue: LocalDate? = SingleValuedField.DEFAULT_VALUE,
+        defaultValue: LocalDate? = ValuedField.DEFAULT_VALUE,
         isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
         isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
         pattern: String = DEFAULT_PATTERN,
@@ -37,7 +38,7 @@ class DateInputField(
         validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, pattern, maxDate, minDate, validator)
 
-    override val serializer: SerializationStrategy<LocalDate> by lazy { LocalDateIsoSerializer }
+    override val serializer: KSerializer<LocalDate> by lazy { LocalDateIsoSerializer }
     var isoString: String?
         get() = value?.toIsoString()
         set(iso) = if (iso == null) {

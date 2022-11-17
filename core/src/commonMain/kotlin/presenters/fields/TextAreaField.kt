@@ -17,7 +17,7 @@ class TextAreaField(
     override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
     override val maxLength: Int? = DEFAULT_MAX_LENGTH,
     override val minLength: Int? = DEFAULT_MIN_LENGTH,
-    override val validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) : TextBasedValueField(name, label, hint, defaultValue, isReadonly, isRequired, maxLength, minLength, validator) {
     @JsName("_ignore_fromPropery")
     constructor(

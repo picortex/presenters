@@ -4,6 +4,7 @@
 package presenters.fields
 
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.internal.NumberBasedValueField
@@ -21,7 +22,7 @@ class IntegerInputField(
     override val max: Int? = DEFAULT_MAX,
     override val min: Int? = DEFAULT_MIN,
     override val step: Int = DEFAULT_STEP,
-    override val validator: ((Int?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    validator: ((Int?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) : NumberBasedValueField<Int>(name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator) {
     companion object {
         val DEFAULT_STEP = 1
@@ -42,7 +43,7 @@ class IntegerInputField(
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator)
 
 
-    override val serializer: SerializationStrategy<Int> by lazy { Int.serializer() }
+    override val serializer: KSerializer<Int> by lazy { Int.serializer() }
     override var stringValue: String
         get() = value.toString()
         set(v) = try {

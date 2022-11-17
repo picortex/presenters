@@ -1,15 +1,15 @@
 package confirmations
 
-import koncurrent.Later
-import live.expect
 import expect.expect
+import koncurrent.Later
 import koncurrent.later.catch
+import live.expect
 import live.toHaveGoneThrough2
 import presenters.confirmations.ConfirmationBox
-import presenters.confirmations.ConfirmationState
-import presenters.confirmations.ConfirmationState.Executed.Exceptionally
-import presenters.confirmations.ConfirmationState.Executed.Successfully
-import presenters.confirmations.ConfirmationState.Executing
+import presenters.states.Failure
+import presenters.states.Loading
+import presenters.states.Pending
+import presenters.states.Success
 import viewmodel.ScopeConfig
 import kotlin.test.Test
 
@@ -26,7 +26,7 @@ class ConfirmationBoxTest {
                 Later.resolve(5)
             }
         }
-        expect(box.ui).toBeIn(ConfirmationState.Pending)
+        expect(box.state).toBeIn(Pending)
     }
 
     @Test
@@ -46,7 +46,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.ui).toHaveGoneThrough2<Executing, Successfully>()
+        expect(box.state).toHaveGoneThrough2<Loading<*>, Success<*>>()
         expect(confirmed).toBe(true)
     }
 
@@ -72,7 +72,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.ui).toHaveGoneThrough2<Executing, Exceptionally>()
+        expect(box.state).toHaveGoneThrough2<Loading<*>, Failure<*>>()
         expect(cancelled).toBe(false)
         expect(confirmed).toBe(true)
     }
@@ -99,7 +99,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.ui).toHaveGoneThrough2<Executing, Exceptionally>()
+        expect(box.state).toHaveGoneThrough2<Loading<*>, Failure<*>>()
         expect(cancelled).toBe(false)
         expect(confirmed).toBe(true)
     }
@@ -122,7 +122,7 @@ class ConfirmationBoxTest {
             println("Error: ${it.message}")
         }
         println("after catching")
-        expect(box.ui).toHaveGoneThrough2<Executing, Exceptionally>()
+        expect(box.state).toHaveGoneThrough2<Loading<*>, Failure<*>>()
         expect(caught).toBe(true)
     }
 }

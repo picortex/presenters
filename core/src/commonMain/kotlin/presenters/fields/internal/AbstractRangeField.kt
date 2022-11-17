@@ -1,38 +1,37 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
+@file:JsExport @file:Suppress("NON_EXPORTABLE_TYPE")
 
 package presenters.fields.internal
 
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
 import presenters.fields.Range
-import presenters.fields.RangeValuedField
+import presenters.fields.RangeField
 import presenters.fields.ValuedField
 import presenters.fields.ValuedField.Companion.DEFAULT_IS_READONLY
 import presenters.fields.ValuedField.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.ValuedField.Companion.DEFAULT_VALIDATOR
 import kotlin.js.JsExport
 
-abstract class AbstractRangeValuedField<T : Comparable<T>>(
+abstract class AbstractRangeField<T : Comparable<T>>(
     override val name: String,
     override val label: String = name.replaceFirstChar { it.uppercase() },
-    override val defaultValue: Range<T>? = ValuedField.DEFAULT_VALUE,
-    override val limit: Range<T>? = RangeValuedField.DEFAULT_LIMIT,
+    defaultValue: Range<T>? = ValuedField.DEFAULT_VALUE,
+    override val limit: Range<T>? = RangeField.DEFAULT_LIMIT,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
-    override val validator: ((Range<T>?) -> Unit)? = DEFAULT_VALIDATOR
-) : AbstractSingleValuedField<Range<T>>(name, label, defaultValue, isReadonly, isRequired, validator), RangeValuedField<T> {
+    validator: ((Range<T>?) -> Unit)? = DEFAULT_VALIDATOR
+) : AbstractValuedField<Range<T>>(name, label, defaultValue, isReadonly, isRequired, validator), RangeField<T> {
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
     override var value: Range<T>?
-        get() {
-            val s = start
-            val e = end
-            return if (s != null && e != null && s <= e) Range(s, e) else defaultValue
-        }
+        get() = input.value
         set(value) {
             start = value?.start
             end = value?.end
+
+            val s = start
+            val e = end
+            input.value = if (s != null && e != null && s <= e) Range(s, e) else defaultValue
         }
 
     override var start: T? = null

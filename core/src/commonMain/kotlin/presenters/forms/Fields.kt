@@ -8,8 +8,8 @@ import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
 import presenters.fields.InputField
 import presenters.fields.InputFieldState
-import presenters.fields.SingleValuedField
 import presenters.fields.ValuedField
+import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
 
 open class Fields(internal val cache: MutableMap<String, InputField> = mutableMapOf()) {
@@ -25,12 +25,10 @@ open class Fields(internal val cache: MutableMap<String, InputField> = mutableMa
 
     internal val allInvalid get() = valuesToBeSubmitted.filter { it.feedback.value is InputFieldState.Error }
 
-    private val singleValueFields get() = valueFields.filterIsInstance<SingleValuedField<*>>()
-
-    private val valueFields get() = cache.values.filterIsInstance<ValuedField>()
+    private val valueFields get() = cache.values.filterIsInstance<AbstractValuedField<*>>()
 
     internal val valuesToBeSubmitted
-        get() = singleValueFields.filterNot {
+        get() = valueFields.filterNot {
             !it.isRequired && (it.value == null || it.value.toString().isBlank())
         }
 

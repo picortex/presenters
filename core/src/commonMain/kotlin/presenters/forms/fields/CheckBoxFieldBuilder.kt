@@ -1,7 +1,6 @@
 package presenters.forms.fields
 
 import presenters.fields.CheckBoxInputField
-import presenters.fields.SingleValuedField
 import presenters.fields.ValuedField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty

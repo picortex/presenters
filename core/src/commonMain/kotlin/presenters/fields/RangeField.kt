@@ -5,7 +5,7 @@ package presenters.fields
 import kotlin.js.JsExport
 
 @JsExport
-interface RangeValuedField<T : Comparable<T>> : SingleValuedField<Range<T>> {
+interface RangeField<T : Comparable<T>> : ValuedField<Range<T>> {
     val limit: Range<T>?
     val start: T?
     val end: T?

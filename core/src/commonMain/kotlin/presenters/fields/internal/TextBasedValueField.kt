@@ -2,31 +2,33 @@
 
 package presenters.fields.internal
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
+import presenters.fields.ValuedField
 import presenters.fields.ValuedField.Companion.DEFAULT_VALIDATOR
-import presenters.fields.SingleValuedField.Companion.DEFAULT_VALUE
+import presenters.fields.ValuedField.Companion.DEFAULT_VALUE
 import kotlin.js.JsExport
 
 abstract class TextBasedValueField(
     override val name: String,
     override val label: String = name,
     open val hint: String = label,
-    override val defaultValue: String? = DEFAULT_VALUE,
+    defaultValue: String? = DEFAULT_VALUE,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     open val maxLength: Int? = DEFAULT_MAX_LENGTH,
     open val minLength: Int? = DEFAULT_MIN_LENGTH,
-    override val validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR
-) : AbstractSingleValuedField<String>(name, label, defaultValue, isReadonly, isRequired, validator) {
+    validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR
+) : AbstractValuedField<String>(name, label, defaultValue, isReadonly, isRequired, validator) {
     companion object {
         val DEFAULT_MAX_LENGTH: Int? = null
         val DEFAULT_MIN_LENGTH: Int? = null
     }
 
-    override val serializer: SerializationStrategy<String> by lazy { String.serializer() }
+    override val serializer: KSerializer<String> by lazy { String.serializer() }
 
     val valueOrNullIfEmpty get() = if (value.isNullOrEmpty()) null else value
 

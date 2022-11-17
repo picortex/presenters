@@ -1,7 +1,6 @@
 package presenters.forms.fields
 
 import presenters.fields.TextInputField
-import presenters.fields.SingleValuedField
 import presenters.fields.ValuedField
 import presenters.fields.internal.TextBasedValueField
 import presenters.forms.Fields

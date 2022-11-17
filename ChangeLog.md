@@ -1,5 +1,21 @@
 # Next
 
+## Added
+- `ConfirmationDialog.cancel()`
+
+## Changed
+- ValuedField to `ValuedField<T>`
+- `RangeBasedField<T>: SingleValuedField<T>` to `RangeField<T>: ValuedField<T>`
+- SelectMany to use `kollections.List` instead of `kotlin.collections.List`
+- `ConfirmationDialog.ui` to `ConfirmationDialog.state` 
+
+## Removed
+- `SingleValuedField` in favour of `ValuedField<T>`
+- `ConfirmationState` in favour of `LazyState<Unit>`
+
+------------------------------------
+# Next
+
 - [ ] Localized presenters-geo & presenters-krono test into their respective modules
 - [x] Add a list of countries with the easy information you can find
 - [x] Add location input

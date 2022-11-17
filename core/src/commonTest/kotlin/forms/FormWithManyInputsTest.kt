@@ -1,6 +1,7 @@
 package forms
 
 import expect.expect
+import kollections.toIList
 import koncurrent.Later
 import kotlinx.collections.interoperable.List
 import kotlinx.collections.interoperable.iListOf
@@ -27,8 +28,8 @@ class FormWithManyInputsTest {
         val name by name(isRequired = true)
         val email by email(isRequired = true)
         val phone by phone(isRequired = true)
-        val color by selectSingle(items = Color.values().toList(), { Option(it.name) }, isRequired = true)
-        val colors by selectMany(items = Color.values().toList(), { Option(it.name) }, isRequired = true)
+        val color by selectSingle(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
+        val colors by selectMany(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
     }
 
     @Serializable

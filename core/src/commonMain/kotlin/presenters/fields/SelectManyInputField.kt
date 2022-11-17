@@ -3,40 +3,39 @@
 
 package presenters.fields
 
-import kotlinx.collections.interoperable.*
-import kotlinx.collections.interoperable.serializers.ListSerializer
-import kotlinx.serialization.SerializationStrategy
+import kollections.Collection
+import kollections.List
+import kollections.toIList
+import kotlinx.serialization.KSerializer
+import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
-import presenters.fields.internal.AbstractSingleValuedField
-import kotlin.collections.Collection
-import kotlin.collections.listOf
 
 class SelectManyInputField<T : Any>(
     override val name: String,
     val items: Collection<T>,
     val mapper: (T) -> Option,
-    override val serializer: SerializationStrategy<List<T>>,
+    override val serializer: KSerializer<List<T>>,
     override val label: String = name.replaceFirstChar { it.uppercase() },
-    override val defaultValue: List<T>? = SingleValuedField.DEFAULT_VALUE,
+    override val defaultValue: List<T>? = ValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
-) : AbstractSingleValuedField<List<T>>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
-    val optionLabels get() = options.map { it.label }.toInteroperableList()
-    val optionValues get() = options.map { it.value }.toInteroperableList()
+) : AbstractValuedField<List<T>>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
+    val optionLabels get() = options.map { it.label }.toIList()
+    val optionValues get() = options.map { it.value }.toIList()
 
     val selectedValues = mutableSetOf<String>()
 
-    val selectedItems: List<T> get() = items.filter { selectedValues.contains(mapper(it).value) }.toInteroperableList()
+    val selectedItems: List<T> get() = items.filter { selectedValues.contains(mapper(it).value) }.toIList()
 
-    val selectedOptions get() = selectedItems.map(mapper).toInteroperableList()
+    val selectedOptions get() = selectedItems.map(mapper).toIList()
 
     val options: List<Option>
         get() = items.map {
             val o = mapper(it)
             if (selectedValues.contains(o.value)) o.copy(selected = true) else o
-        }.toInteroperableList()
+        }.toIList()
 
-    val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toInteroperableList()
+    val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toIList()
 
     val selected get() = options.firstOrNull { it.selected }
 
@@ -44,7 +43,7 @@ class SelectManyInputField<T : Any>(
         val selectedItems = items.filter {
             val o = mapper(it)
             selectedValues.contains(o.value)
-        }.toInteroperableList()
+        }.toIList()
         value = if (selectedItems.isEmpty()) null else selectedItems
     }
 

@@ -2,6 +2,7 @@ package forms
 
 import expect.expect
 import expect.toBe
+import kollections.toIList
 import koncurrent.Later
 import kotlinx.collections.interoperable.iListOf
 import kotlinx.serialization.Serializable
@@ -29,7 +30,7 @@ class FormWithMultiSelectDropDownTest {
         )
 
         val color by selectMany(
-            items = Color.values().toList(),
+            items = Color.values().toIList(),
             mapper = { Option(it.name) },
             isRequired = true
         )

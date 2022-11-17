@@ -2,10 +2,19 @@ package presenters.confirmations.internal
 
 import koncurrent.Later
 import koncurrent.later.catch
+import live.Live
+import live.MutableLive
+import live.mutableLiveOf
 import presenters.actions.MutableSimpleAction
 import presenters.confirmations.ConfirmActionsBuilder
 import presenters.confirmations.ConfirmationBox
 import presenters.confirmations.ConfirmationState
+import presenters.states.Failure
+import presenters.states.LazyState
+import presenters.states.Loading
+import presenters.states.Pending
+import presenters.states.Success
+import viewmodel.BaseViewModel
 import viewmodel.ScopeConfig
 import viewmodel.ViewModel
 
@@ -13,11 +22,14 @@ import viewmodel.ViewModel
 internal class ConfirmationBoxImpl(
     override val heading: String,
     override val details: String,
+    val executionMessage: String,
     config: ScopeConfig<*>,
     actionsBuilder: ConfirmActionsBuilder.() -> Unit
-) : ViewModel<ConfirmationState>(config.of(ConfirmationState.Pending)), ConfirmationBox {
+) : BaseViewModel(config), ConfirmationBox {
 
     private val actions = ConfirmActionsBuilder().apply(actionsBuilder)
+
+    override val state: MutableLive<LazyState<Unit>> = mutableLiveOf(Pending, 2)
 
     override val cancelAction = MutableSimpleAction(
         name = "Cancel",
@@ -30,15 +42,21 @@ internal class ConfirmationBoxImpl(
 
     private val confirmAction = actions.submitAction
 
+    override fun cancel(): Later<Any?> = try {
+        cancelAction()
+    } catch (cause: Throwable) {
+        Later.reject(cause)
+    }
+
     override fun confirm(): Later<Any?> = try {
-        ui.value = ConfirmationState.Executing
+        state.value = Loading(executionMessage)
         confirmAction()
     } catch (err: Throwable) {
         Later.reject(err)
     }.then {
-        ui.value = ConfirmationState.Executed.Successfully
+        state.value = Success(Unit)
     }.catch {
-        ui.value = ConfirmationState.Executed.Exceptionally
+        state.value = Failure(it)
         throw it
     }
 }

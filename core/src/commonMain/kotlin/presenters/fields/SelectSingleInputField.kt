@@ -6,19 +6,20 @@ package presenters.fields
 import kotlin.js.JsExport
 import kotlinx.collections.interoperable.List
 import kotlinx.collections.interoperable.toInteroperableList
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
-import presenters.fields.internal.AbstractSingleValuedField
+import presenters.fields.internal.AbstractValuedField
 
 class SelectSingleInputField<T : Any>(
     override val name: String,
     val items: Collection<T>,
     val mapper: (T) -> Option,
-    override val serializer: SerializationStrategy<T>,
+    override val serializer: KSerializer<T>,
     override val label: String = name.replaceFirstChar { it.uppercase() },
-    override val defaultValue: T? = SingleValuedField.DEFAULT_VALUE,
+    override val defaultValue: T? = ValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
-) : AbstractSingleValuedField<T>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
+) : AbstractValuedField<T>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
     val optionLabels get() = options.map { it.label }.toInteroperableList()
     val optionValues get() = options.map { it.value }.toInteroperableList()
 

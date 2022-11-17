@@ -1,5 +1,6 @@
 package presenters.forms.fields
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 import presenters.fields.*
@@ -10,9 +11,9 @@ inline fun <reified T : Any> Fields.selectSingle(
     items: Collection<T>,
     noinline mapper: (T) -> Option,
     name: String? = null,
-    serializer: SerializationStrategy<T> = serializer(),
+    serializer: KSerializer<T> = serializer(),
     label: String? = name?.replaceFirstChar { it.uppercase() },
-    value: T? = SingleValuedField.DEFAULT_VALUE,
+    value: T? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
 ) = getOrCreate { property ->
@@ -32,9 +33,9 @@ inline fun <reified T : Any> Fields.selectSingle(
     name: KProperty<*>,
     items: Collection<T>,
     noinline mapper: (T) -> Option,
-    serializer: SerializationStrategy<T> = serializer(),
+    serializer: KSerializer<T> = serializer(),
     label: String? = name.name.replaceFirstChar { it.uppercase() },
-    value: T? = SingleValuedField.DEFAULT_VALUE,
+    value: T? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
 ) = selectSingle(items, mapper, name.name, serializer, label, value, isReadonly, isRequired)

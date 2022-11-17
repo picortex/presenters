@@ -2,26 +2,25 @@
 
 package presenters.fields.internal
 
-import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
+import presenters.fields.ValuedField
 import presenters.fields.ValuedField.Companion.DEFAULT_VALIDATOR
-import presenters.fields.SingleValuedField.Companion.DEFAULT_VALUE
+import presenters.fields.ValuedField.Companion.DEFAULT_VALUE
 import kotlin.js.JsExport
 
 abstract class NumberBasedValueField<N : Number>(
     override val name: String,
     override val label: String = name,
     open val hint: String = label,
-    override val defaultValue: N? = DEFAULT_VALUE,
+    defaultValue: N? = DEFAULT_VALUE,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     open val max: N? = DEFAULT_MAX,
     open val min: N? = DEFAULT_MIN,
     open val step: N? = DEFAULT_STEP,
-    override val validator: ((N?) -> Unit)? = DEFAULT_VALIDATOR
-) : AbstractSingleValuedField<N>(name, label, defaultValue, isReadonly, isRequired, validator) {
+    validator: ((N?) -> Unit)? = DEFAULT_VALIDATOR
+) : AbstractValuedField<N>(name, label, defaultValue, isReadonly, isRequired, validator) {
     companion object {
         val DEFAULT_STEP: Nothing? = null
         val DEFAULT_MAX: Nothing? = null
