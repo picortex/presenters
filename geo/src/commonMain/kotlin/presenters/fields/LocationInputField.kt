@@ -5,6 +5,7 @@ package presenters.fields
 import geo.GeoLocation
 import kotlinx.serialization.KSerializer
 import presenters.fields.internal.AbstractValuedField
+import presenters.parsers.GooglePlacesApiParser
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.reflect.KProperty
@@ -32,7 +33,16 @@ class LocationInputField(
 
     override val serializer: KSerializer<GeoLocation> by lazy { GeoLocation.serializer() }
 
-    var googleApiString: String? = null
+    private val googleParser = GooglePlacesApiParser()
+
+    var googleApiString: String?
+        set(json) {
+            if (json != null) {
+                val loc = googleParser.parse(json)
+                value = loc
+            }
+        }
+        get() = value?.address
 
     override fun validate(value: GeoLocation?) {
         val tag = label.replaceFirstChar { it.uppercase() }
