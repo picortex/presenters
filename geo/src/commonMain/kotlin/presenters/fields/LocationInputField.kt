@@ -1,11 +1,9 @@
 @file:Suppress("NON_EXPORTABLE_TYPE")
 
-package presenters.field
+package presenters.fields
 
 import geo.GeoLocation
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationStrategy
-import presenters.fields.ValuedField
 import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
 import kotlin.js.JsName

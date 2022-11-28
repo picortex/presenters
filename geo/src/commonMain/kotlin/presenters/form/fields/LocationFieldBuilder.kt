@@ -1,7 +1,7 @@
 package presenters.form.fields
 
 import geo.GeoLocation
-import presenters.field.LocationInputField
+import presenters.fields.LocationInputField
 import presenters.fields.*
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
