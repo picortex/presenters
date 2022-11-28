@@ -57,11 +57,11 @@ class DateInputField(
         }
 
         val max = maxDate
-        if (max != null && value != null && value > max) {
+        if (max != null && value != null && value.isAfter(max)) {
             throw IllegalArgumentException("$tag must be before ${max.format(pattern)}")
         }
         val min = minDate
-        if (min != null && value != null && value < min) {
+        if (min != null && value != null && value.isBefore(min)) {
             throw IllegalArgumentException("$tag must be after ${min.format(pattern)}")
         }
         validator?.invoke(value)

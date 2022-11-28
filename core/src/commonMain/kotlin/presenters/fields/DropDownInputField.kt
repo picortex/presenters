@@ -5,8 +5,8 @@ package presenters.fields
 
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.toInteroperableList
+import kollections.List
+import kollections.toIList
 import kotlin.reflect.KProperty
 
 data class DropDownInputField(
@@ -21,7 +21,7 @@ data class DropDownInputField(
         label: String = name,
         isReadonly: Boolean = false,
         vararg options: Option
-    ) : this(name, label, isReadonly, options.toInteroperableList())
+    ) : this(name, label, isReadonly, options.toIList())
 
     @JsName("_ignore_fromProperty")
     constructor(
@@ -31,10 +31,10 @@ data class DropDownInputField(
         options: List<Option>
     ) : this(name.name, label, isReadonly, options)
 
-    val itemLabels get() = options.map { it.label }.toInteroperableList()
-    val itemValues get() = options.map { it.value }.toInteroperableList()
+    val itemLabels get() = options.map { it.label }.toIList()
+    val itemValues get() = options.map { it.value }.toIList()
 
-    val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toInteroperableList()
+    val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toIList()
 
     val selected get() = options.firstOrNull { it.selected }
 

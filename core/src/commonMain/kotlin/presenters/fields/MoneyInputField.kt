@@ -5,7 +5,7 @@ package presenters.fields
 
 import kash.Currency
 import kash.Money
-import kotlinx.collections.interoperable.toInteroperableList
+import kollections.toIList
 import presenters.fields.internal.AbstractTextInputFieldRaw
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -47,7 +47,7 @@ class MoneyInputField(
                     value = it.name,
                     selected = it == currency
                 )
-            }.toInteroperableList()
+            }.toIList()
         )
     }
 

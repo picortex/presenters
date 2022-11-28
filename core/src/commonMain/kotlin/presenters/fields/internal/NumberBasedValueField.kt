@@ -28,6 +28,7 @@ abstract class NumberBasedValueField<N : Number>(
     }
 
     abstract var stringValue: String
+
     abstract fun increment(step: N? = this.step)
 
     abstract fun decrement(step: N? = this.step)
