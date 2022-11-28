@@ -2,7 +2,6 @@ package presenters.collections
 
 import kollections.toIList
 import presenters.collections.internal.TableImpl
-import viewmodel.ViewModelConfig
 import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
@@ -16,7 +15,6 @@ fun <T> tableOf(
 @JvmSynthetic
 fun <T> simpleTableOf(
     items: Collection<T>,
-    config: ViewModelConfig = ViewModelConfig(),
     builder: ColumnsBuilder<T>.() -> Unit
 ): Table<T> {
     val paginator = SinglePagePaginator(items)

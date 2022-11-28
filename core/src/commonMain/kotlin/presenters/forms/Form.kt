@@ -4,14 +4,11 @@ package presenters.forms
 
 import koncurrent.Later
 import koncurrent.later.catch
-import kotlinx.serialization.serializer
 import presenters.actions.GenericAction
 import presenters.actions.MutableSimpleAction
-import presenters.actions.SimpleAction
 import presenters.collections.*
 import viewmodel.ViewModel
 import kotlin.js.JsExport
-import kotlin.js.JsName
 
 open class Form<out F : Fields, P>(
     open val heading: String,
