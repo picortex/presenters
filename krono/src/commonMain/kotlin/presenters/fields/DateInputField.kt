@@ -3,9 +3,8 @@
 package presenters.fields
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationStrategy
 import krono.LocalDate
-import krono.LocalDateIsoSerializer
+import krono.serializers.LocalDateIsoSerializer
 import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
 import kotlin.js.JsName
