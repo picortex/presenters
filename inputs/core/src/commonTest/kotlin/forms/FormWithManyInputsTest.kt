@@ -11,8 +11,13 @@ import live.toHaveGoneThrough3
 import presenters.fields.Option
 import presenters.forms.Fields
 import presenters.forms.Form
-import presenters.forms.FormState.*
-import presenters.forms.fields.*
+import presenters.forms.FormState.Submitted
+import presenters.forms.FormState.Submitting
+import presenters.forms.FormState.Validating
+import presenters.forms.fields.name
+import presenters.forms.fields.selectMany
+import presenters.forms.fields.selectSingle
+import presenters.forms.fields.text
 import presenters.forms.toFormConfig
 import viewmodel.ViewModelConfig
 import kotlin.test.Test

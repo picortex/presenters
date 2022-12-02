@@ -21,7 +21,11 @@ class DateRangeInputValidationTest {
     fun should_submit_if_all_start_and_end_dates_are_provided() {
         val dr = DateRangeInputField("span")
         dr.startIsoString = "2022-01-20"
+        println(dr.start)
+        println(dr.value)
         dr.endIsoString = "2022-01-30"
+        println(dr.end)
+        println(dr.value)
 
         val actual = Range(
             start = LocalDate(2022, 1, 20),

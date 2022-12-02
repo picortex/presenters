@@ -51,6 +51,9 @@ abstract class AbstractRangeField<T : Comparable<T>>(
     protected fun update(start: T?, end: T?) {
         try {
             validate(start, end)
+            if (start != null && end != null) {
+                input.value = Range(start, end)
+            }
             if (feedback.value != InputFieldState.Empty) {
                 feedback.value = InputFieldState.Empty
             }
