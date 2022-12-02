@@ -16,12 +16,6 @@ kotlin {
                 api(projects.presentersCollectionsRenderersString)
             }
         }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(projects.expectCore)
-            }
-        }
     }
 }
 

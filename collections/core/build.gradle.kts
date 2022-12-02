@@ -24,6 +24,7 @@ kotlin {
                 implementation(projects.koncurrentLaterCoroutines)
                 implementation(projects.koncurrentPrimitivesMock)
                 implementation(projects.liveTest)
+                implementation(projects.presentersCollectionsRenderersConsole)
             }
         }
     }

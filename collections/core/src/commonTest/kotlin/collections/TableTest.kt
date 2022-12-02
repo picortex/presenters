@@ -1,10 +1,12 @@
 package collections
 
 import expect.expect
-import koncurrent.SynchronousExecutor
-import presenters.collections.*
-import presenters.collections.tabulateToConsole
-import viewmodel.ViewModelConfig
+import presenters.collections.CollectionPaginator
+import presenters.collections.SelectionManager
+import presenters.collections.actionsOf
+import presenters.collections.columnsOf
+import presenters.collections.renderToConsole
+import presenters.collections.tableOf
 import kotlin.test.Test
 
 class TableTest {
@@ -22,17 +24,17 @@ class TableTest {
         val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
         val table = tableOf(paginator, selector, action, PersonTableColumns())
-        table.tabulateToConsole()
+        table.renderToConsole()
         expect(table.currentPageOrNull?.number).toBe(null)
 
         table.refresh()
-        table.tabulateToConsole()
+        table.renderToConsole()
 
         table.loadNextPage()
-        table.tabulateToConsole()
+        table.renderToConsole()
 
         table.loadNextPage()
-        table.tabulateToConsole()
+        table.renderToConsole()
     }
 
     @Test
@@ -42,12 +44,12 @@ class TableTest {
         val action = actionsOf(selector) {}
         val table = tableOf(paginator, selector, action, PersonTableColumns())
         table.loadFirstPage()
-        table.tabulateToConsole()
+        table.renderToConsole()
 
         table.select(row = 1)
         selector.select(row = 1)
         expect(table.isCurrentPageSelectedPartially()).toBe(true, "Table was supposed to be partially selected")
-        table.tabulateToConsole()
+        table.renderToConsole()
         expect(selector.isRowSelectedOnCurrentPage(row = 1)).toBe(true, "Explicit selector failed to select")
         expect(table.isRowSelectedOnCurrentPage(row = 1)).toBe(true, "Implicit selector failed to select")
     }
@@ -60,10 +62,10 @@ class TableTest {
         val table = tableOf(paginator, selector, action, PersonTableColumns())
 
         table.loadFirstPage()
-        table.tabulateToConsole()
+        table.renderToConsole()
 
         table.selectAllItemsInTheCurrentPage()
-        table.tabulateToConsole()
+        table.renderToConsole()
         expect(table.isRowSelectedOnCurrentPage(row = 1)).toBe(true, "Implicit selector failed to select")
     }
 
@@ -87,7 +89,7 @@ class TableTest {
         expect(table.actions).toBeOfSize(1)
 
         table.select(1)
-        table.tabulateToConsole()
+        table.renderToConsole()
 
         expect(table.actions).toBeOfSize(2)
     }
