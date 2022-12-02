@@ -6,8 +6,6 @@ plugins {
     signing
 }
 
-val tmp = 2
-
 kotlin {
     jvm { library() }
     js(IR) { library() }
@@ -17,13 +15,6 @@ kotlin {
             dependencies {
                 api(projects.koncurrentLaterCore)
                 api(asoft.kotlinx.collections.interoperable)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(projects.expectCoroutines)
-                implementation(projects.koncurrentLaterCoroutines)
             }
         }
     }

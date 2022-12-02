@@ -14,7 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.presentersCore)
-                api(projects.geoCore)
+                api(projects.kashMoney)
             }
         }
 

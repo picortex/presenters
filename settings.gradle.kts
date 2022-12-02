@@ -13,15 +13,6 @@ pluginManagement {
         mavenCentral()
         google()
         gradlePluginPortal()
-        maven {
-            name = "piCortex"
-            url = uri("http://65.21.254.230:1050/repository/internal/")
-            isAllowInsecureProtocol = true
-            credentials {
-                username = "admin"
-                password = "admin@123"
-            }
-        }
         mavenLocal()
     }
 
@@ -41,12 +32,13 @@ fun includeSubs(base: String, path: String = base, vararg subs: String) {
 
 val tmp = 1
 
-rootProject.name = "asoft"
+rootProject.name = "presenters"
 
 includeSubs("functions", "../functions", "core")
 includeSubs("expect", "../expect", "core", "coroutines")
 includeSubs("koncurrent-primitives", "../koncurrent/primitives", "core", "coroutines", "mock")
 includeSubs("koncurrent-later", "../koncurrent/later", "core", "coroutines", "test")
+includeSubs("kollections", "../kollections", "interoperable")
 includeSubs("live", "../live", "core", "coroutines", "test")
 includeSubs("cache", "../cache", "api", "file", "test", "mock")
 includeSubs("viewmodel", "../viewmodel", "core")
@@ -62,4 +54,4 @@ includeSubs("kash", "../kash", "currency", "money")
 
 includeSubs("krono", "../krono", "api")
 
-includeSubs("presenters", ".", "core", "actions", "mock", "krono", "geo")
+includeSubs("presenters", ".", "core", "actions", "mock", "kash", "krono", "geo")
