@@ -20,7 +20,6 @@ kotlin {
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.presentersMock)
                 implementation(projects.expectCoroutines)
                 implementation(projects.koncurrentLaterCoroutines)
                 implementation(projects.liveTest)

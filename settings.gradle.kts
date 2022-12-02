@@ -54,4 +54,8 @@ includeSubs("kash", "../kash", "currency", "money")
 
 includeSubs("krono", "../krono", "api")
 
-includeSubs("presenters", ".", "core", "actions", "mock", "kash", "krono", "geo")
+includeSubs("presenters", ".", "states", "core", "actions", "kash", "krono", "geo")
+
+includeSubs("presenters-collections", "collections", "core")
+includeSubs("presenters-collections-renderers", "collections/renderers", "string", "console")
+includeSubs("presenters-inputs", "inputs", "core", "geo", "kash", "krono")
