@@ -3,6 +3,7 @@ package fields.email
 import expect.expect
 import expect.expectFailure
 import kotlinx.coroutines.test.runTest
+import presenters.fields.EmailInputField
 import kotlin.test.Test
 
 class EmailInputValidationTest {

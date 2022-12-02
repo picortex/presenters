@@ -13,21 +13,17 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.presentersActions)
-                api(projects.presentersCollectionsRenderersString)
-                api(projects.presentersStates)
-                api(projects.viewmodelCore)
-                api(kotlinx.serialization.json)
+                api(projects.presentersInputsCore)
+                api(projects.identifierCore)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.presentersCollectionsRenderersConsole)
                 implementation(projects.expectCoroutines)
                 implementation(projects.koncurrentLaterCoroutines)
-                implementation(projects.koncurrentPrimitivesMock)
                 implementation(projects.liveTest)
+                implementation(projects.koncurrentPrimitivesMock)
             }
         }
     }
