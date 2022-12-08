@@ -24,10 +24,10 @@ inline fun Fields.switch(
 }
 
 inline fun Fields.switch(
-    property: KProperty<*>,
-    label: String? = property.name,
+    name: KProperty<*>,
+    label: String? = name.name,
     value: Boolean? = null,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
     noinline validator: ((Boolean?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) = switch(property.name, label, value, isReadonly, isRequired, validator)
+) = switch(name.name, label, value, isReadonly, isRequired, validator)
