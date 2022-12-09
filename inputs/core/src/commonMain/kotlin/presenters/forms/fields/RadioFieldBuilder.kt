@@ -1,5 +1,6 @@
 package presenters.forms.fields
 
+import presenters.fields.InputLabel
 import presenters.fields.RadioInputField
 import presenters.fields.ValuedField
 import presenters.forms.Fields
@@ -15,7 +16,7 @@ inline fun Fields.radio(
 ) = getOrCreate { property ->
     RadioInputField(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(label ?: property.name,isReadonly),
         defaultValue = value,
         isReadonly = isReadonly,
         isRequired = isRequired,

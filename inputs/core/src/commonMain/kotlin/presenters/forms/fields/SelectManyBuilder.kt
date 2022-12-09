@@ -6,6 +6,7 @@ import kollections.serializers.ListSerializer
 import kollections.toIList
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
+import presenters.fields.InputLabel
 import presenters.fields.Option
 import presenters.fields.SelectManyInputField
 import presenters.fields.ValuedField
@@ -27,7 +28,7 @@ inline fun <reified T : Any> Fields.selectMany(
         items = items,
         mapper = mapper,
         serializer = serializer,
-        label = label ?: property.name,
+        label = InputLabel(label ?: property.name,isReadonly),
         defaultValue = value?.toIList(),
         isReadonly = isReadonly,
         isRequired = isRequired,

@@ -4,6 +4,6 @@ import presenters.fields.*
 import presenters.forms.Fields
 
 inline fun Fields.button(
-    text: String,
-    name: String = text,
-) = getOrCreate { ButtonInputField(text, name) }
+    label: String,
+    name: String = label,
+) = getOrCreate { ButtonInputField(name, InputLabel(label, false)) }

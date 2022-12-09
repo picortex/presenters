@@ -19,7 +19,7 @@ inline fun Fields.long(
 ) = getOrCreate { property ->
     LongInputField(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(label ?: property.name,isReadonly),
         hint = hint ?: property.name,
         defaultValue = value,
         isReadonly = isReadonly,

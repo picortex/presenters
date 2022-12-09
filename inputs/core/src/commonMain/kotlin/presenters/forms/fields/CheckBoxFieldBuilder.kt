@@ -1,6 +1,7 @@
 package presenters.forms.fields
 
 import presenters.fields.CheckBoxInputField
+import presenters.fields.InputLabel
 import presenters.fields.ValuedField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
@@ -15,7 +16,7 @@ inline fun Fields.checkBox(
 ) = getOrCreate { property ->
     CheckBoxInputField(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(label ?: property.name,isReadonly),
         defaultValue = value,
         isReadonly = isReadonly,
         isRequired = isRequired,

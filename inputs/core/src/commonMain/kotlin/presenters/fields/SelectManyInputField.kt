@@ -15,11 +15,11 @@ class SelectManyInputField<T : Any>(
     val items: Collection<T>,
     val mapper: (T) -> Option,
     override val serializer: KSerializer<List<T>>,
-    override val label: String = name.replaceFirstChar { it.uppercase() },
+    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    override val label: InputLabel = InputLabel(name, isRequired),
     override val defaultValue: List<T>? = ValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
-) : AbstractValuedField<List<T>>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
+    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY
+) : AbstractValuedField<List<T>>(name, isRequired, label, defaultValue, isReadonly, ValuedField.DEFAULT_VALIDATOR) {
     val optionLabels get() = options.map { it.label }.toIList()
     val optionValues get() = options.map { it.value }.toIList()
 
@@ -94,9 +94,10 @@ class SelectManyInputField<T : Any>(
         findOptionWithLabel(l)?.let { toggleSelectedValue(it.value) }
     }
 
-    override fun validate(value: List<T>?) {
+    override fun validate(value: List<T>?): ValidationResult {
         if (isRequired && value.isNullOrEmpty()) {
-            throw IllegalArgumentException("$label is required")
+            return Invalid(IllegalArgumentException("$label is required"))
         }
+        return Valid
     }
 }

@@ -11,25 +11,19 @@ import kotlin.reflect.KProperty
 
 data class DropDownInputField(
     override val name: String,
-    override val label: String = name,
+    val isRequired: Boolean = false,
+    override val label: InputLabel = InputLabel(name, isRequired),
     val isReadonly: Boolean = false,
     val options: List<Option>
 ) : InputField {
     @JsName("from")
     constructor(
         name: String,
-        label: String = name,
+        isRequired: Boolean = false,
+        label: InputLabel = InputLabel(name, isRequired),
         isReadonly: Boolean = false,
         vararg options: Option
-    ) : this(name, label, isReadonly, options.toIList())
-
-    @JsName("_ignore_fromProperty")
-    constructor(
-        name: KProperty<*>,
-        label: String = name.name,
-        isReadonly: Boolean = false,
-        options: List<Option>
-    ) : this(name.name, label, isReadonly, options)
+    ) : this(name, isRequired, label, isReadonly, options.toIList())
 
     val itemLabels get() = options.map { it.label }.toIList()
     val itemValues get() = options.map { it.value }.toIList()
@@ -37,10 +31,4 @@ data class DropDownInputField(
     val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toIList()
 
     val selected get() = options.firstOrNull { it.selected }
-
-    data class Option(
-        val label: String,
-        val value: String = label,
-        val selected: Boolean = false
-    )
 }

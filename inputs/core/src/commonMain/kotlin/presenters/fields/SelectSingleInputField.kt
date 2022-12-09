@@ -15,11 +15,11 @@ class SelectSingleInputField<T : Any>(
     val items: Collection<T>,
     val mapper: (T) -> Option,
     override val serializer: KSerializer<T>,
-    override val label: String = name.replaceFirstChar { it.uppercase() },
+    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    override val label: InputLabel = InputLabel(name, isRequired),
     override val defaultValue: T? = ValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
-) : AbstractValuedField<T>(name, label, defaultValue, isReadonly, isRequired, ValuedField.DEFAULT_VALIDATOR) {
+    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY
+) : AbstractValuedField<T>(name, isRequired, label, defaultValue, isReadonly, ValuedField.DEFAULT_VALIDATOR) {
     val optionLabels get() = options.map { it.label }.toInteroperableList()
     val optionValues get() = options.map { it.value }.toInteroperableList()
 
@@ -59,9 +59,10 @@ class SelectSingleInputField<T : Any>(
         field.value = null
     }
 
-    override fun validate(value: T?) {
+    override fun validate(value: T?): ValidationResult {
         if (isRequired && value == null) {
-            throw IllegalArgumentException("$label is required")
+            return Invalid(IllegalArgumentException("$label is required"))
         }
+        return Valid
     }
 }
