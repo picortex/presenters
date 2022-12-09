@@ -43,9 +43,9 @@ class DoubleInputField(
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator)
 
     override var stringValue: String
-        get() = value.toString()
+        get() = this.field.value.toString()
         set(v) = try {
-            value = v.toDouble()
+            this.field.value = v.toDouble()
         } finally {
 
         }
@@ -53,10 +53,10 @@ class DoubleInputField(
     override val serializer: KSerializer<Double> by lazy { Double.serializer() }
 
     override fun increment(step: Double?) {
-        value = (value ?: 0.0) + (step ?: DEFAULT_STEP)
+        field.value = (field.value ?: 0.0) + (step ?: DEFAULT_STEP)
     }
 
     override fun decrement(step: Double?) {
-        value = (value ?: 0.0) - (step ?: DEFAULT_STEP)
+        field.value = (field.value ?: 0.0) - (step ?: DEFAULT_STEP)
     }
 }

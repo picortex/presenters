@@ -44,7 +44,7 @@ class SelectSingleInputField<T : Any>(
 
     fun selectValue(v: String) {
         selectedValue = v
-        value = items.find { mapper(it).value == v }
+        field.value = items.find { mapper(it).value == v }
     }
 
     fun selectLabel(l: String) {
@@ -56,7 +56,7 @@ class SelectSingleInputField<T : Any>(
 
     fun unselect() {
         selectedValue = null
-        value = null
+        field.value = null
     }
 
     override fun validate(value: T?) {

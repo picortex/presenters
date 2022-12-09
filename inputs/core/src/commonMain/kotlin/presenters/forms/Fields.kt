@@ -18,9 +18,9 @@ open class Fields(internal val cache: MutableMap<String, InputField> = mutableMa
 
     fun encodedValuesToJson(codec: StringFormat) = valuesToBeSubmitted.associate {
         it.name to it
-    }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, field) ->
-        val serializer = field.serializer as KSerializer<Any>
-        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.value)}"""
+    }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, input) ->
+        val serializer = input.serializer as KSerializer<Any>
+        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, input.field.value)}"""
     }
 
     internal val allInvalid get() = valuesToBeSubmitted.filter { it.feedback.value is InputFieldState.Error }
@@ -29,7 +29,7 @@ open class Fields(internal val cache: MutableMap<String, InputField> = mutableMa
 
     internal val valuesToBeSubmitted
         get() = valueFields.filterNot {
-            !it.isRequired && (it.value == null || it.value.toString().isBlank())
+            !it.isRequired && (it.field.value == null || it.field.value.toString().isBlank())
         }
 
     fun validate() {

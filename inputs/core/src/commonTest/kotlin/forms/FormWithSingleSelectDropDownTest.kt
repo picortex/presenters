@@ -40,8 +40,8 @@ class FormWithSingleSelectDropDownTest {
         }
 
         form.fields.apply {
-            name.value = "John"
-            color.value = null
+            name.type("John")
+            color.clear()
         }
 
         form.submit()
@@ -58,8 +58,8 @@ class FormWithSingleSelectDropDownTest {
         }
 
         form.fields.apply {
-            name.value = "John"
-            color.value = Color.Red
+            name.type("John")
+            color.set(Color.Red)
         }
 
         form.submit()

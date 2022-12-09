@@ -23,13 +23,8 @@ class FormTest {
     fun should_easily_interact_with_text_fields() {
         val fields = PersonFields()
         val name = fields.name
-        name.apply {
-            value = "A"
-            value = "An"
-            value = "And"
-            value = "Anderson"
-        }
-        expect(name.value).toBe("Anderson")
+        name.type("Anderson")
+        expect(name.field.value).toBe("Anderson")
     }
 
     @Test
@@ -43,8 +38,8 @@ class FormTest {
         }
 
         form.fields.apply {
-            name.value = "Anderson"
-            details.value = "andy@lamax"
+            name.type("Anderson")
+            details.type("andy@lamax")
         }
         form.submit()
         val (_, s1) = expect(form.ui).toHaveGoneThrough2<Validating, Failure>()
@@ -53,8 +48,8 @@ class FormTest {
         form.ui.history.clear()
 
         form.fields.apply {
-            name.value = null
-            details.value = "andy@lamax"
+            name.clear()
+            details.type("andy@lamax")
         }
         form.submit()
         val (_, s2) = expect(form.ui).toHaveGoneThrough2<Validating, Failure>()
@@ -62,11 +57,11 @@ class FormTest {
 
         form.ui.history.clear()
         form.fields.apply {
-            name.value = "Anderson"
-            details.value = "andy@lamax.me"
+            name.type("Anderson")
+            details.type("andy@lamax.me")
         }
         form.submit()
-        expect(form.fields.details.value).toBe("andy@lamax.me")
+        expect(form.fields.details.field.value).toBe("andy@lamax.me")
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()
     }
 }

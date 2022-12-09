@@ -45,18 +45,18 @@ class IntegerInputField(
 
     override val serializer: KSerializer<Int> by lazy { Int.serializer() }
     override var stringValue: String
-        get() = value.toString()
+        get() = this.field.value.toString()
         set(v) = try {
-            value = v.toInt()
+            this.field.value = v.toInt()
         } finally {
 
         }
 
     override fun increment(step: Int?) {
-        value = (value ?: 0) + (step ?: DEFAULT_STEP)
+        field.value = (field.value ?: 0) + (step ?: DEFAULT_STEP)
     }
 
     override fun decrement(step: Int?) {
-        value = (value ?: 0) - (step ?: DEFAULT_STEP)
+        field.value = (field.value ?: 0) - (step ?: DEFAULT_STEP)
     }
 }

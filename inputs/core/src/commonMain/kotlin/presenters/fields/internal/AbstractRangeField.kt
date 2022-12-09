@@ -23,16 +23,11 @@ abstract class AbstractRangeField<T : Comparable<T>>(
 ) : AbstractValuedField<Range<T>>(name, label, defaultValue, isReadonly, isRequired, validator), RangeField<T> {
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
-    override var value: Range<T>?
-        get() = input.value
-        set(value) {
-            start = value?.start
-            end = value?.end
-
-            val s = start
-            val e = end
-            input.value = if (s != null && e != null && s <= e) Range(s, e) else defaultValue
-        }
+    override fun set(value: Range<T>?) {
+        val s = value?.start
+        val e = value?.end
+        field.value = if (s != null && e != null && s <= e) Range(s, e) else defaultValue
+    }
 
     override var start: T? = null
         get() = field ?: defaultValue?.start
@@ -52,7 +47,7 @@ abstract class AbstractRangeField<T : Comparable<T>>(
         try {
             validate(start, end)
             if (start != null && end != null) {
-                input.value = Range(start, end)
+                field.value = Range(start, end)
             }
             if (feedback.value != InputFieldState.Empty) {
                 feedback.value = InputFieldState.Empty
@@ -107,7 +102,7 @@ abstract class AbstractRangeField<T : Comparable<T>>(
             throw IllegalArgumentException("$tag can't range from $start to $end")
         }
 
-        validator?.invoke(value)
+        validator?.invoke(field.value)
     }
 
     override fun validateWithFeedback(value: Range<T>?) {

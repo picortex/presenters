@@ -4,7 +4,6 @@ import koncurrent.Later
 import koncurrent.later.await
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import live.expect
 import presenters.forms.Fields
@@ -12,7 +11,6 @@ import presenters.forms.Form
 import presenters.forms.FormActionsBuildingBlock
 import presenters.forms.fields.textTo
 import presenters.forms.toFormConfig
-import viewmodel.ScopeConfig
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
@@ -41,9 +39,8 @@ class TextMappedInputFieldTest {
                 Later.resolve(Unit)
             }
         }
-        form.fields.category.text = "Test"
-
-        expect(form.fields.category.input).toHaveGoneThrough(Category(name = "Test"))
+        form.fields.category.type("Test")
+        expect(form.fields.category.field).toHaveGoneThrough(Category(name = "Test"))
         form.submit().await()
     }
 }

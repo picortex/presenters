@@ -43,23 +43,23 @@ class LongInputField(
 
     override val serializer: KSerializer<Long> by lazy { Long.serializer() }
     override var stringValue: String
-        get() = value.toString()
+        get() = this.field.value.toString()
         set(v) = try {
-            value = v.toLong()
+            this.field.value = v.toLong()
         } finally {
 
         }
 
-    val valueAsDouble get() = this.value?.toDouble()
+    val valueAsDouble get() = field.value?.toDouble()
     val maxAsDouble get() = this.max?.toDouble()
     val minAsDouble get() = this.min?.toDouble()
     val stepAsDouble get() = this.step.toDouble()
 
     override fun increment(step: Long?) {
-        value = (value ?: 0) + (step ?: DEFAULT_STEP)
+        field.value = (field.value ?: 0) + (step ?: DEFAULT_STEP)
     }
 
     override fun decrement(step: Long?) {
-        value = (value ?: 0) - (step ?: DEFAULT_STEP)
+        field.value = (field.value ?: 0) - (step ?: DEFAULT_STEP)
     }
 }

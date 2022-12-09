@@ -44,7 +44,7 @@ class SelectManyInputField<T : Any>(
             val o = mapper(it)
             selectedValues.contains(o.value)
         }.toIList()
-        value = if (selectedItems.isEmpty()) null else selectedItems
+        field.value = if (selectedItems.isEmpty()) null else selectedItems
     }
 
     fun addSelectedItem(item: T) = addSelectedValue(mapper(item).value)
@@ -75,7 +75,7 @@ class SelectManyInputField<T : Any>(
 
     fun unselectAll() {
         selectedValues.clear()
-        value = null
+        field.value = null
     }
 
     fun toggleSelectedValue(v: String) {

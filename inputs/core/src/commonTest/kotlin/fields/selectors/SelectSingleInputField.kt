@@ -23,7 +23,7 @@ class SelectSingleInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectValue("Red")
-        expect(color.value).toBe(Color.Red)
+        expect(color.field.value).toBe(Color.Red)
     }
 
     @Test
@@ -35,7 +35,7 @@ class SelectSingleInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        expect(color.value).toBe(Color.Green)
+        expect(color.field.value).toBe(Color.Green)
     }
 
     @Test
@@ -47,11 +47,11 @@ class SelectSingleInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        expect(color.value).toBe(Color.Green)
+        expect(color.field.value).toBe(Color.Green)
 
         color.unselect()
 
-        expect(color.value).toBe(null)
+        expect(color.field.value).toBe(null)
     }
 
     @Test
@@ -65,7 +65,7 @@ class SelectSingleInputFieldTest {
         )
 
         color.selectItem(Color.Green)
-        expect(color.value).toBe(Color.Green)
+        expect(color.field.value).toBe(Color.Green)
 
         color.unselect()
         try {

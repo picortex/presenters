@@ -1,8 +1,9 @@
 package presenters.forms.fields
 
-import presenters.fields.TextInputField
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
 import presenters.fields.ValuedField
-import presenters.fields.internal.TextBasedValueField
+import presenters.fields.internal.TextBasedValueFieldImpl
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
@@ -16,22 +17,10 @@ inline fun Fields.name(
     value: String? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = TextBasedValueField.DEFAULT_MAX_LENGTH,
+    maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
     minLength: Int? = DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) = getOrCreate { property ->
-    TextInputField(
-        name = name ?: property.name,
-        label = label ?: property.name,
-        hint = hint ?: property.name,
-        defaultValue = value,
-        isReadonly = isReadonly,
-        isRequired = isRequired,
-        maxLength = maxLength,
-        minLength = minLength,
-        validator = validator,
-    )
-}
+) = textTo(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, String.serializer().nullable, validator) { it }
 
 inline fun Fields.name(
     name: KProperty<*>,
@@ -40,7 +29,7 @@ inline fun Fields.name(
     value: String? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = TextBasedValueField.DEFAULT_MAX_LENGTH,
+    maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
     minLength: Int? = DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) = this.name(name.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)

@@ -61,10 +61,10 @@ class FormWithManyInputsTest {
             }
         }
         form.fields.apply {
-            name.value = "Andy"
-            username.value = "andy@lamax.com"
-            address.value = "0752748674"
-            color.value = Color.Red
+            name.type("Andy")
+            username.type("andy@lamax.com")
+            address.type("0752748674")
+            color.set(Color.Red)
             colors.addSelectedItem(Color.Green)
             colors.addSelectedItem(Color.Blue)
         }

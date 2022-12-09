@@ -47,7 +47,7 @@ open class Form<out F : Fields, P>(
         if (invalids.isNotEmpty()) {
             val message = simpleTableOf(invalids) {
                 column("Field") { it.item.label.replaceFirstChar { c -> c.uppercase() } }
-                column("Value") { it.item.value.toString() }
+                column("Value") { it.item.field.value.toString() }
                 column("Reason") { it.item.feedback.value.asError.message }
             }.renderToString()
             logger.error(message)

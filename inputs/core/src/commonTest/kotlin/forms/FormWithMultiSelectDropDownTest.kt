@@ -43,8 +43,8 @@ class FormWithMultiSelectDropDownTest {
         }
 
         form.fields.apply {
-            name.value = "John"
-            color.value = null
+            name.type("John")
+            color.clear()
         }
 
         form.submit()
@@ -62,7 +62,7 @@ class FormWithMultiSelectDropDownTest {
         }
 
         form.fields.apply {
-            name.value = "John"
+            name.type("John")
             color.addSelectedItem(Color.Blue)
         }
 
@@ -78,13 +78,13 @@ class FormWithMultiSelectDropDownTest {
         }
 
         form.fields.apply {
-            name.value = "John"
+            name.type("John")
             color.addSelectedItem(Color.Blue)
             color.addSelectedItem(Color.Red)
         }
 
         form.submit()
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()
-        expect(form.fields.color.value).toBe(iListOf(Color.Red, Color.Blue))
+        expect(form.fields.color.field.value).toBe(iListOf(Color.Red, Color.Blue))
     }
 }
