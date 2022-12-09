@@ -1,9 +1,10 @@
+@file:JsExport
+
 package presenters.fields
 
 import kotlin.js.JsExport
 
-@JsExport
 data class ButtonInputField(
-    override val label: String,
-    override val name: String = label
+    override val name: String,
+    override val label: InputLabel = InputLabel(name, isRequired = true)
 ) : InputField

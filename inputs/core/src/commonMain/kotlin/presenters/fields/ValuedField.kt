@@ -16,11 +16,10 @@ interface ValuedField<T> : InputField {
     val isReadonly: Boolean
     val isRequired: Boolean
 
-    val labelWithAsterisks get() = label.replaceFirstChar { it.uppercase() } + if (isRequired) "*" else ""
-    val asteriskedLabel get() = labelWithAsterisks
+    fun validate(value: @UnsafeVariance T? = field.value): ValidationResult
+    fun validateSettingInvalidsAsWarnings(value: @UnsafeVariance T? = field.value): ValidationResult
+    fun validateSettingInvalidsAsErrors(value: @UnsafeVariance T? = field.value): ValidationResult
 
-    fun validate(value: @UnsafeVariance T? = field.value)
-    fun validateWithFeedback(value: @UnsafeVariance T? = field.value)
     fun clear()
 
     @JsName("setValue")

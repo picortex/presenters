@@ -7,6 +7,10 @@ import kotlinx.serialization.KSerializer
 import live.MutableLive
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
+import presenters.fields.InputLabel
+import presenters.fields.Invalid
+import presenters.fields.Valid
+import presenters.fields.ValidationResult
 import presenters.fields.ValuedField
 import presenters.fields.ValuedField.Companion.DEFAULT_IS_READONLY
 import presenters.fields.ValuedField.Companion.DEFAULT_IS_REQUIRED
@@ -16,10 +20,10 @@ import kotlin.js.JsExport
 
 abstract class AbstractValuedField<T>(
     override val name: String,
-    override val label: String = name.replaceFirstChar { it.uppercase() },
+    override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
+    override val label: InputLabel = InputLabel(name.replaceFirstChar { it.uppercase() }, isRequired),
     defaultValue: T? = DEFAULT_VALUE,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     val validator: ((T?) -> Unit)? = DEFAULT_VALIDATOR
 ) : ValuedField<T> {
 
@@ -46,16 +50,23 @@ abstract class AbstractValuedField<T>(
         feedback.value = InputFieldState.Empty
     }
 
-    abstract override fun validate(value: T?)
+    abstract override fun validate(value: T?): ValidationResult
 
-    override fun validateWithFeedback(value: T?) {
-        try {
-            validate(value)
-            if (feedback.value != InputFieldState.Empty) {
-                feedback.value = InputFieldState.Empty
-            }
-        } catch (err: Throwable) {
-            feedback.value = InputFieldState.Error(err.message ?: "", err)
+    override fun validateSettingInvalidsAsWarnings(value: T?): ValidationResult {
+        val res = validate(value)
+        feedback.value = when (res) {
+            is Invalid -> InputFieldState.Warning(res.cause.message ?: "", res.cause)
+            Valid -> InputFieldState.Empty
         }
+        return res
+    }
+
+    override fun validateSettingInvalidsAsErrors(value: T?): ValidationResult {
+        val res = validate(value)
+        feedback.value = when (res) {
+            is Invalid -> InputFieldState.Error(res.cause.message ?: "", res.cause)
+            Valid -> InputFieldState.Empty
+        }
+        return res
     }
 }

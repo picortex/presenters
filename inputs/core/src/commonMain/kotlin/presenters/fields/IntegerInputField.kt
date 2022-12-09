@@ -14,16 +14,16 @@ import kotlin.reflect.KProperty
 
 class IntegerInputField(
     override val name: String,
-    override val label: String = name,
-    override val hint: String = label,
+    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    override val label: InputLabel = InputLabel(name, isRequired),
+    override val hint: String = label.text,
     override val defaultValue: Int? = ValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
     override val max: Int? = DEFAULT_MAX,
     override val min: Int? = DEFAULT_MIN,
     override val step: Int = DEFAULT_STEP,
     validator: ((Int?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) : NumberBasedValueField<Int>(name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator) {
+) : NumberBasedValueField<Int>(name, isRequired, label, hint, defaultValue, isReadonly, max, min, step, validator) {
     companion object {
         val DEFAULT_STEP = 1
     }
@@ -31,16 +31,16 @@ class IntegerInputField(
     @JsName("_ignore_fromPropery")
     constructor(
         name: KProperty<*>,
-        label: String = name.name,
-        hint: String = label,
+        isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+        label: InputLabel = InputLabel(name.name, isRequired),
+        hint: String = label.text,
         defaultValue: Int? = ValuedField.DEFAULT_VALUE,
         isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-        isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
         max: Int? = DEFAULT_MAX,
         min: Int? = DEFAULT_MIN,
         step: Int = DEFAULT_STEP,
         validator: ((Int?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-    ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, max, min, step, validator)
+    ) : this(name.name, isRequired, label, hint, defaultValue, isReadonly, max, min, step, validator)
 
 
     override val serializer: KSerializer<Int> by lazy { Int.serializer() }

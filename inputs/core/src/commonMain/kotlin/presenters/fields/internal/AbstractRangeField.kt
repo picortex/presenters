@@ -105,7 +105,7 @@ abstract class AbstractRangeField<T : Comparable<T>>(
         validator?.invoke(field.value)
     }
 
-    override fun validateWithFeedback(value: Range<T>?) {
+    override fun validateSettingInvalidsAsWarnings(value: Range<T>?) {
         try {
             validate(start, end)
             if (feedback.value != InputFieldState.Empty) {

@@ -2,6 +2,7 @@ package presenters.forms.fields
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
+import presenters.fields.InputLabel
 import presenters.fields.ValuedField
 import presenters.fields.internal.TextBasedValueFieldImpl
 import presenters.forms.Fields
@@ -22,7 +23,7 @@ inline fun <reified T> Fields.textTo(
 ) = getOrCreate { property ->
     TextBasedValueFieldImpl(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(label ?: name ?: property.name, isRequired),
         hint = hint ?: property.name,
         defaultText = value,
         transformer = transformer,

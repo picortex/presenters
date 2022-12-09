@@ -1,9 +1,10 @@
+@file:JsExport
+
 package presenters.fields
 
 import kotlin.js.JsExport
 
-@JsExport
 interface InputField {
     val name: String
-    val label: String
+    val label: InputLabel
 }

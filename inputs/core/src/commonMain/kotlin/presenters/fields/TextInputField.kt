@@ -15,7 +15,7 @@ inline fun TextInputField(
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ): TextBasedValuedField<String> = TextBasedValueFieldImpl(
     name = name,
-    label = label ?: name,
+    label = InputLabel(label ?: name, isRequired),
     hint = hint ?: label ?: name,
     defaultText = value,
     transformer = { it },

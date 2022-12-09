@@ -7,6 +7,10 @@ import koncurrent.later.catch
 import presenters.actions.GenericAction
 import presenters.actions.MutableSimpleAction
 import presenters.collections.*
+import presenters.fields.Invalid
+import presenters.fields.Valid
+import presenters.fields.ValidationResult
+import presenters.fields.throwIfInvalid
 import viewmodel.ViewModel
 import kotlin.js.JsExport
 
@@ -41,12 +45,12 @@ open class Form<out F : Fields, P>(
 
     fun exit() = cancel()
 
-    open fun validate() {
+    open fun validate(): ValidationResult {
         fields.validate()
         val invalids = fields.allInvalid
         if (invalids.isNotEmpty()) {
             val message = simpleTableOf(invalids) {
-                column("Field") { it.item.label.replaceFirstChar { c -> c.uppercase() } }
+                column("Field") { it.item.label.capitalizedWithoutAstrix() }
                 column("Value") { it.item.field.value.toString() }
                 column("Reason") { it.item.feedback.value.asError.message }
             }.renderToString()
@@ -54,8 +58,9 @@ open class Form<out F : Fields, P>(
             val invalidFields = IllegalArgumentException(message)
             val size = invalids.size
             val terminator = "input" + if (size > 1) "s" else ""
-            throw IllegalArgumentException("You have $size invalid $terminator", invalidFields)
+            return Invalid(IllegalArgumentException("You have $size invalid $terminator", invalidFields))
         }
+        return Valid
     }
 
     fun clear() {
@@ -65,7 +70,7 @@ open class Form<out F : Fields, P>(
 
     fun submit() = try {
         ui.value = FormState.Validating
-        validate()
+        validate().throwIfInvalid()
         val values = fields.encodedValuesToJson(codec)
         ui.value = FormState.Submitting(values)
         submitAction.invoke(codec.decodeFromString(config.serializer, values)).then {

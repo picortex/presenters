@@ -8,7 +8,6 @@ import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
 import presenters.fields.InputField
 import presenters.fields.InputFieldState
-import presenters.fields.ValuedField
 import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
 
@@ -33,7 +32,7 @@ open class Fields(internal val cache: MutableMap<String, InputField> = mutableMa
         }
 
     fun validate() {
-        valuesToBeSubmitted.forEach { it.validateWithFeedback() }
+        valuesToBeSubmitted.forEach { it.validateSettingInvalidsAsErrors() }
     }
 
     fun clearAll() {

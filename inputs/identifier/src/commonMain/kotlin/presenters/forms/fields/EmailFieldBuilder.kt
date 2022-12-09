@@ -1,7 +1,10 @@
 package presenters.forms.fields
 
-import presenters.fields.*
-import presenters.fields.internal.TextBasedValueField
+import identifier.Email
+import identifier.serializers.EmailSerializer
+import kotlinx.serialization.builtins.serializer
+import presenters.fields.ValuedField
+import presenters.fields.internal.TextBasedValueFieldImpl
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
@@ -12,20 +15,22 @@ inline fun Fields.email(
     value: String? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = TextBasedValueField.DEFAULT_MAX_LENGTH,
-    minLength: Int? = TextBasedValueField.DEFAULT_MIN_LENGTH,
+    maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
+    minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate { property ->
-    EmailInputField(
+    TextBasedValueFieldImpl<Email>(
         name = name ?: property.name,
         label = label ?: property.name,
         hint = hint ?: property.name,
-        defaultValue = value,
+        defaultText = value,
         isReadonly = isReadonly,
         isRequired = isRequired,
+        serializer = EmailSerializer,
         maxLength = maxLength,
         minLength = minLength,
-        validator = validator,
+        transformer = { text -> text?.let { Email(it) } },
+        validator = { },
     )
 }
 
@@ -36,7 +41,7 @@ inline fun Fields.email(
     value: String? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = TextBasedValueField.DEFAULT_MAX_LENGTH,
-    minLength: Int? = TextBasedValueField.DEFAULT_MIN_LENGTH,
+    maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
+    minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) = email(name.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)
