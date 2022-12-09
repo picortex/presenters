@@ -1,6 +1,6 @@
 import expect.expect
 import geo.Country
-import presenters.parsers.GooglePlacesApiParser
+import presenters.internal.GooglePlacesApiParser
 import kotlin.test.Test
 
 class GoogleApiJsonParserTest {

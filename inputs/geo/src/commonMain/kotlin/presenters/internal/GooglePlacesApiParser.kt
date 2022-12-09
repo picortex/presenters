@@ -1,4 +1,4 @@
-package presenters.parsers
+package presenters.internal
 
 import geo.Country
 import geo.GeoLocation
@@ -6,10 +6,16 @@ import kollections.toIList
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-internal class GooglePlacesApiParser {
+class GooglePlacesApiParser {
     private val codex = Json {
         ignoreUnknownKeys = true
         isLenient = true
+    }
+
+    fun parseOrNull(json: String?): GeoLocation? = try {
+        parse(json!!)
+    } catch (err: Throwable) {
+        null
     }
 
     fun parse(json: String): GeoLocation {

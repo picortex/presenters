@@ -4,51 +4,35 @@ package presenters.fields
 
 import geo.GeoLocation
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.nullable
 import presenters.fields.internal.AbstractValuedField
-import presenters.parsers.GooglePlacesApiParser
+import presenters.internal.GooglePlacesApiParser
 import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.reflect.KProperty
 
 @JsExport
 class LocationInputField(
     override val name: String,
-    override val label: String = name,
-    val hint: String = label,
-    override val defaultValue: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    validator: ((GeoLocation?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) : AbstractValuedField<GeoLocation>(name, label, defaultValue, isReadonly, isRequired, validator) {
-    @JsName("_ignore_fromPropery")
-    constructor(
-        name: KProperty<*>,
-        label: String = name.name,
-        hint: String = label,
-        defaultValue: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
-        isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-        isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-        validator: ((GeoLocation?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-    ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, validator)
+    override val label: InputLabel = InputLabel(name, isRequired),
+    val hint: String = label.text,
+    override val defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
+    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    private val googleParser: GooglePlacesApiParser = GooglePlacesApiParser(),
+    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+) : AbstractValuedField<String?, GeoLocation>(name, isRequired, label, defaultValue, { googleParser.parseOrNull(it) }, isReadonly, validator) {
+    override val serializer: KSerializer<GeoLocation?> by lazy { GeoLocation.serializer().nullable }
 
-    override val serializer: KSerializer<GeoLocation> by lazy { GeoLocation.serializer() }
-
-    private val googleParser = GooglePlacesApiParser()
-
-    var googleApiString: String?
-        set(json) {
-            if (json != null) {
-                val loc = googleParser.parse(json)
-                value = loc
-            }
-        }
-        get() = value?.address
-
-    override fun validate(value: GeoLocation?) {
-        val tag = label.replaceFirstChar { it.uppercase() }
+    override fun validate(value: String?): ValidationResult {
+        val tag = label.capitalizedWithoutAstrix()
         if (isRequired && value == null) {
-            throw IllegalArgumentException("$tag is required")
+            return Invalid(IllegalArgumentException("$tag is required"))
         }
-        validator?.invoke(value)
+
+        return try {
+            validator?.invoke(value)
+            Valid
+        } catch (err: Throwable) {
+            Invalid(err)
+        }
     }
 }

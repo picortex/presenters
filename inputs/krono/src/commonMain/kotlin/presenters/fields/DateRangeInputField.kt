@@ -1,3 +1,4 @@
+@file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE")
 
 package presenters.fields
@@ -10,14 +11,13 @@ import live.mutableLiveOf
 import presenters.fields.internal.AbstractRangeField
 import kotlin.js.JsExport
 
-@JsExport
 class DateRangeInputField(
     override val name: String,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
     override val limit: Range<LocalDate>? = null,
-    val defaultStart: LocalDate? = null,
-    val defaultEnd: LocalDate? = null,
+    defaultStart: LocalDate? = null,
+    defaultEnd: LocalDate? = null,
     override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     validator: ((String?, String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : AbstractRangeField<String, LocalDate>(name, isRequired, label, DateInputField.DEFAULT_DATE_TRANSFORMER, limit, isReadonly, validator) {

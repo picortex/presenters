@@ -14,13 +14,13 @@ inline fun Fields.location(
     value: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((GeoLocation?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate { property ->
     LocationInputField(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(label ?: property.name, isRequired),
         hint = hint ?: property.name,
-        defaultValue = value,
+        defaultValue = value?.address,
         isReadonly = isReadonly,
         isRequired = isRequired,
         validator = validator
@@ -34,5 +34,5 @@ inline fun Fields.location(
     value: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((GeoLocation?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = location(name.name, label, hint, value, isReadonly, isRequired, validator)

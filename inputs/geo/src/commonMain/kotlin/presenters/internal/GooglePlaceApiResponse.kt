@@ -1,4 +1,4 @@
-package presenters.parsers
+package presenters.internal
 
 import geo.LatLng
 import kotlinx.serialization.Serializable
