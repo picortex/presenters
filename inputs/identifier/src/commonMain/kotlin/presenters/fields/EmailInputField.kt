@@ -1,41 +1,36 @@
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
 package presenters.fields
 
 import identifier.Email
-import presenters.fields.internal.TextBasedValueField
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.reflect.KProperty
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
+import presenters.fields.internal.TextBasedValueFieldImpl
 
-@JsExport
-class EmailInputField(
-    override val name: String,
-    override val label: String = name,
-    override val hint: String = label,
-    override val defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    override val maxLength: Int? = DEFAULT_MAX_LENGTH,
-    override val minLength: Int? = DEFAULT_MIN_LENGTH,
-    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) : TextBasedValueField(name, label, hint, defaultValue, isReadonly, isRequired, maxLength, minLength, validator) {
-
-    @JsName("_ignore_fromPropery")
-    constructor(
-        name: KProperty<*>,
-        label: String = name.name,
-        hint: String = label,
-        defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-        isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-        isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-        maxLength: Int? = DEFAULT_MAX_LENGTH,
-        minLength: Int? = DEFAULT_MIN_LENGTH,
-        validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-    ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, maxLength, minLength, validator)
-
-    override fun validate(value: String?) {
-        super.validate(value)
-        if (value != null) Email(value)
-    }
+@PublishedApi
+internal fun EmailCompoundValidator(validator: ((String?) -> Unit)?): ((String?) -> Unit) = { email: String? ->
+    validator?.invoke(email)
+    Email(email ?: throw IllegalArgumentException("Email values can't be null"))
 }
+
+inline fun EmailInputField(
+    name: String,
+    label: String? = name,
+    hint: String? = label,
+    value: String? = SingleValuedField.DEFAULT_VALUE,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
+    minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
+    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+): TextBasedValuedField<String> = TextBasedValueFieldImpl(
+    name = name,
+    label = InputLabel(label ?: name, isRequired),
+    hint = hint ?: label ?: name,
+    defaultValue = value,
+    transformer = { it },
+    serializer = String.serializer().nullable,
+    isReadonly = isReadonly,
+    isRequired = isRequired,
+    maxLength = maxLength,
+    minLength = minLength,
+    validator = EmailCompoundValidator(validator),
+)

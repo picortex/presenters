@@ -56,10 +56,10 @@ class FormWithManyInputsTest {
             }
         }
         form.fields.apply {
-            name.value = "Andy"
-            email.value = "andy@lamax.com"
-            phone.value = "0752748674"
-            color.value = Color.Red
+            name.set("Andy")
+            email.set("andy@lamax.com")
+            phone.set("0752748674")
+            color.selectItem(Color.Red)
             colors.addSelectedItem(Color.Green)
             colors.addSelectedItem(Color.Blue)
         }

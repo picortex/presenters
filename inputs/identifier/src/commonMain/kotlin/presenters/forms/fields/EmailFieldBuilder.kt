@@ -1,8 +1,8 @@
 package presenters.forms.fields
 
-import identifier.Email
-import identifier.serializers.EmailSerializer
-import presenters.fields.InputLabel
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
+import presenters.fields.EmailCompoundValidator
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.TextBasedValueFieldImpl
 import presenters.forms.Fields
@@ -18,21 +18,7 @@ inline fun Fields.email(
     maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
     minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate { property ->
-    TextBasedValueFieldImpl(
-        name = name ?: property.name,
-        label = InputLabel(name ?: property.name, isRequired),
-        hint = hint ?: property.name,
-        defaultText = value,
-        isReadonly = isReadonly,
-        isRequired = isRequired,
-        serializer = EmailSerializer,
-        maxLength = maxLength,
-        minLength = minLength,
-        transformer = { text -> text?.let { Email(it) } },
-        validator = { },
-    )
-}
+) = textTo(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, String.serializer().nullable, EmailCompoundValidator(validator)) { it }
 
 inline fun Fields.email(
     name: KProperty<*>,

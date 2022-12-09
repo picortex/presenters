@@ -1,13 +1,16 @@
 package presenters.forms.fields
 
 import identifier.Phone
-import identifier.serializers.PhoneSerializer
-import presenters.fields.InputLabel
-import presenters.fields.PHONE_DEFAULT_MAX_LENGTH
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
+import presenters.fields.PhoneCompoundValidator
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.TextBasedValueFieldImpl
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
+
+@PublishedApi
+internal val PHONE_DEFAULT_MAX_LENGTH = 12
 
 inline fun Fields.phone(
     name: String? = null,
@@ -19,21 +22,7 @@ inline fun Fields.phone(
     maxLength: Int? = PHONE_DEFAULT_MAX_LENGTH,
     minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate { property ->
-    TextBasedValueFieldImpl(
-        name = name ?: property.name,
-        label = InputLabel(label ?: property.name, isRequired),
-        hint = hint ?: property.name,
-        defaultText = value,
-        isReadonly = isReadonly,
-        isRequired = isRequired,
-        serializer = PhoneSerializer,
-        maxLength = maxLength,
-        minLength = minLength,
-        transformer = { text -> text?.let { Phone(it) } },
-        validator = validator,
-    )
-}
+) = textTo(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, String.serializer().nullable, PhoneCompoundValidator(validator)) { it }
 
 inline fun Fields.phone(
     name: KProperty<*>,

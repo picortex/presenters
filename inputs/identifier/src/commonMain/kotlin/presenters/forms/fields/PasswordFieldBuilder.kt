@@ -1,5 +1,7 @@
 package presenters.forms.fields
 
+import identifier.Email
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
@@ -17,21 +19,7 @@ inline fun Fields.password(
     maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
     minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate { property ->
-    TextBasedValueFieldImpl(
-        name = name ?: property.name,
-        label = InputLabel(label ?: property.name, isRequired),
-        hint = hint ?: property.name,
-        defaultText = value,
-        isReadonly = isReadonly,
-        isRequired = isRequired,
-        serializer = String.serializer(),
-        maxLength = maxLength,
-        minLength = minLength,
-        transformer = { it },
-        validator = validator,
-    )
-}
+) = textTo(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, String.serializer().nullable, validator) { it }
 
 inline fun Fields.password(
     property: KProperty<*>,
