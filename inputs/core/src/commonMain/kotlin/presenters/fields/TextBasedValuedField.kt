@@ -2,12 +2,15 @@
 
 package presenters.fields
 
+import live.Live
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
 @JsExport
 interface TextBasedValuedField<T> : ValuedField<T> {
     val defaultText: String?
+
+    val text: Live<String?>
 
     /**
      * Transforms this text into an object of type [T]

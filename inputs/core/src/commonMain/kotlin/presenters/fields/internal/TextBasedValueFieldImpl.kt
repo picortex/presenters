@@ -3,6 +3,9 @@
 package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
+import live.Live
+import live.MutableLive
+import live.mutableLiveOf
 import presenters.fields.InputFieldState
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
@@ -22,6 +25,7 @@ open class TextBasedValueFieldImpl<T>(
     open val hint: String = label.text,
     override val transformer: (String?) -> T?,
     override val defaultText: String? = null,
+    override val text: MutableLive<String?> = mutableLiveOf(defaultText),
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
     open val maxLength: Int? = DEFAULT_MAX_LENGTH,
     open val minLength: Int? = DEFAULT_MIN_LENGTH,
@@ -32,6 +36,8 @@ open class TextBasedValueFieldImpl<T>(
         val DEFAULT_MAX_LENGTH: Int? = null
         val DEFAULT_MIN_LENGTH: Int? = null
     }
+
+    override val field: MutableLive<T?> = text.map(transformer)
 
     override val defaultValue: T? get() = transformer(defaultText)
 
@@ -50,7 +56,7 @@ open class TextBasedValueFieldImpl<T>(
             res2 is Invalid -> InputFieldState.Warning(res2.cause.message ?: "Unknown", res2.cause)
             else -> InputFieldState.Empty
         }
-        field.value = v
+        this.text.value = text
     }
 
     @JsName("validateText")

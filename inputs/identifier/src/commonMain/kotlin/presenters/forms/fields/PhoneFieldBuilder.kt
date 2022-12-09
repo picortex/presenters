@@ -1,7 +1,11 @@
 package presenters.forms.fields
 
-import presenters.fields.*
-import presenters.fields.internal.TextBasedValueField
+import identifier.Phone
+import identifier.serializers.PhoneSerializer
+import presenters.fields.InputLabel
+import presenters.fields.PHONE_DEFAULT_MAX_LENGTH
+import presenters.fields.ValuedField
+import presenters.fields.internal.TextBasedValueFieldImpl
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
@@ -12,19 +16,21 @@ inline fun Fields.phone(
     value: String? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = PhoneInputField.DEFAULT_MAX_LENGTH,
-    minLength: Int? = TextBasedValueField.DEFAULT_MIN_LENGTH,
+    maxLength: Int? = PHONE_DEFAULT_MAX_LENGTH,
+    minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate { property ->
-    PhoneInputField(
+    TextBasedValueFieldImpl(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(label ?: property.name, isRequired),
         hint = hint ?: property.name,
-        defaultValue = value,
+        defaultText = value,
         isReadonly = isReadonly,
         isRequired = isRequired,
+        serializer = PhoneSerializer,
         maxLength = maxLength,
         minLength = minLength,
+        transformer = { text -> text?.let { Phone(it) } },
         validator = validator,
     )
 }
@@ -36,7 +42,7 @@ inline fun Fields.phone(
     value: String? = ValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = PhoneInputField.DEFAULT_MAX_LENGTH,
-    minLength: Int? = TextBasedValueField.DEFAULT_MIN_LENGTH,
+    maxLength: Int? = PHONE_DEFAULT_MAX_LENGTH,
+    minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) = phone(name.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)

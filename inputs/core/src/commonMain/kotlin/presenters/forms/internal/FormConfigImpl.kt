@@ -13,4 +13,4 @@ class FormConfigImpl<P>(
     override val logger: Logger,
     override val codec: StringFormat,
     override val exitOnSubmitted: Boolean
-) : FormConfig<P>, ViewModelConfig by ViewModelConfig()
+) : FormConfig<P>, ViewModelConfig by ViewModelConfig(executor, logger, codec)

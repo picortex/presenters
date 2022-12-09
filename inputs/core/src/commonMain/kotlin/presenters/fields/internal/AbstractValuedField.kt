@@ -34,13 +34,10 @@ abstract class AbstractValuedField<T>(
     override val field: MutableLive<T?> = mutableLiveOf(defaultValue, 1)
 
     override fun set(value: T?) {
-        try {
-            validate(value)
-            if (feedback.value != InputFieldState.Empty) {
-                feedback.value = InputFieldState.Empty
-            }
-        } catch (err: Throwable) {
-            feedback.value = InputFieldState.Warning(err.message ?: "", err)
+        val res = validate(value)
+        feedback.value = when (res) {
+            is Invalid -> InputFieldState.Warning(res.cause.message ?: "Unknown", res.cause)
+            Valid -> InputFieldState.Empty
         }
         field.value = value
     }
@@ -52,21 +49,20 @@ abstract class AbstractValuedField<T>(
 
     abstract override fun validate(value: T?): ValidationResult
 
-    override fun validateSettingInvalidsAsWarnings(value: T?): ValidationResult {
+    private fun validateSettingFeedback(value: T?, body: (res: Invalid) -> InputFieldState): ValidationResult {
         val res = validate(value)
         feedback.value = when (res) {
-            is Invalid -> InputFieldState.Warning(res.cause.message ?: "", res.cause)
+            is Invalid -> body(res)
             Valid -> InputFieldState.Empty
         }
         return res
     }
 
-    override fun validateSettingInvalidsAsErrors(value: T?): ValidationResult {
-        val res = validate(value)
-        feedback.value = when (res) {
-            is Invalid -> InputFieldState.Error(res.cause.message ?: "", res.cause)
-            Valid -> InputFieldState.Empty
-        }
-        return res
+    override fun validateSettingInvalidsAsWarnings(value: T?) = validateSettingFeedback(value) {
+        InputFieldState.Warning(it.cause.message ?: "", it.cause)
+    }
+
+    override fun validateSettingInvalidsAsErrors(value: T?) = validateSettingFeedback(value) {
+        InputFieldState.Error(it.cause.message ?: "", it.cause)
     }
 }

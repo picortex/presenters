@@ -1,5 +1,6 @@
 package fields
 
+import expect.expect
 import koncurrent.Later
 import koncurrent.later.await
 import kotlinx.coroutines.test.runTest
@@ -17,6 +18,7 @@ import kotlin.test.Test
 class TextMappedInputFieldTest {
     @Serializable
     data class Category(val uid: String = "unset", val name: String)
+
     class TestFields : Fields() {
         val category by textTo(name = "Category") {
             Category(name = it ?: "Nothing")
@@ -40,7 +42,7 @@ class TextMappedInputFieldTest {
             }
         }
         form.fields.category.type("Test")
-        expect(form.fields.category.field).toHaveGoneThrough(Category(name = "Test"))
+        expect(form.fields.category.field.value).toBe(Category(name = "Test"))
         form.submit().await()
     }
 }

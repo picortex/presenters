@@ -3,6 +3,7 @@ package presenters.forms.fields
 import identifier.Email
 import identifier.serializers.EmailSerializer
 import kotlinx.serialization.builtins.serializer
+import presenters.fields.InputLabel
 import presenters.fields.ValuedField
 import presenters.fields.internal.TextBasedValueFieldImpl
 import presenters.forms.Fields
@@ -19,9 +20,9 @@ inline fun Fields.email(
     minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate { property ->
-    TextBasedValueFieldImpl<Email>(
+    TextBasedValueFieldImpl(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(name ?: property.name, isRequired),
         hint = hint ?: property.name,
         defaultText = value,
         isReadonly = isReadonly,
