@@ -52,7 +52,7 @@ open class Form<out F : Fields, P>(
             val message = simpleTableOf(invalids) {
                 column("Field") { it.item.label.capitalizedWithoutAstrix() }
                 column("Value") { it.item.field.value.toString() }
-                column("Reason") { it.item.feedback.value.asError.message }
+                column("Reason") { it.item.feedback.value.asError?.message ?: "Unknown" }
             }.renderToString()
             logger.error(message)
             val invalidFields = IllegalArgumentException(message)
