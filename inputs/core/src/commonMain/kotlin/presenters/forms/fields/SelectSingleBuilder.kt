@@ -1,6 +1,6 @@
 package presenters.forms.fields
 
-import kollections.Collection
+import kollections.toIList
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.serializer
@@ -23,7 +23,7 @@ inline fun <reified T : Any> Fields.selectSingle(
 ) = getOrCreate { property ->
     SelectSingleInputField(
         name = name ?: property.name,
-        items = items,
+        items = items.toIList(),
         mapper = mapper,
         label = InputLabel(label ?: property.name, isReadonly),
         defaultValue = value,
