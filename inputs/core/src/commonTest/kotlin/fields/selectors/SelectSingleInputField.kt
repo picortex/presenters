@@ -3,6 +3,7 @@ package fields.selectors
 import expect.expect
 import kotlinx.collections.interoperable.toInteroperableList
 import kotlinx.serialization.Serializable
+import presenters.fields.Invalid
 import presenters.fields.Option
 import presenters.fields.SelectSingleInputField
 import kotlin.test.Test
@@ -68,11 +69,7 @@ class SelectSingleInputFieldTest {
         expect(color.field.value).toBe(Color.Green)
 
         color.unselect()
-        try {
-            color.validate()
-            fail()
-        } catch (err: Throwable) {
-            expect(err.message).toBe("Color is required")
-        }
+        val res = color.validate() as Invalid
+        expect(res.cause.message).toBe("Color is required")
     }
 }

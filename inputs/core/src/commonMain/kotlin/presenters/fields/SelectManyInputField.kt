@@ -96,7 +96,7 @@ class SelectManyInputField<T : Any>(
 
     override fun validate(value: List<T>?): ValidationResult {
         if (isRequired && value.isNullOrEmpty()) {
-            return Invalid(IllegalArgumentException("$label is required"))
+            return Invalid(IllegalArgumentException("${label.capitalizedWithoutAstrix()} is required"))
         }
         return Valid
     }

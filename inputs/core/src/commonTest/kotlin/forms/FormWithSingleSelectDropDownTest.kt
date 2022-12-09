@@ -48,7 +48,7 @@ class FormWithSingleSelectDropDownTest {
         val (_, f) = expect(form.ui).toHaveGoneThrough2<Validating, Failure>()
         expect(f.message).toBe("You have 1 invalid input")
         val err = expect(form.fields.color.feedback.value).toBe<InputFieldState.Error>()
-        expect(err.message).toBe("color is required")
+        expect(err.message).toBe("Color is required")
     }
 
     @Test

@@ -38,16 +38,19 @@ open class TextBasedValueFieldImpl<T>(
     override val valueOrNull: T? get() = this.field.value
 
     override fun set(text: String) {
-        try {
-            validate(text = text)
-            validate(transformer(text))
-            if (feedback.value != InputFieldState.Empty) {
-                feedback.value = InputFieldState.Empty
-            }
+        val res1 = validate(text)
+        val v = try {
+            transformer(text)
         } catch (err: Throwable) {
-            feedback.value = InputFieldState.Warning(err.message ?: "", err)
+            null
         }
-        field.value = transformer(text)
+        val res2 = validate(v)
+        feedback.value = when {
+            res1 is Invalid -> InputFieldState.Warning(res1.cause.message ?: "Unknown", res1.cause)
+            res2 is Invalid -> InputFieldState.Warning(res2.cause.message ?: "Unknown", res2.cause)
+            else -> InputFieldState.Empty
+        }
+        field.value = v
     }
 
     @JsName("validateText")
