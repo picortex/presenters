@@ -2,6 +2,7 @@ package forms
 
 import expect.expect
 import expect.toBe
+import kollections.toIList
 import koncurrent.Later
 import kotlinx.serialization.Serializable
 import live.expect
@@ -27,7 +28,7 @@ class FormWithSingleSelectDropDownTest {
         )
 
         val color by selectSingle(
-            items = Color.values().toList(),
+            items = Color.values().toIList(),
             mapper = { Option(it.name) },
             isRequired = true
         )
@@ -59,7 +60,7 @@ class FormWithSingleSelectDropDownTest {
 
         form.fields.apply {
             name.type("John")
-            color.set(Color.Red)
+            color.selectItem(Color.Red)
         }
 
         form.submit()

@@ -2,17 +2,17 @@ package presenters.forms.fields
 
 import presenters.fields.InputLabel
 import presenters.fields.RadioInputField
-import presenters.fields.ValuedField
+import presenters.fields.SingleValuedField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
 inline fun Fields.radio(
     name: String? = null,
     label: String? = name,
-    value: Boolean? = ValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((Boolean?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    value: Boolean? = SingleValuedField.DEFAULT_VALUE,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    noinline validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate { property ->
     RadioInputField(
         name = name ?: property.name,
@@ -27,8 +27,8 @@ inline fun Fields.radio(
 inline fun Fields.radio(
     property: KProperty<*>,
     label: String? = property.name,
-    value: Boolean? = ValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((Boolean?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    value: Boolean? = SingleValuedField.DEFAULT_VALUE,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    noinline validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = radio(property.name, label, value, isReadonly, isRequired, validator)

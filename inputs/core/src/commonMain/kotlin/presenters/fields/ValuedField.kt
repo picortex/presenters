@@ -1,29 +1,20 @@
+@file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE", "WRONG_EXPORTED_DECLARATION")
 
 package presenters.fields
 
+import kotlinx.serialization.KSerializer
 import live.Live
 import kotlin.js.JsExport
-import kotlin.js.JsName
 
-@JsExport
-interface ValuedField<T> : InputField {
-    val field: Live<T?>
+sealed interface ValuedField<out O> : InputField {
     val feedback: Live<InputFieldState>
-
-    val defaultValue: T?
-
+    val output: Live<O>
     val isReadonly: Boolean
     val isRequired: Boolean
-
-    fun validate(value: @UnsafeVariance T? = field.value): ValidationResult
-    fun validateSettingInvalidsAsWarnings(value: @UnsafeVariance T? = field.value): ValidationResult
-    fun validateSettingInvalidsAsErrors(value: @UnsafeVariance T? = field.value): ValidationResult
+    val serializer: KSerializer<@UnsafeVariance O>
 
     fun clear()
-
-    @JsName("setValue")
-    fun set(value: T?)
 
     companion object {
         val DEFAULT_IS_READONLY = false

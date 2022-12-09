@@ -15,20 +15,20 @@ class LocationInputField(
     override val name: String,
     override val label: String = name,
     val hint: String = label,
-    override val defaultValue: GeoLocation? = ValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-    validator: ((GeoLocation?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    override val defaultValue: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
+    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    validator: ((GeoLocation?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : AbstractValuedField<GeoLocation>(name, label, defaultValue, isReadonly, isRequired, validator) {
     @JsName("_ignore_fromPropery")
     constructor(
         name: KProperty<*>,
         label: String = name.name,
         hint: String = label,
-        defaultValue: GeoLocation? = ValuedField.DEFAULT_VALUE,
-        isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-        isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-        validator: ((GeoLocation?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+        defaultValue: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
+        isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+        isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+        validator: ((GeoLocation?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
     ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, validator)
 
     override val serializer: KSerializer<GeoLocation> by lazy { GeoLocation.serializer() }

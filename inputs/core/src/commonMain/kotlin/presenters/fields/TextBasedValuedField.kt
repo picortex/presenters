@@ -2,29 +2,10 @@
 
 package presenters.fields
 
-import live.Live
 import kotlin.js.JsExport
-import kotlin.js.JsName
 
 @JsExport
-interface TextBasedValuedField<T> : ValuedField<T> {
-    val defaultText: String?
-
-    val text: Live<String?>
-
-    /**
-     * Transforms this text into an object of type [T]
-     */
-    val transformer: (String?) -> T?
-
-    /**
-     * Returns the value [T] or if the text is empty
-     */
-    val valueOrNull: T?
-
-    @JsName("setText")
-    fun set(text: String)
-
+interface TextBasedValuedField<out O> : SingleValuedField<String, O> {
     fun type(text: String) {
         for (i in 0..text.lastIndex) set(text.substring(0..i))
     }

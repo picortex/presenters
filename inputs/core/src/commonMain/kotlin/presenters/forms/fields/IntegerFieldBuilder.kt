@@ -9,19 +9,19 @@ inline fun Fields.integer(
     name: String? = null,
     label: String? = name,
     hint: String? = label,
-    value: Int? = ValuedField.DEFAULT_VALUE,
+    value: Int? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
     isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
     max: Int? = NumberBasedValueField.DEFAULT_MAX,
     min: Int? = NumberBasedValueField.DEFAULT_MIN,
     step: Int = IntegerInputField.DEFAULT_STEP,
-    noinline validator: ((Int?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate { property ->
     IntegerInputField(
         name = name ?: property.name,
-        label = InputLabel(label ?: property.name,isReadonly),
+        label = InputLabel(label ?: property.name, isReadonly),
         hint = hint ?: property.name,
-        defaultValue = value,
+        defaultValue = value?.toString(),
         isReadonly = isReadonly,
         isRequired = isRequired,
         max = max,
@@ -35,11 +35,11 @@ inline fun Fields.integer(
     property: KProperty<*>,
     label: String? = property.name,
     hint: String? = label,
-    value: Int? = ValuedField.DEFAULT_VALUE,
+    value: Int? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
     isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
     max: Int? = NumberBasedValueField.DEFAULT_MAX,
     min: Int? = NumberBasedValueField.DEFAULT_MIN,
     step: Int = IntegerInputField.DEFAULT_STEP,
-    noinline validator: ((Int?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = integer(property.name, label, hint, value, isReadonly, isRequired, max, min, step, validator)

@@ -64,7 +64,7 @@ class FormWithManyInputsTest {
             name.type("Andy")
             username.type("andy@lamax.com")
             address.type("0752748674")
-            color.set(Color.Red)
+            color.selectItem(Color.Red)
             colors.addSelectedItem(Color.Green)
             colors.addSelectedItem(Color.Blue)
         }

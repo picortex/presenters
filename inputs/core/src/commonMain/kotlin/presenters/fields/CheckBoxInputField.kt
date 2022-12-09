@@ -5,14 +5,12 @@ package presenters.fields
 
 import presenters.fields.internal.BooleanBasedInputField
 import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.reflect.KProperty
 
 class CheckBoxInputField(
     override val name: String,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
-    override val defaultValue: Boolean? = ValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    validator: ((Boolean?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    override val defaultValue: Boolean? = SingleValuedField.DEFAULT_VALUE,
+    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : BooleanBasedInputField(name, isRequired, label, defaultValue, isReadonly, validator)

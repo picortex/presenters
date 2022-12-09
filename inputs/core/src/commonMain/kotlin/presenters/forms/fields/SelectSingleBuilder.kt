@@ -1,9 +1,13 @@
 package presenters.forms.fields
 
+import kollections.Collection
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.serializer
-import presenters.fields.*
+import presenters.fields.InputLabel
+import presenters.fields.Option
+import presenters.fields.SelectSingleInputField
+import presenters.fields.SingleValuedField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
@@ -13,17 +17,17 @@ inline fun <reified T : Any> Fields.selectSingle(
     name: String? = null,
     serializer: KSerializer<T> = serializer(),
     label: String? = name?.replaceFirstChar { it.uppercase() },
-    value: T? = ValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
+    value: T? = SingleValuedField.DEFAULT_VALUE,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED
 ) = getOrCreate { property ->
     SelectSingleInputField(
         name = name ?: property.name,
         items = items,
         mapper = mapper,
-        label = InputLabel(label ?: property.name,isReadonly),
+        label = InputLabel(label ?: property.name, isReadonly),
         defaultValue = value,
-        serializer = serializer,
+        serializer = serializer.nullable,
         isReadonly = isReadonly,
         isRequired = isRequired,
     )
@@ -35,7 +39,7 @@ inline fun <reified T : Any> Fields.selectSingle(
     noinline mapper: (T) -> Option,
     serializer: KSerializer<T> = serializer(),
     label: String? = name.name.replaceFirstChar { it.uppercase() },
-    value: T? = ValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED
+    value: T? = SingleValuedField.DEFAULT_VALUE,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED
 ) = selectSingle(items, mapper, name.name, serializer, label, value, isReadonly, isRequired)

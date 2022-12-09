@@ -3,7 +3,10 @@
 package presenters.fields
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.nullable
 import krono.LocalDate
+import krono.LocalDateOrNull
+import krono.internal.InstantImpl
 import krono.serializers.LocalDateIsoSerializer
 import presenters.fields.internal.AbstractValuedField
 import kotlin.js.JsExport
@@ -13,62 +16,58 @@ import kotlin.reflect.KProperty
 @JsExport
 class DateInputField(
     override val name: String,
-    override val label: String = name,
-    val hint: String = label,
-    override val defaultValue: LocalDate? = ValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    override val label: InputLabel = InputLabel(name, isRequired),
+    val hint: String = label.text,
+    override val defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
+    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     val pattern: String = DEFAULT_PATTERN,
     val maxDate: LocalDate? = DEFAULT_MAX_DATE,
     val minDate: LocalDate? = DEFAULT_MIN_DATE,
-    validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) : AbstractValuedField<LocalDate>(name, label, defaultValue, isReadonly, isRequired, validator) {
-    @JsName("_ignore_fromPropery")
-    constructor(
-        name: KProperty<*>,
-        label: String = name.name,
-        hint: String = label,
-        defaultValue: LocalDate? = ValuedField.DEFAULT_VALUE,
-        isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-        isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
-        pattern: String = DEFAULT_PATTERN,
-        maxDate: LocalDate? = DEFAULT_MAX_DATE,
-        minDate: LocalDate? = DEFAULT_MIN_DATE,
-        validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-    ) : this(name.name, label, hint, defaultValue, isReadonly, isRequired, pattern, maxDate, minDate, validator)
+    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+) : AbstractValuedField<String, LocalDate>(name, isRequired, label, defaultValue, DEFAULT_DATE_TRANSFORMER, isReadonly, validator) {
+    override val serializer: KSerializer<LocalDate?> by lazy { LocalDateIsoSerializer.nullable }
 
-    override val serializer: KSerializer<LocalDate> by lazy { LocalDateIsoSerializer }
-    var isoString: String?
-        get() = value?.toIsoString()
-        set(iso) = if (iso == null) {
-            value = null
-        } else try {
-            value = LocalDate(iso)
-        } catch (err: Throwable) {
-            value = null
-            feedback.value = InputFieldState.Warning("Invalid date $iso", err)
+    override fun set(value: String?) {
+        val res = validate(value)
+        val date = LocalDateOrNull(value)
+        feedback.value = when {
+            res is Invalid -> InputFieldState.Warning(res.cause.message ?: "Unknown", res.cause)
+            date == null -> InputFieldState.Warning("Invalid date $value", IllegalArgumentException("Invalid date $value"))
+            else -> InputFieldState.Empty
         }
+        input.value = value
+    }
 
-    override fun validate(value: LocalDate?) {
-        val tag = label.replaceFirstChar { it.uppercase() }
-        if (isRequired && value == null) {
-            throw IllegalArgumentException("$tag is required")
+    override fun validate(value: String?): ValidationResult {
+        val date = LocalDateOrNull(value)
+        val tag = label.capitalizedWithoutAstrix()
+        if (isRequired && date == null) {
+            return Invalid(IllegalArgumentException("$tag is required"))
         }
 
         val max = maxDate
-        if (max != null && value != null && value.isAfter(max)) {
-            throw IllegalArgumentException("$tag must be before ${max.format(pattern)}")
+        if (max != null && date != null && date > max) {
+            return Invalid(IllegalArgumentException("$tag must be before ${max.format(pattern)}"))
         }
+
         val min = minDate
-        if (min != null && value != null && value.isBefore(min)) {
-            throw IllegalArgumentException("$tag must be after ${min.format(pattern)}")
+        if (min != null && date != null && date < min) {
+            return Invalid(IllegalArgumentException("$tag must be after ${min.format(pattern)}"))
         }
-        validator?.invoke(value)
+
+        return try {
+            validator?.invoke(value)
+            Valid
+        } catch (err: Throwable) {
+            Invalid(err)
+        }
     }
 
     companion object {
         val DEFAULT_MAX_DATE: Nothing? = null
         val DEFAULT_MIN_DATE: Nothing? = null
         val DEFAULT_PATTERN = "{MMM} {D}, {YYYY}"
+        val DEFAULT_DATE_TRANSFORMER = { iso: String? -> LocalDateOrNull(iso) }
     }
 }

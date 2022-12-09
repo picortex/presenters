@@ -21,7 +21,7 @@ class SwitchValidationTest {
     @Test
     fun should_pass_validation_if_input_is_set() = runTest {
         val switch = SwitchInputField(name = "switch")
-        switch.field.value = true
+        switch.output.value = true
         val res = switch.validate()
         expect(res).toBe<Valid>()
     }

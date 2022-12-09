@@ -85,6 +85,6 @@ class FormWithMultiSelectDropDownTest {
 
         form.submit()
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()
-        expect(form.fields.color.field.value).toBe(iListOf(Color.Red, Color.Blue))
+        expect(form.fields.color.output.value).toBe(iListOf(Color.Red, Color.Blue))
     }
 }

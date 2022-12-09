@@ -24,7 +24,7 @@ class FormTest {
         val fields = PersonFields()
         val name = fields.name
         name.type("Anderson")
-        expect(name.field.value).toBe("Anderson")
+        expect(name.output.value).toBe("Anderson")
     }
 
     @Test
@@ -61,7 +61,7 @@ class FormTest {
             details.type("andy@lamax.me")
         }
         form.submit()
-        expect(form.fields.details.field.value).toBe("andy@lamax.me")
+        expect(form.fields.details.output.value).toBe("andy@lamax.me")
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()
     }
 }

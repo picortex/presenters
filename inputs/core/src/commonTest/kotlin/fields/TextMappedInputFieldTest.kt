@@ -6,7 +6,6 @@ import koncurrent.later.await
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
-import live.expect
 import presenters.forms.Fields
 import presenters.forms.Form
 import presenters.forms.FormActionsBuildingBlock
@@ -42,7 +41,7 @@ class TextMappedInputFieldTest {
             }
         }
         form.fields.category.type("Test")
-        expect(form.fields.category.field.value).toBe(Category(name = "Test"))
+        expect(form.fields.category.output.value).toBe(Category(name = "Test"))
         form.submit().await()
     }
 }

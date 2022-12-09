@@ -16,7 +16,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.presentersInputsCore)
-                api(projects.kronoApi)
+                api(projects.kronoKotlinx)
             }
         }
 

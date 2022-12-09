@@ -4,7 +4,7 @@
 package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
 import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
@@ -12,23 +12,23 @@ import presenters.fields.InputLabel
 import presenters.fields.Invalid
 import presenters.fields.Valid
 import presenters.fields.ValidationResult
-import presenters.fields.ValuedField
+import presenters.fields.SingleValuedField
 import kotlin.js.JsExport
 
 abstract class BooleanBasedInputField(
     override val name: String,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
-    override val defaultValue: Boolean? = ValuedField.DEFAULT_VALUE,
+    override val defaultValue: Boolean? = SingleValuedField.DEFAULT_VALUE,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
-    validator: ((Boolean?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
-) : AbstractValuedField<Boolean>(name, isRequired, label, defaultValue, isReadonly, validator) {
+    validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+) : AbstractValuedField<Boolean, Boolean>(name, isRequired, label, defaultValue, { it }, isReadonly, validator) {
     companion object {
         val DEFAULT_MAX_LENGTH: Int? = null
         val DEFAULT_MIN_LENGTH: Int? = null
     }
 
-    override val serializer: KSerializer<Boolean> by lazy { Boolean.serializer() }
+    override val serializer: KSerializer<Boolean?> by lazy { Boolean.serializer().nullable }
 
     override fun validate(value: Boolean?): ValidationResult {
         if (isRequired && value == null) {

@@ -40,8 +40,8 @@ class FormWithDateRangeTest {
         }
 
         form.fields.apply {
-            name.value = "Anderson"
-            range.startIsoString = "andy@lamax"
+            name.type("Anderson")
+            range.setStart("andy@lamax")
         }
         form.submit()
         val (_, s1) = expect(form.ui).toHaveGoneThrough2<Validating, Failure>()
@@ -49,9 +49,9 @@ class FormWithDateRangeTest {
         form.ui.history.clear()
 
         form.fields.apply {
-            name.value = "Anderson"
-            range.startIsoString = "2021-01-10"
-            range.endIsoString = "2021-01-11"
+            name.type("Anderson")
+            range.setStart("2021-01-10")
+            range.setEnd("2021-01-11")
         }
         form.submit()
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()

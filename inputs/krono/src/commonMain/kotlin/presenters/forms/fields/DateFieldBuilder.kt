@@ -9,19 +9,19 @@ inline fun Fields.date(
     name: String? = null,
     label: String? = name,
     hint: String? = label,
-    value: LocalDate? = ValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    value: LocalDate? = SingleValuedField.DEFAULT_VALUE,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     pattern: String = DateInputField.DEFAULT_PATTERN,
     maxDate: LocalDate? = DateInputField.DEFAULT_MAX_DATE,
     minDate: LocalDate? = DateInputField.DEFAULT_MIN_DATE,
-    noinline validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate { property ->
     DateInputField(
         name = name ?: property.name,
-        label = label ?: property.name,
+        label = InputLabel(label ?: property.name, isRequired),
         hint = hint ?: property.name,
-        defaultValue = value,
+        defaultValue = value?.toIsoString(),
         isReadonly = isReadonly,
         isRequired = isRequired,
         pattern = pattern,
@@ -35,11 +35,11 @@ inline fun Fields.date(
     name: KProperty<*>,
     label: String? = name.name,
     hint: String? = label,
-    value: LocalDate? = ValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    value: LocalDate? = SingleValuedField.DEFAULT_VALUE,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     pattern: String = DateInputField.DEFAULT_PATTERN,
     maxDate: LocalDate? = DateInputField.DEFAULT_MAX_DATE,
     minDate: LocalDate? = DateInputField.DEFAULT_MIN_DATE,
-    noinline validator: ((LocalDate?) -> Unit)? = ValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = date(name.name, label, hint, value, isReadonly, isRequired, pattern, maxDate, minDate, validator)

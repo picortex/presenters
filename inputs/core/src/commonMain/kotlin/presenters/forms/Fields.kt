@@ -8,7 +8,11 @@ import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
 import presenters.fields.InputField
 import presenters.fields.InputFieldState
-import presenters.fields.internal.AbstractValuedField
+import presenters.fields.MultiChoiceValuedField
+import presenters.fields.SingleChoiceValuedField
+import presenters.fields.RangeValuedField
+import presenters.fields.SingleValuedField
+import presenters.fields.ValuedField
 import kotlin.js.JsExport
 
 open class Fields(internal val cache: MutableMap<String, InputField> = mutableMapOf()) {
@@ -17,22 +21,29 @@ open class Fields(internal val cache: MutableMap<String, InputField> = mutableMa
 
     fun encodedValuesToJson(codec: StringFormat) = valuesToBeSubmitted.associate {
         it.name to it
-    }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, input) ->
-        val serializer = input.serializer as KSerializer<Any>
-        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, input.field.value)}"""
+    }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, field) ->
+        val serializer = field.serializer as KSerializer<Any>
+        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.output.value)}"""
     }
 
     internal val allInvalid get() = valuesToBeSubmitted.filter { it.feedback.value is InputFieldState.Error }
 
-    private val valueFields get() = cache.values.filterIsInstance<AbstractValuedField<*>>()
+    private val valueFields get() = cache.values.filterIsInstance<ValuedField<*>>()
 
     internal val valuesToBeSubmitted
         get() = valueFields.filterNot {
-            !it.isRequired && (it.field.value == null || it.field.value.toString().isBlank())
+            !it.isRequired && (it.output.value == null || it.output.value.toString().isBlank())
         }
 
     fun validate() {
-        valuesToBeSubmitted.forEach { it.validateSettingInvalidsAsErrors() }
+        valuesToBeSubmitted.forEach {
+            when (it) {
+                is SingleChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
+                is RangeValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
+                is SingleValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
+                is MultiChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
+            }
+        }
     }
 
     fun clearAll() {

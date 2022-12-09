@@ -1,6 +1,7 @@
 package forms
 
 import expect.expect
+import kollections.toIList
 import koncurrent.Later
 import kotlinx.collections.interoperable.List
 import kotlinx.collections.interoperable.iListOf
@@ -27,7 +28,7 @@ class FormWithManyInputsTest {
     class AllFields : Fields() {
         val name by name(isRequired = true)
         val dob by date(isRequired = true)
-        val color by selectSingle(items = Color.values().toList(), { Option(it.name) }, isRequired = true)
+        val color by selectSingle(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
     }
 
     @Serializable
@@ -52,9 +53,9 @@ class FormWithManyInputsTest {
             }
         }
         form.fields.apply {
-            name.value = "Andy"
-            dob.isoString = "2022-01-01"
-            color.value = Color.Red
+            name.type("Andy")
+            dob.set("2022-01-01")
+            color.selectItem(Color.Red)
         }
         form.submit()
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()

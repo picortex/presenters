@@ -5,23 +5,27 @@ package presenters.fields
 
 import kollections.Collection
 import kollections.List
+import kollections.iEmptyList
 import kollections.toIList
 import kotlinx.serialization.KSerializer
-import presenters.fields.internal.AbstractValuedField
+import live.Live
+import live.mutableLiveOf
 import kotlin.js.JsExport
 
 class SelectManyInputField<T : Any>(
     override val name: String,
-    val items: Collection<T>,
+    override val items: Collection<T>,
     val mapper: (T) -> Option,
     override val serializer: KSerializer<List<T>>,
-    override val isRequired: Boolean = ValuedField.DEFAULT_IS_REQUIRED,
+    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
-    override val defaultValue: List<T>? = ValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = ValuedField.DEFAULT_IS_READONLY
-) : AbstractValuedField<List<T>>(name, isRequired, label, defaultValue, isReadonly, ValuedField.DEFAULT_VALIDATOR) {
+    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY
+) : MultiChoiceValuedField<T> {
     val optionLabels get() = options.map { it.label }.toIList()
     val optionValues get() = options.map { it.value }.toIList()
+
+    override val output = mutableLiveOf<List<T>>(iEmptyList())
+    override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
     val selectedValues = mutableSetOf<String>()
 
@@ -44,7 +48,7 @@ class SelectManyInputField<T : Any>(
             val o = mapper(it)
             selectedValues.contains(o.value)
         }.toIList()
-        field.value = if (selectedItems.isEmpty()) null else selectedItems
+        output.value = if (selectedItems.isEmpty()) iEmptyList() else selectedItems
     }
 
     fun addSelectedItem(item: T) = addSelectedValue(mapper(item).value)
@@ -64,6 +68,7 @@ class SelectManyInputField<T : Any>(
     fun unselectOption(o: Option) = unselectValue(o.value)
 
     fun unselectItem(i: T) = unselectValue(mapper(i).value)
+
     fun unselectValue(v: String) {
         selectedValues.remove(v)
         updateValue()
@@ -75,7 +80,11 @@ class SelectManyInputField<T : Any>(
 
     fun unselectAll() {
         selectedValues.clear()
-        field.value = null
+        output.value = iEmptyList()
+    }
+
+    override fun clear() {
+        unselectAll()
     }
 
     fun toggleSelectedValue(v: String) {
@@ -94,10 +103,27 @@ class SelectManyInputField<T : Any>(
         findOptionWithLabel(l)?.let { toggleSelectedValue(it.value) }
     }
 
-    override fun validate(value: List<T>?): ValidationResult {
-        if (isRequired && value.isNullOrEmpty()) {
+    override fun validate(): ValidationResult {
+        if (isRequired && output.value.isNullOrEmpty()) {
             return Invalid(IllegalArgumentException("${label.capitalizedWithoutAstrix()} is required"))
         }
         return Valid
+    }
+
+    private fun validateSettingFeedback(body: (res: Invalid) -> InputFieldState): ValidationResult {
+        val res = validate()
+        feedback.value = when (res) {
+            is Invalid -> body(res)
+            Valid -> InputFieldState.Empty
+        }
+        return res
+    }
+
+    override fun validateSettingInvalidsAsWarnings() = validateSettingFeedback {
+        InputFieldState.Warning(it.cause.message ?: "", it.cause)
+    }
+
+    override fun validateSettingInvalidsAsErrors() = validateSettingFeedback {
+        InputFieldState.Error(it.cause.message ?: "", it.cause)
     }
 }
