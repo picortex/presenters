@@ -12,6 +12,8 @@ class ActionManagerBuilder<T> {
 
     fun MutableList<SimpleAction>.on(name: String, handler: () -> Unit) = add(SimpleAction(name, handler))
 
+    fun MutableList<SimpleAction>.onCreate(handler: () -> Unit) = on("Create", handler)
+
     fun MutableList<SimpleAction>.onDelete(handler: () -> Unit) = on("Delete", handler)
 
     fun MutableList<SimpleAction>.onView(handler: () -> Unit) = on("View", handler)

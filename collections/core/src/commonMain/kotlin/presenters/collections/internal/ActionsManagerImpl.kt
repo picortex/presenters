@@ -6,7 +6,8 @@ import presenters.collections.ActionsManager
 import presenters.collections.ActionManagerBuilder
 import presenters.collections.SelectionManager
 
-class ActionsManagerImpl<T>(
+@PublishedApi
+internal class ActionsManagerImpl<T>(
     private val selector: SelectionManager<T>,
     private val builder: ActionManagerBuilder<T>
 ) : ActionsManager<T> {

@@ -6,14 +6,8 @@ package presenters.collections
 import functions.Function
 import functions.Function2
 import kollections.List
-import kollections.iListOf
-import kollections.toIList
-import presenters.collections.internal.PageImpl
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import kotlin.jvm.JvmName
-import kotlin.jvm.JvmOverloads
-import kotlin.jvm.JvmStatic
 
 
 /**
@@ -52,21 +46,4 @@ interface Page<out T> {
     fun <R> map(transformer: (item: T) -> R): Page<R>
 
     fun <R> mapIndexed(transformer: (index: Int, item: T) -> R): Page<R>
-
-    companion object {
-        @JvmStatic
-        @JvmOverloads
-        @JvmName("create")
-        operator fun <T> invoke(
-            items: Collection<T> = iListOf(),
-            capacity: Int = items.size,
-            number: Int = 1
-        ): Page<T> = PageImpl(
-            items = items.mapIndexed { index, it ->
-                Row(index, it)
-            }.toIList(),
-            capacity = capacity,
-            number = number
-        )
-    }
 }
