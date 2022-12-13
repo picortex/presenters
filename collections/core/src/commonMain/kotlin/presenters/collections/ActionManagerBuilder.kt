@@ -16,9 +16,13 @@ class ActionManagerBuilder<T> {
 
     fun MutableList<SimpleAction>.onDelete(handler: () -> Unit) = on("Delete", handler)
 
+    fun MutableList<SimpleAction>.onDeleteAll(handler: () -> Unit) = on("Delete All", handler)
+
     fun MutableList<SimpleAction>.onView(handler: () -> Unit) = on("View", handler)
 
     fun MutableList<SimpleAction>.onEdit(handler: () -> Unit) = on("Edit", handler)
+
+    fun MutableList<SimpleAction>.onDuplicate(handler: () -> Unit) = on("Duplicate", handler)
 
     fun primary(builder: MutableList<SimpleAction>.() -> Unit) {
         primaryActionsBuilder = builder
