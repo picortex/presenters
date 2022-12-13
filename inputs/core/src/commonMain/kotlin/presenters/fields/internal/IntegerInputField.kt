@@ -1,16 +1,10 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
-package presenters.fields
+package presenters.fields.internal
 
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
-import presenters.fields.internal.NumberBasedValueField
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.reflect.KProperty
+import presenters.fields.InputLabel
+import presenters.fields.SingleValuedField
 
 class IntegerInputField(
     override val name: String,
@@ -28,7 +22,7 @@ class IntegerInputField(
         val DEFAULT_STEP = 1
     }
 
-    override val serializer: KSerializer<Int?> by lazy { Int.serializer().nullable }
+    override val serializer: KSerializer<Int> by lazy { Int.serializer() }
 
     override fun increment(step: Int?) {
         val value = output.value ?: 0

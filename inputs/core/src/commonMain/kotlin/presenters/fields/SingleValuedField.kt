@@ -7,7 +7,7 @@ import live.Live
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface SingleValuedField<in I, out O> : ValuedField<O?> {
+interface SingleValuedField<in I, out O : Any> : ValuedField<O> {
     val input: Live<@UnsafeVariance I?>
     val transformer: (I?) -> O?
     val defaultValue: @UnsafeVariance I?

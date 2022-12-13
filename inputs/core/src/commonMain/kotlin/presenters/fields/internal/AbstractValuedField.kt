@@ -17,7 +17,7 @@ import presenters.fields.Valid
 import presenters.fields.ValidationResult
 import kotlin.js.JsExport
 
-abstract class AbstractValuedField<in I, out O>(
+abstract class AbstractValuedField<in I, out O : Any>(
     override val name: String,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),

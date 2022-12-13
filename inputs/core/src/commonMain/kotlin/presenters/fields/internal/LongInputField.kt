@@ -1,13 +1,9 @@
-@file:JsExport @file:Suppress("NON_EXPORTABLE_TYPE")
-
-package presenters.fields
-
+package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
-import presenters.fields.internal.NumberBasedValueField
-import kotlin.js.JsExport
+import presenters.fields.InputLabel
+import presenters.fields.SingleValuedField
 
 class LongInputField(
     override val name: String,
@@ -25,7 +21,7 @@ class LongInputField(
         val DEFAULT_STEP = 1L
     }
 
-    override val serializer: KSerializer<Long?> by lazy { Long.serializer().nullable }
+    override val serializer: KSerializer<Long> by lazy { Long.serializer() }
 
     val valueAsDouble get() = output.value?.toDouble()
     val maxAsDouble get() = this.max?.toDouble()

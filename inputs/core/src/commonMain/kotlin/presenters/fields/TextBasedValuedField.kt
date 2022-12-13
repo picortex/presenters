@@ -5,7 +5,7 @@ package presenters.fields
 import kotlin.js.JsExport
 
 @JsExport
-interface TextBasedValuedField<out O> : SingleValuedField<String, O> {
+interface TextBasedValuedField<out O : Any> : SingleValuedField<String, O> {
     fun type(text: String) {
         for (i in 0..text.lastIndex) set(text.substring(0..i))
     }

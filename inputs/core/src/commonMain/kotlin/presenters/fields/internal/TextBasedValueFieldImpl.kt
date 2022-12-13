@@ -1,5 +1,3 @@
-@file:JsExport @file:Suppress("NON_EXPORTABLE_TYPE")
-
 package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
@@ -13,7 +11,7 @@ import presenters.fields.ValidationResult
 import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
 import kotlin.js.JsExport
 
-open class TextBasedValueFieldImpl<out O>(
+class TextBasedValueFieldImpl<O : Any>(
     override val name: String,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
@@ -24,7 +22,7 @@ open class TextBasedValueFieldImpl<out O>(
     open val maxLength: Int? = DEFAULT_MAX_LENGTH,
     open val minLength: Int? = DEFAULT_MIN_LENGTH,
     validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR,
-    override val serializer: KSerializer<@UnsafeVariance O?>,
+    override val serializer: KSerializer<O>,
 ) : AbstractValuedField<String, O>(name, isRequired, label, defaultValue, transformer, isReadonly, validator), TextBasedValuedField<O> {
     companion object {
         val DEFAULT_MAX_LENGTH: Int? = null

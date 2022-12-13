@@ -1,14 +1,10 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
-package presenters.fields
-
+package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
-import presenters.fields.internal.NumberBasedValueField
-import kotlin.js.JsExport
+import presenters.fields.InputFieldWithValue
+import presenters.fields.InputLabel
+import presenters.fields.SingleValuedField
 
 class DoubleInputField(
     override val name: String,
@@ -26,7 +22,7 @@ class DoubleInputField(
         val DEFAULT_STEP = 1.0
     }
 
-    override val serializer: KSerializer<Double?> by lazy { Double.serializer().nullable }
+    override val serializer: KSerializer<Double> by lazy { Double.serializer() }
 
     override fun increment(step: Double?) {
         val value = output.value ?: 0.0

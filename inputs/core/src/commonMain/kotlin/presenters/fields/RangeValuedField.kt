@@ -4,7 +4,7 @@ package presenters.fields
 
 import kotlin.js.JsExport
 
-interface RangeValuedField<in I, out O> : ValuedField<Range<O>?> {
+interface RangeValuedField<in I, out O : Any> : ValuedField<Range<O>> {
     val start: SingleValuedField<I, O>
     val end: SingleValuedField<I, O>
     val transformer: (I?) -> O?

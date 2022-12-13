@@ -1,8 +1,10 @@
 package presenters.forms.fields
 
 import presenters.fields.*
+import presenters.fields.internal.DoubleInputField
 import presenters.fields.internal.NumberBasedValueField
 import presenters.forms.Fields
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun Fields.number(
@@ -16,7 +18,7 @@ inline fun Fields.number(
     min: Double? = NumberBasedValueField.DEFAULT_MIN,
     step: Double = DoubleInputField.DEFAULT_STEP,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate { property ->
+): ReadOnlyProperty<Fields, NumberBasedValueField<Double>> = getOrCreate { property ->
     DoubleInputField(
         name = name ?: property.name,
         label = InputLabel(label ?: property.name, isReadonly),

@@ -1,14 +1,11 @@
 package fields.switch
 
 import expect.expect
-import expect.expectFailure
 import expect.toBe
 import kotlinx.coroutines.test.runTest
 import presenters.fields.Invalid
-import presenters.fields.SwitchInputField
 import presenters.fields.Valid
 import kotlin.test.Test
-import kotlin.test.fail
 
 class SwitchValidationTest {
     @Test
