@@ -26,7 +26,7 @@ class DateInputField(
     val minDate: LocalDate? = DEFAULT_MIN_DATE,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : AbstractValuedField<String, LocalDate>(name, isRequired, label, defaultValue, DEFAULT_DATE_TRANSFORMER, isReadonly, validator) {
-    override val serializer: KSerializer<LocalDate?> by lazy { LocalDateIsoSerializer.nullable }
+    override val serializer: KSerializer<LocalDate> by lazy { LocalDateIsoSerializer }
 
     override fun set(value: String?) {
         val res = validate(value)

@@ -73,7 +73,7 @@ class DateRangeInputField(
         update(s, e)
     }
 
-    override val serializer: KSerializer<Range<LocalDate>?> by lazy { Range.serializer(LocalDateIsoSerializer).nullable }
+    override val serializer: KSerializer<Range<LocalDate>> by lazy { Range.serializer(LocalDateIsoSerializer) }
 
     override val output = mutableLiveOf<Range<LocalDate>?>(null)
 }

@@ -27,7 +27,7 @@ inline fun <reified T : Any> Fields.selectSingle(
         mapper = mapper,
         label = InputLabel(label ?: property.name, isReadonly),
         defaultValue = value,
-        serializer = serializer.nullable,
+        serializer = serializer,
         isReadonly = isReadonly,
         isRequired = isRequired,
     )

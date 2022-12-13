@@ -20,7 +20,7 @@ class LocationInputField(
     private val googleParser: GooglePlacesApiParser = GooglePlacesApiParser(),
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : AbstractValuedField<String?, GeoLocation>(name, isRequired, label, defaultValue, { googleParser.parseOrNull(it) }, isReadonly, validator) {
-    override val serializer: KSerializer<GeoLocation?> by lazy { GeoLocation.serializer().nullable }
+    override val serializer: KSerializer<GeoLocation> by lazy { GeoLocation.serializer() }
 
     override fun validate(value: String?): ValidationResult {
         val tag = label.capitalizedWithoutAstrix()
