@@ -14,7 +14,7 @@ class SelectSingleInputField<T : Any>(
     override val name: String,
     override val items: Collection<T>,
     val mapper: (T) -> Option,
-    override val serializer: KSerializer<T?>,
+    override val serializer: KSerializer<T>,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
     val defaultValue: T? = SingleValuedField.DEFAULT_VALUE,

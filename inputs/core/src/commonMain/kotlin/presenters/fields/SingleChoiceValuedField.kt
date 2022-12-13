@@ -5,4 +5,4 @@ package presenters.fields
 
 import kotlin.js.JsExport
 
-interface SingleChoiceValuedField<out O> : ChoiceField<O>, ValuedField<O?>
+interface SingleChoiceValuedField<out O : Any> : ChoiceField<O>, ValuedField<O>

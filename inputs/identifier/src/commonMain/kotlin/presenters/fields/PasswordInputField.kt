@@ -2,7 +2,7 @@ package presenters.fields
 
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
-import presenters.fields.internal.TextBasedValueFieldImpl
+import presenters.fields.internal.TextBasedValuedFieldImpl
 
 inline fun PasswordInputField(
     name: String,
@@ -11,16 +11,16 @@ inline fun PasswordInputField(
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = TextBasedValueFieldImpl.DEFAULT_MAX_LENGTH,
-    minLength: Int? = TextBasedValueFieldImpl.DEFAULT_MIN_LENGTH,
+    maxLength: Int? = TextBasedValuedFieldImpl.DEFAULT_MAX_LENGTH,
+    minLength: Int? = TextBasedValuedFieldImpl.DEFAULT_MIN_LENGTH,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): TextBasedValuedField<String> = TextBasedValueFieldImpl(
+): TextBasedValuedField<String> = TextBasedValuedFieldImpl(
     name = name,
     label = InputLabel(label ?: name, isRequired),
     hint = hint ?: label ?: name,
     defaultValue = value,
     transformer = { it },
-    serializer = String.serializer().nullable,
+    serializer = String.serializer(),
     isReadonly = isReadonly,
     isRequired = isRequired,
     maxLength = maxLength,

@@ -9,13 +9,12 @@ import presenters.fields.TextBasedValuedField
 import presenters.fields.Valid
 import presenters.fields.ValidationResult
 import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
-import kotlin.js.JsExport
 
-class TextBasedValueFieldImpl<O : Any>(
+class TextBasedValuedFieldImpl<O : Any>(
     override val name: String,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
-    open val hint: String = label.text,
+    open val hint: String = label.capitalizedWithAstrix(),
     override val transformer: (String?) -> O?,
     override val defaultValue: String? = null,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
