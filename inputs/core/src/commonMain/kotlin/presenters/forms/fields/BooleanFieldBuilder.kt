@@ -1,6 +1,6 @@
 package presenters.forms.fields
 
-import presenters.fields.BooleanBasedValuedField
+import presenters.fields.BooleanInputField
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.BooleanBasedValuedFieldImpl
@@ -15,7 +15,7 @@ inline fun Fields.boolean(
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     noinline validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): ReadOnlyProperty<Fields, BooleanBasedValuedField> = getOrCreate { property ->
+): ReadOnlyProperty<Fields, BooleanInputField> = getOrCreate { property ->
     BooleanBasedValuedFieldImpl(
         name = name ?: property.name,
         label = InputLabel(label ?: property.name, isReadonly),
