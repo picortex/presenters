@@ -14,7 +14,7 @@ class TextBasedValuedFieldImpl<O : Any>(
     override val name: String,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
-    open val hint: String = label.capitalizedWithAstrix(),
+    override val hint: String = label.capitalizedWithAstrix(),
     override val transformer: (String?) -> O?,
     override val defaultValue: String? = null,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
