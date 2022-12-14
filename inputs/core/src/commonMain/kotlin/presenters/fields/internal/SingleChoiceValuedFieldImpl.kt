@@ -18,7 +18,7 @@ import presenters.fields.ValidationResult
 internal class SingleChoiceValuedFieldImpl<T : Any>(
     override val name: String,
     override val items: Collection<T>,
-    val mapper: (T) -> Option,
+    override val mapper: (T) -> Option,
     override val serializer: KSerializer<T>,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
@@ -37,7 +37,7 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
         listOf(Option("Select ${label.capitalizedWithoutAstrix()}", ""))
     } else {
         emptyList()
-    } + items.map {
+    } + items.toList().map {
         val o = mapper(it)
         if (it == output.value) o.copy(selected = true) else o
     }).toIList()

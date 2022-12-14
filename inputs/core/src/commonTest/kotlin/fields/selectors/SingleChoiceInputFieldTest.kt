@@ -83,5 +83,11 @@ class SingleChoiceInputFieldTest {
 
         expect(color.options(withSelect = false)).toBeOfSize(3)
         expect(color.options(withSelect = true)).toBeOfSize(4)
+
+        val options = color.options(withSelect = true)
+        println(options)
+        expect(options[1].value).toBe("Red")
+        expect(options[2].value).toBe("Green")
+        expect(options[3].value).toBe("Blue")
     }
 }

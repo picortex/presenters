@@ -7,6 +7,8 @@ import kollections.List
 import kotlin.js.JsExport
 
 interface SingleChoiceValuedField<O : Any> : ChoiceField<O>, ValuedField<O> {
+    val mapper: (O) -> Option
+
     val selectedItem: O?
 
     val selectedOption: Option?
