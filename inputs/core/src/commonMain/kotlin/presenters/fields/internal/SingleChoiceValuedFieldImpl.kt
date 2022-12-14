@@ -1,16 +1,21 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
-package presenters.fields
+package presenters.fields.internal
 
 import kollections.Collection
 import kollections.List
 import kollections.toIList
 import kotlinx.serialization.KSerializer
 import live.mutableLiveOf
-import kotlin.js.JsExport
+import presenters.fields.InputFieldState
+import presenters.fields.InputLabel
+import presenters.fields.Invalid
+import presenters.fields.Option
+import presenters.fields.SingleChoiceValuedField
+import presenters.fields.SingleValuedField
+import presenters.fields.Valid
+import presenters.fields.ValidationResult
 
-class SelectSingleInputField<T : Any>(
+@PublishedApi
+internal class SingleChoiceValuedFieldImpl<T : Any>(
     override val name: String,
     override val items: Collection<T>,
     val mapper: (T) -> Option,
@@ -24,37 +29,33 @@ class SelectSingleInputField<T : Any>(
     override val output = mutableLiveOf(defaultValue)
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
-    val optionLabels get() = options.map { it.label }.toIList()
-    val optionValues get() = options.map { it.value }.toIList()
+    override val selectedItem: T? get() = output.value
 
-    val selectedValue: String? get() = output.value?.let(mapper)?.value
+    override val selectedOption: Option? get() = selectedItem?.let(mapper)?.copy(selected = true)
 
-    val selectedItem: T? get() = output.value
+    override fun options(withSelect: Boolean): List<Option> = (if (withSelect) {
+        listOf(Option("Select ${label.capitalizedWithoutAstrix()}", ""))
+    } else {
+        emptyList()
+    } + items.map {
+        val o = mapper(it)
+        if (it == output.value) o.copy(selected = true) else o
+    }).toIList()
 
-    val selectedOption: Option? get() = selectedItem?.let(mapper)?.copy(selected = true)
+    override fun select(option: Option) = selectValue(option.value)
 
-    val options: List<Option>
-        get() = items.map {
-            val o = mapper(it)
-            if (it == output.value) o.copy(selected = true) else o
-        }.toIList()
-
-    val optionsWithSelectLabel get() = (listOf(Option("Select ${label.capitalizedWithoutAstrix()}", "")) + options).toIList()
-
-    fun selectOption(o: Option) = selectValue(o.value)
-
-    fun selectValue(v: String) {
-        output.value = items.find { mapper(it).value == v }
+    override fun selectValue(optionValue: String) {
+        output.value = items.find { mapper(it).value == optionValue }
     }
 
-    fun selectLabel(l: String) {
-        val opt = items.map(mapper).find { it.label == l }
-        if (opt != null) selectOption(opt)
+    override fun selectLabel(optionLabel: String) {
+        val opt = items.map(mapper).find { it.label == optionLabel }
+        if (opt != null) select(opt)
     }
 
-    fun selectItem(item: T) = selectOption(mapper(item))
+    override fun selectItem(item: T) = select(mapper(item))
 
-    fun unselect() {
+    override fun unselect() {
         output.value = null
     }
 

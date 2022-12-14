@@ -2,13 +2,14 @@ package presenters.forms.fields
 
 import kollections.toIList
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.serializer
 import presenters.fields.InputLabel
 import presenters.fields.Option
-import presenters.fields.SelectSingleInputField
+import presenters.fields.SingleChoiceValuedField
+import presenters.fields.internal.SingleChoiceValuedFieldImpl
 import presenters.fields.SingleValuedField
 import presenters.forms.Fields
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun <reified T : Any> Fields.selectSingle(
@@ -20,8 +21,8 @@ inline fun <reified T : Any> Fields.selectSingle(
     value: T? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED
-) = getOrCreate { property ->
-    SelectSingleInputField(
+): ReadOnlyProperty<Fields, SingleChoiceValuedField<T>> = getOrCreate { property ->
+    SingleChoiceValuedFieldImpl(
         name = name ?: property.name,
         items = items.toIList(),
         mapper = mapper,

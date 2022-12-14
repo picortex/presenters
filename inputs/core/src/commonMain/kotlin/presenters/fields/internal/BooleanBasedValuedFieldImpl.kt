@@ -38,4 +38,11 @@ class BooleanBasedValuedFieldImpl(
             Invalid(err)
         }
     }
+
+    override fun toggle() = set(
+        when (val value = input.value) {
+            null -> true
+            else -> !value
+        }
+    )
 }

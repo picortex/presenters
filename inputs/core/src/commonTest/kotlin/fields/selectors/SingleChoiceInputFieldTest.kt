@@ -2,16 +2,13 @@ package fields.selectors
 
 import expect.expect
 import kollections.toIList
-import kotlinx.collections.interoperable.toInteroperableList
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.nullable
 import presenters.fields.Invalid
 import presenters.fields.Option
-import presenters.fields.SelectSingleInputField
+import presenters.fields.SingleChoiceValuedField
 import kotlin.test.Test
-import kotlin.test.fail
 
-class SelectSingleInputFieldTest {
+class SingleChoiceInputFieldTest {
     @Serializable
     enum class Color {
         Red, Green, Blue
@@ -19,11 +16,11 @@ class SelectSingleInputFieldTest {
 
     @Test
     fun should_be_able_to_select_a_single_item() {
-        val color = SelectSingleInputField(
+        val color = SingleChoiceValuedField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
-            serializer = Color.serializer().nullable
+            serializer = Color.serializer()
         )
         color.selectValue("Red")
         expect(color.output.value).toBe(Color.Red)
@@ -31,11 +28,11 @@ class SelectSingleInputFieldTest {
 
     @Test
     fun should_be_able_to_select_an_item_by_providing_an_item_itself() {
-        val color = SelectSingleInputField(
+        val color = SingleChoiceValuedField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
-            serializer = Color.serializer().nullable
+            serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
         expect(color.output.value).toBe(Color.Green)
@@ -43,11 +40,11 @@ class SelectSingleInputFieldTest {
 
     @Test
     fun should_be_able_to_unselect_an_item() {
-        val color = SelectSingleInputField(
+        val color = SingleChoiceValuedField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
-            serializer = Color.serializer().nullable
+            serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
         expect(color.output.value).toBe(Color.Green)
@@ -59,11 +56,11 @@ class SelectSingleInputFieldTest {
 
     @Test
     fun should_provide_error_feedback_if_the_field_is_unrequired() {
-        val color = SelectSingleInputField(
+        val color = SingleChoiceValuedField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
-            serializer = Color.serializer().nullable,
+            serializer = Color.serializer(),
             isRequired = true
         )
 
@@ -73,5 +70,18 @@ class SelectSingleInputFieldTest {
         color.unselect()
         val res = color.validate() as Invalid
         expect(res.cause.message).toBe("Color is required")
+    }
+
+    @Test
+    fun should_have_no_null_options() {
+        val color = SingleChoiceValuedField(
+            name = "color",
+            items = Color.values().toIList(),
+            mapper = { Option(label = it.name) },
+            serializer = Color.serializer()
+        )
+
+        expect(color.options(withSelect = false)).toBeOfSize(3)
+        expect(color.options(withSelect = true)).toBeOfSize(4)
     }
 }

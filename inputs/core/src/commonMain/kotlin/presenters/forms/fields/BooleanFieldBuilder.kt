@@ -27,10 +27,10 @@ inline fun Fields.boolean(
 }
 
 inline fun Fields.boolean(
-    property: KProperty<*>,
-    label: String? = property.name,
+    name: KProperty<*>,
+    label: String? = name.name,
     value: Boolean? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     noinline validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = checkBox(property.name, label, value, isReadonly, isRequired, validator)
+) = boolean(name.name, label, value, isReadonly, isRequired, validator)
