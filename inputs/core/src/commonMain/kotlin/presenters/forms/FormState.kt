@@ -2,9 +2,8 @@
 
 package presenters.forms
 
-import presenters.states.Failure
-import kotlin.js.JsExport
 import presenters.states.Failure.Companion.DEFAULT_MESSAGE as DEFAULT_FAILURE_MESSAGE
+import kotlin.js.JsExport
 
 sealed class FormState {
     object Fillable : FormState()
@@ -15,6 +14,7 @@ sealed class FormState {
     }
 
     object Submitted : FormState()
+
     data class Failure(
         val cause: Throwable? = null,
         val message: String? = cause?.message ?: DEFAULT_FAILURE_MESSAGE

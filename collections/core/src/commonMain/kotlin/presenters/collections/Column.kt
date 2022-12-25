@@ -29,5 +29,4 @@ sealed class Column<in D> {
 
     val isAction get() = this is Action
     val asAction get() = this as Action
-
 }
