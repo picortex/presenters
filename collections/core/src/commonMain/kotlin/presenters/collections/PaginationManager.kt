@@ -17,6 +17,7 @@ interface PaginationManager<out T> {
     var capacity: Int
     fun readPageFromMemory(page: Int, cap: Int): Page<T>
     fun readPageFromMemoryOrNull(page: Int, cap: Int): Page<T>?
+    fun readPageFromMemoryOrEmpty(page: Int, cap: Int): Page<T>
     fun writePageToMemory(page: Page<@UnsafeVariance T>): Page<T>?
     fun wipeMemory()
     fun clearPages()

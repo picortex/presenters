@@ -22,7 +22,7 @@ class SelectionManagerImpl<T>(
             )
 
             is SelectorState.Item -> Selected.Item(
-                paginator.readPageFromMemory(s.page, paginator.capacity).items.first { row ->
+                paginator.readPageFromMemoryOrEmpty(s.page, paginator.capacity).items.first { row ->
                     row.number == s.number
                 }.item
             )
@@ -35,12 +35,12 @@ class SelectionManagerImpl<T>(
         }
 
     private fun List<SelectorState.Item>.loadedFromPaginatorMemory() = map { item ->
-        paginator.readPageFromMemory(item.page, paginator.capacity).items.first { row -> row.number == item.number }.item
+        paginator.readPageFromMemoryOrEmpty(item.page, paginator.capacity).items.first { row -> row.number == item.number }.item
     }.toIList()
 
     override fun selectAllRowsInPage(page: Int?) {
         val p = page ?: return
-        val rows = paginator.readPageFromMemory(p, paginator.capacity)
+        val rows = paginator.readPageFromMemoryOrEmpty(p, paginator.capacity)
         state.value = SelectorState.Items(
             items = rows.items.map { SelectorState.Item(it.number, p) }.toIList()
         )
@@ -84,7 +84,7 @@ class SelectionManagerImpl<T>(
             is SelectorState.NoSelected -> false
             is SelectorState.Item -> false
             is SelectorState.Items -> {
-                paginator.readPageFromMemory(p, paginator.capacity).items.map { row ->
+                paginator.readPageFromMemoryOrEmpty(p, paginator.capacity).items.map { row ->
                     s.items.find { it.page == p && it.number == row.number } != null
                 }.all { it }
             }

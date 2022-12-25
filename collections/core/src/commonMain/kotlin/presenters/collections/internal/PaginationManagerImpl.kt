@@ -44,6 +44,8 @@ internal class PaginationManagerImpl<out T>(
 
     override fun readPageFromMemoryOrNull(page: Int, cap: Int): Page<T>? = ram.readOrNull(page, capacity)
 
+    override fun readPageFromMemoryOrEmpty(page: Int, cap: Int): Page<T> = ram.readOrNull(page, capacity) ?: Page(capacity = capacity, number = page)
+
     override fun writePageToMemory(page: Page<@UnsafeVariance T>): Page<T> = ram.write(page)
 
     override fun wipeMemory() = ram.wipe()

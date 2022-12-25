@@ -22,7 +22,7 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
     override val serializer: KSerializer<T>,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
-    val defaultValue: T? = SingleValuedField.DEFAULT_VALUE,
+    val defaultValue: T? = items.find { mapper(it).selected },
     override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY
 ) : SingleChoiceValuedField<T> {
 
@@ -74,7 +74,7 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
         val res = validate()
         feedback.value = when (res) {
             is Invalid -> body(res)
-            Valid -> InputFieldState.Empty
+            is Valid -> InputFieldState.Empty
         }
         return res
     }
