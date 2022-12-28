@@ -3,8 +3,8 @@
 
 package presenters.forms
 
-import actions.GenericAction
-import actions.simpleAction
+import actions.Action1I1R
+import actions.action0I1R
 import kase.Failure
 import kase.FormState
 import kase.Pending
@@ -32,14 +32,14 @@ open class Form<out F : Fields, P, R>(
 
     private val builtActions = FormActionsBuilder<P, R>().apply { initializer() }
 
-    val cancelAction = simpleAction("Cancel") {
+    val cancelAction = action0I1R("Cancel") {
         val handler = builtActions.actions.firstOrNull {
             it.name.contentEquals("Cancel", ignoreCase = true)
         }?.handler ?: { logger.warn("Cancel action of ${this::class.simpleName} was never setup") }
         handler()
     }
 
-    private val submitAction: GenericAction<P, R> = builtActions.submitAction
+    private val submitAction: Action1I1R<P, R> = builtActions.submitAction
 
     private val codec get() = config.codec
 

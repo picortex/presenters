@@ -3,8 +3,8 @@
 
 package presenters.collections
 
-import functions.Function
-import functions.Function2
+import functions.Function1IO
+import functions.Function2IO
 import kollections.List
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -38,10 +38,10 @@ interface Page<out T> {
     val isEmpty: Boolean
 
     @JsName("_ignore_map")
-    fun <R> map(transformer: Function<T, R>): Page<R>
+    fun <R> map(transformer: Function1IO<T, R>): Page<R>
 
     @JsName("_ignore_mapIndexed")
-    fun <R> mapIndexed(transformer: Function2<Int, T, R>): Page<R>
+    fun <R> mapIndexed(transformer: Function2IO<Int, T, R>): Page<R>
 
     fun <R> map(transformer: (item: T) -> R): Page<R>
 
