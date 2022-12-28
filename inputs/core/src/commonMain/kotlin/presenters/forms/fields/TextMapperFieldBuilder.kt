@@ -11,8 +11,8 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun <reified T : Any> Fields.textTo(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
@@ -22,11 +22,11 @@ inline fun <reified T : Any> Fields.textTo(
     serializer: KSerializer<T> = serializer(),
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR,
     noinline transformer: (String?) -> T?
-): ReadOnlyProperty<Fields, TextBasedValuedField<T>> = getOrCreate { property ->
+): TextBasedValuedField<T> = getOrCreate(name) {
     TextBasedValuedFieldImpl(
-        name = name ?: property.name,
-        label = InputLabel(label ?: name ?: property.name, isRequired),
-        hint = hint ?: property.name,
+        name = name,
+        label = InputLabel(label, isRequired),
+        hint = hint ?: name,
         defaultValue = value,
         transformer = transformer,
         serializer = serializer,
@@ -40,7 +40,7 @@ inline fun <reified T : Any> Fields.textTo(
 
 inline fun <reified T : Any> Fields.textTo(
     name: KProperty<*>,
-    label: String? = name.name,
+    label: String = name.name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

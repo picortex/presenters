@@ -1,10 +1,11 @@
 package forms
 
 import expect.expect
+import kase.Success
 import kollections.toIList
 import koncurrent.Later
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.iListOf
+import kase.Validating
+import kase.Submitting
 import kotlinx.serialization.Serializable
 import krono.LocalDate
 import live.expect
@@ -12,7 +13,6 @@ import live.toHaveGoneThrough3
 import presenters.fields.Option
 import presenters.forms.Fields
 import presenters.forms.Form
-import presenters.forms.FormState.*
 import presenters.forms.fields.*
 import presenters.forms.toFormConfig
 import viewmodel.ViewModelConfig
@@ -41,7 +41,7 @@ class FormWithManyInputsTest {
     @Test
     fun should_be_able_to_submit_fields() {
         var params: AllParams? = null
-        val form = Form<AllFields, AllParams>(
+        val form = Form<AllFields, AllParams, Any?>(
             heading = "The god form",
             details = "A form to test things out",
             fields = AllFields(),
@@ -58,7 +58,7 @@ class FormWithManyInputsTest {
             color.selectItem(Color.Red)
         }
         form.submit()
-        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()
+        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
         expect(params?.name).toBe("Andy")
         expect(params?.dob).toBe(LocalDate(2022, 1, 1))
         expect(params?.color).toBe(Color.Red)

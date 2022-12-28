@@ -16,19 +16,19 @@ import kotlin.reflect.KProperty
 inline fun <reified T : Any> Fields.selectMany(
     items: Collection<T>,
     noinline mapper: (T) -> Option,
-    name: String? = null,
+    name: String,
     serializer: KSerializer<List<T>> = ListSerializer(serializer()),
-    label: String? = name?.replaceFirstChar { it.uppercase() },
+    label: String = name.replaceFirstChar { it.uppercase() },
     value: Collection<T>? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED
-) = getOrCreate { property ->
+) = getOrCreate(name) {
     SelectManyInputField(
-        name = name ?: property.name,
+        name = name,
         items = items,
         mapper = mapper,
         serializer = serializer,
-        label = InputLabel(label ?: property.name, isReadonly),
+        label = InputLabel(label, isReadonly),
         isReadonly = isReadonly,
         isRequired = isRequired,
     )
@@ -39,7 +39,7 @@ inline fun <reified T : Any> Fields.selectMany(
     items: Collection<T>,
     noinline mapper: (T) -> Option,
     serializer: KSerializer<List<T>> = ListSerializer(serializer()),
-    label: String? = name.name.replaceFirstChar { it.uppercase() },
+    label: String = name.name.replaceFirstChar { it.uppercase() },
     value: Collection<T>? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED

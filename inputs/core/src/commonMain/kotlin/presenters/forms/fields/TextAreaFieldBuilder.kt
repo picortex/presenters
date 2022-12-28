@@ -1,6 +1,5 @@
 package presenters.forms.fields
 
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.TextBasedValuedFieldImpl
@@ -8,8 +7,8 @@ import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
 inline fun Fields.textArea(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
@@ -21,7 +20,7 @@ inline fun Fields.textArea(
 
 inline fun Fields.textArea(
     name: KProperty<*>,
-    label: String? = name.name,
+    label: String = name.name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

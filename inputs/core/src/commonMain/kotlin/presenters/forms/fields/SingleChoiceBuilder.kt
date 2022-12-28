@@ -15,18 +15,18 @@ import kotlin.reflect.KProperty
 inline fun <reified T : Any> Fields.selectSingle(
     items: Collection<T>,
     noinline mapper: (T) -> Option,
-    name: String? = null,
+    name: String,
     serializer: KSerializer<T> = serializer(),
-    label: String? = name?.replaceFirstChar { it.uppercase() },
+    label: String = name.replaceFirstChar { it.uppercase() },
     value: T? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED
-): ReadOnlyProperty<Fields, SingleChoiceValuedField<T>> = getOrCreate { property ->
+): SingleChoiceValuedField<T> = getOrCreate(name) {
     SingleChoiceValuedFieldImpl(
-        name = name ?: property.name,
+        name = name,
         items = items.toIList(),
         mapper = mapper,
-        label = InputLabel(label ?: property.name, isReadonly),
+        label = InputLabel(label, isReadonly),
         defaultValue = value,
         serializer = serializer,
         isReadonly = isReadonly,
@@ -39,7 +39,7 @@ inline fun <reified T : Any> Fields.selectSingle(
     items: Collection<T>,
     noinline mapper: (T) -> Option,
     serializer: KSerializer<T> = serializer(),
-    label: String? = name.name.replaceFirstChar { it.uppercase() },
+    label: String = name.name.replaceFirstChar { it.uppercase() },
     value: T? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED

@@ -5,8 +5,8 @@ import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
 inline fun Fields.switch(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     value: Boolean? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
@@ -15,7 +15,7 @@ inline fun Fields.switch(
 
 inline fun Fields.switch(
     name: KProperty<*>,
-    label: String? = name.name,
+    label: String = name.name,
     value: Boolean? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,

@@ -2,8 +2,10 @@ package presenters.forms.fields
 
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.SingleValuedField
+import presenters.fields.TextBasedValuedField
 import presenters.fields.internal.TextBasedValuedFieldImpl
 import presenters.forms.Fields
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 @PublishedApi
@@ -13,8 +15,8 @@ internal const val DEFAULT_MIN_LENGTH = 2
 internal const val DEFAULT_IS_REQUIRED: Boolean = true
 
 inline fun Fields.name(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
@@ -26,7 +28,7 @@ inline fun Fields.name(
 
 inline fun Fields.name(
     name: KProperty<*>,
-    label: String? = name.name,
+    label: String = name.name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

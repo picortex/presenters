@@ -11,8 +11,8 @@ import kotlin.reflect.KProperty
 internal val PHONE_DEFAULT_MAX_LENGTH = 12
 
 inline fun Fields.phone(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
@@ -24,7 +24,7 @@ inline fun Fields.phone(
 
 inline fun Fields.phone(
     name: KProperty<*>,
-    label: String? = name.name,
+    label: String = name.name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

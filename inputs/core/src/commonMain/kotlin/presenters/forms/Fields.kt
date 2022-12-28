@@ -15,7 +15,7 @@ import presenters.fields.SingleValuedField
 import presenters.fields.ValuedField
 import kotlin.js.JsExport
 
-open class Fields(internal val cache: MutableMap<String, InputField> = mutableMapOf()) {
+open class Fields(@PublishedApi internal val cache: MutableMap<String, InputField> = mutableMapOf()) {
 
     internal val all get() = cache.values
 

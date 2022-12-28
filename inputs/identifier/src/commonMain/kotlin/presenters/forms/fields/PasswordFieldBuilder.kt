@@ -7,8 +7,8 @@ import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
 inline fun Fields.password(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
@@ -20,7 +20,7 @@ inline fun Fields.password(
 
 inline fun Fields.password(
     property: KProperty<*>,
-    label: String? = property.name,
+    label: String = property.name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

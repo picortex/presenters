@@ -7,19 +7,19 @@ import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
 import kotlin.reflect.KProperty
 
-inline fun Fields.location(
-    name: String? = null,
-    label: String? = name,
+fun Fields.location(
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate { property ->
+    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+) = getOrCreate(name) {
     LocationInputField(
-        name = name ?: property.name,
-        label = InputLabel(label ?: property.name, isRequired),
-        hint = hint ?: property.name,
+        name = name,
+        label = InputLabel(label, isRequired),
+        hint = hint ?: label,
         defaultValue = value?.address,
         isReadonly = isReadonly,
         isRequired = isRequired,
@@ -29,7 +29,7 @@ inline fun Fields.location(
 
 inline fun Fields.location(
     name: KProperty<*>,
-    label: String? = name.name,
+    label: String = name.name,
     hint: String? = label,
     value: GeoLocation? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

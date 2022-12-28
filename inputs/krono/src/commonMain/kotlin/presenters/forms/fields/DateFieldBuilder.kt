@@ -6,8 +6,8 @@ import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
 inline fun Fields.date(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: LocalDate? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
@@ -16,11 +16,11 @@ inline fun Fields.date(
     maxDate: LocalDate? = DateInputField.DEFAULT_MAX_DATE,
     minDate: LocalDate? = DateInputField.DEFAULT_MIN_DATE,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate { property ->
+) = getOrCreate(name) {
     DateInputField(
-        name = name ?: property.name,
-        label = InputLabel(label ?: property.name, isRequired),
-        hint = hint ?: property.name,
+        name = name,
+        label = InputLabel(label, isRequired),
+        hint = hint ?: label,
         defaultValue = value?.toIsoString(),
         isReadonly = isReadonly,
         isRequired = isRequired,
@@ -33,7 +33,7 @@ inline fun Fields.date(
 
 inline fun Fields.date(
     name: KProperty<*>,
-    label: String? = name.name,
+    label: String = name.name,
     hint: String? = label,
     value: LocalDate? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

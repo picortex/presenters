@@ -5,8 +5,8 @@ import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
 inline fun Fields.radio(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     value: Boolean? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
@@ -15,7 +15,7 @@ inline fun Fields.radio(
 
 inline fun Fields.radio(
     property: KProperty<*>,
-    label: String? = property.name,
+    label: String = property.name,
     value: Boolean? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,

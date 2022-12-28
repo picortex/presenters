@@ -8,8 +8,8 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun Fields.integer(
-    name: String? = null,
-    label: String? = name,
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: Int? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
@@ -18,11 +18,11 @@ inline fun Fields.integer(
     min: Int? = NumberBasedValueField.DEFAULT_MIN,
     step: Int = IntegerInputField.DEFAULT_STEP,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): ReadOnlyProperty<Fields, NumberBasedValueField<Int>> = getOrCreate { property ->
+): NumberBasedValueField<Int> = getOrCreate(name) {
     IntegerInputField(
-        name = name ?: property.name,
-        label = InputLabel(label ?: property.name, isReadonly),
-        hint = hint ?: property.name,
+        name = name,
+        label = InputLabel(label, isReadonly),
+        hint = hint ?: name,
         defaultValue = value?.toString(),
         isReadonly = isReadonly,
         isRequired = isRequired,
@@ -35,7 +35,7 @@ inline fun Fields.integer(
 
 inline fun Fields.integer(
     property: KProperty<*>,
-    label: String? = property.name,
+    label: String = property.name,
     hint: String? = label,
     value: Int? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,

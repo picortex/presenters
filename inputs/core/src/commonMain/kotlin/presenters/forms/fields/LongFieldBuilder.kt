@@ -7,9 +7,9 @@ import presenters.forms.Fields
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-inline fun Fields.long(
-    name: String? = null,
-    label: String? = name,
+fun Fields.long(
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: Long? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
@@ -17,12 +17,12 @@ inline fun Fields.long(
     max: Long? = NumberBasedValueField.DEFAULT_MAX,
     min: Long? = NumberBasedValueField.DEFAULT_MIN,
     step: Long = LongInputField.DEFAULT_STEP,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): ReadOnlyProperty<Fields, NumberBasedValueField<Long>> = getOrCreate { property ->
+    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+): NumberBasedValueField<Long> = getOrCreate(name) {
     LongInputField(
-        name = name ?: property.name,
-        label = InputLabel(label ?: property.name, isReadonly),
-        hint = hint ?: property.name,
+        name = name,
+        label = InputLabel(label, isReadonly),
+        hint = hint ?: name,
         defaultValue = value?.toString(),
         isReadonly = isReadonly,
         isRequired = isRequired,
@@ -35,7 +35,7 @@ inline fun Fields.long(
 
 inline fun Fields.long(
     property: KProperty<*>,
-    label: String? = property.name,
+    label: String = property.name,
     hint: String? = label,
     value: Long? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,

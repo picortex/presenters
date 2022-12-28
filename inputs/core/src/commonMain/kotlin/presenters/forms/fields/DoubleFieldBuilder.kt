@@ -7,9 +7,9 @@ import presenters.forms.Fields
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-inline fun Fields.double(
-    name: String? = null,
-    label: String? = name,
+fun Fields.double(
+    name: String,
+    label: String = name,
     hint: String? = label,
     value: Double? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
@@ -17,12 +17,12 @@ inline fun Fields.double(
     max: Double? = NumberBasedValueField.DEFAULT_MAX,
     min: Double? = NumberBasedValueField.DEFAULT_MIN,
     step: Double = DoubleInputField.DEFAULT_STEP,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): ReadOnlyProperty<Fields, NumberBasedValueField<Double>> = getOrCreate { property ->
+    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+): NumberBasedValueField<Double> = getOrCreate(name) {
     DoubleInputField(
-        name = name ?: property.name,
-        label = InputLabel(label ?: property.name, isReadonly),
-        hint = hint ?: property.name,
+        name = name,
+        label = InputLabel(label, isReadonly),
+        hint = hint ?: name,
         defaultValue = value?.toString(),
         isReadonly = isReadonly,
         isRequired = isRequired,
@@ -35,7 +35,7 @@ inline fun Fields.double(
 
 inline fun Fields.double(
     property: KProperty<*>,
-    label: String? = property.name,
+    label: String = property.name,
     hint: String? = label,
     value: Double? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
