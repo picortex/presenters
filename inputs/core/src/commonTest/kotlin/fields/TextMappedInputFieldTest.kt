@@ -24,7 +24,7 @@ class TextMappedInputFieldTest {
         }
     }
 
-    class TestForm(initializer: FormActionsBuildingBlock<JsonObject>) : Form<TestFields, JsonObject>(
+    class TestForm(initializer: FormActionsBuildingBlock<JsonObject,Any?>) : Form<TestFields, JsonObject,Any?>(
         heading = "Test Form",
         details = "A Form for testing TextMappedInputField",
         fields = TestFields(),

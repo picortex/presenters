@@ -84,11 +84,11 @@ open class Form<out F : Fields, P, R>(
             if (config.exitOnSubmitted) cancel()
             it
         }.catch {
-            ui.value = Failure(it) { submit() }
+            ui.value = Failure(it) { onRetry { submit() } }
             throw it
         }
     } catch (err: Throwable) {
-        ui.value = Failure(err)
+        ui.value = Failure(err) { onRetry { submit() } }
         Later.reject(err, config.executor)
     }
 }

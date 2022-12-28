@@ -2,6 +2,10 @@ package forms
 
 import expect.expect
 import expect.toBe
+import kase.Failure
+import kase.Submitting
+import kase.Success
+import kase.Validating
 import kollections.toIList
 import koncurrent.Later
 import kotlinx.collections.interoperable.iListOf
@@ -12,7 +16,6 @@ import live.toHaveGoneThrough3
 import presenters.fields.InputFieldState
 import presenters.fields.Option
 import presenters.forms.Fields
-import presenters.forms.FormState.*
 import presenters.forms.fields.name
 import presenters.forms.fields.selectMany
 import kotlin.test.Ignore
@@ -48,7 +51,7 @@ class FormWithMultiSelectDropDownTest {
         }
 
         form.submit()
-        val (_, f) = expect(form.ui).toHaveGoneThrough2<Validating, Failure>()
+        val (_, f) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<*>>()
         expect(f.message).toBe("You have 1 invalid input")
         val err = expect(form.fields.color.feedback.value).toBe<InputFieldState.Error>()
         expect(err.message).toBe("Color is required")
@@ -67,7 +70,7 @@ class FormWithMultiSelectDropDownTest {
         }
 
         form.submit()
-        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()
+        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
     }
 
     @Test
@@ -84,7 +87,7 @@ class FormWithMultiSelectDropDownTest {
         }
 
         form.submit()
-        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Submitted>()
+        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
         expect(form.fields.color.output.value).toBe(iListOf(Color.Red, Color.Blue))
     }
 }
