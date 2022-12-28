@@ -1,5 +1,5 @@
 package presenters.forms
 
-import presenters.actions.GenericAction
+import actions.GenericAction
 
-typealias FormActionsBuildingBlock<T> = FormActionsBuilder<T>.() -> GenericAction<T>
+typealias FormActionsBuildingBlock<P, R> = FormActionsBuilder<P, R>.() -> GenericAction<P, R>

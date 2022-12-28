@@ -1,11 +1,19 @@
-@file:JsExport @file:Suppress("NON_EXPORTABLE_TYPE")
+@file:JsExport
+@file:Suppress("NON_EXPORTABLE_TYPE")
 
 package presenters.forms
 
+import actions.GenericAction
+import actions.simpleAction
+import kase.Failure
+import kase.FormState
+import kase.Pending
+import kase.Submitting
+import kase.Success
+import kase.Validating
 import koncurrent.Later
-import koncurrent.later.catch
-import presenters.actions.GenericAction
-import presenters.actions.MutableSimpleAction
+import koncurrent.Thenable
+import koncurrent.thenable.catch
 import presenters.collections.*
 import presenters.fields.Invalid
 import presenters.fields.Valid
@@ -14,33 +22,31 @@ import presenters.fields.throwIfInvalid
 import viewmodel.ViewModel
 import kotlin.js.JsExport
 
-open class Form<out F : Fields, P>(
+open class Form<out F : Fields, P, R>(
     open val heading: String,
     open val details: String,
     open val fields: F,
     open val config: FormConfig<P>,
-    initializer: FormActionsBuildingBlock<P>,
-) : ViewModel<FormState>(config.of(FormState.Fillable)) {
+    initializer: FormActionsBuildingBlock<P, R>,
+) : ViewModel<FormState<R>>(config.of(Pending)) {
 
-    private val builtActions = FormActionsBuilder<P>().apply { initializer() }
+    private val builtActions = FormActionsBuilder<P, R>().apply { initializer() }
 
-    val cancelAction = MutableSimpleAction("Cancel") {
+    val cancelAction = simpleAction("Cancel") {
         val handler = builtActions.actions.firstOrNull {
             it.name.contentEquals("Cancel", ignoreCase = true)
         }?.handler ?: { logger.warn("Cancel action of ${this::class.simpleName} was never setup") }
         handler()
     }
 
-    private val submitAction: GenericAction<P> = builtActions.submitAction
+    private val submitAction: GenericAction<P, R> = builtActions.submitAction
 
     private val codec get() = config.codec
 
-    fun cancel() {
-        try {
-            cancelAction.invoke()
-        } catch (err: Throwable) {
-            ui.value = FormState.Failure(err)
-        }
+    fun cancel() = try {
+        cancelAction.invoke()
+    } catch (err: Throwable) {
+        ui.value = Failure(err)
     }
 
     fun exit() = cancel()
@@ -65,24 +71,24 @@ open class Form<out F : Fields, P>(
 
     fun clear() {
         fields.clearAll()
-        ui.value = FormState.Fillable
+        ui.value = Pending
     }
 
-    fun submit() = try {
-        ui.value = FormState.Validating
+    fun submit(): Thenable<R> = try {
+        ui.value = Validating
         validate().throwIfInvalid()
         val values = fields.encodedValuesToJson(codec)
-        ui.value = FormState.Submitting(values)
+        ui.value = Submitting(values)
         submitAction.invoke(codec.decodeFromString(config.serializer, values)).then {
-            ui.value = FormState.Submitted
+            ui.value = Success(it)
             if (config.exitOnSubmitted) cancel()
             it
         }.catch {
-            ui.value = FormState.Failure(it)
+            ui.value = Failure(it) { submit() }
             throw it
         }
     } catch (err: Throwable) {
-        ui.value = FormState.Failure(err)
+        ui.value = Failure(err)
         Later.reject(err, config.executor)
     }
 }

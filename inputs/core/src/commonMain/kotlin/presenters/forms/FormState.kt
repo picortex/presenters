@@ -5,6 +5,7 @@ package presenters.forms
 import presenters.states.Failure.Companion.DEFAULT_MESSAGE as DEFAULT_FAILURE_MESSAGE
 import kotlin.js.JsExport
 
+@Deprecated("in favour of kase.FormState")
 sealed class FormState {
     object Fillable : FormState()
     object Validating : FormState()

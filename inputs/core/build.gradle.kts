@@ -13,9 +13,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.presentersActions)
+                api(projects.actionsCore)
+                api(projects.kaseBuilders)
                 api(projects.presentersCollectionsRenderersString)
-                api(projects.presentersStates)
                 api(projects.viewmodelCore)
                 api(kotlinx.serialization.json)
             }
