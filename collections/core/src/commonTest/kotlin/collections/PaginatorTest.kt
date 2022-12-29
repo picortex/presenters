@@ -7,8 +7,8 @@ import kotlinx.coroutines.test.runTest
 import presenters.collections.PaginationManager
 import presenters.collections.CollectionPaginator
 import presenters.collections.SinglePagePaginator
-import presenters.states.Pending
-import presenters.states.Success
+import kase.Pending
+import kase.Success
 import kotlin.test.Test
 
 class PaginatorTest {

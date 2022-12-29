@@ -34,8 +34,8 @@ class SelectionManagerImpl<T>(
             is SelectorState.NoSelected -> Selected.None
         }
 
-    private fun List<SelectorState.Item>.loadedFromPaginatorMemory() = map { item ->
-        paginator.readPageFromMemoryOrEmpty(item.page, paginator.capacity).items.first { row -> row.number == item.number }.item
+    private fun List<SelectorState.Item>.loadedFromPaginatorMemory(): List<T> = mapNotNull { item ->
+        paginator.readPageFromMemoryOrEmpty(item.page, paginator.capacity).items.firstOrNull { row -> row.number == item.number }?.item
     }.toIList()
 
     override fun selectAllRowsInPage(page: Int?) {

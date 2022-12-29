@@ -3,17 +3,16 @@ package presenters.collections.internal
 import kollections.toIList
 import koncurrent.FailedLater
 import koncurrent.Later
-import koncurrent.later.catch
 import live.MutableLive
 import live.mutableLiveOf
 import presenters.collections.Page
 import presenters.collections.PaginationManager
 import presenters.collections.Row
-import presenters.states.Failure
-import presenters.states.LazyState
-import presenters.states.Loading
-import presenters.states.Pending
-import presenters.states.Success
+import kase.Failure
+import kase.LazyState
+import kase.Loading
+import kase.Pending
+import kase.Success
 
 @PublishedApi
 internal class PaginationManagerImpl<out T>(

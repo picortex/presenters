@@ -7,7 +7,7 @@ import koncurrent.Later
 import kollections.List
 import live.Live
 import presenters.collections.internal.PaginationManagerImpl
-import presenters.states.LazyState
+import kase.LazyState
 import kotlin.js.JsExport
 
 interface PaginationManager<out T> {

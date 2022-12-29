@@ -8,8 +8,8 @@ import presenters.collections.CollectionPaginator
 import presenters.collections.SelectionManager
 import presenters.collections.actionsOf
 import presenters.collections.scrollableListOf
-import presenters.states.Loading
-import presenters.states.Success
+import kase.Loading
+import kase.Success
 import kotlin.test.Test
 
 class ScrollableListTest {

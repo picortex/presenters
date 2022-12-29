@@ -1,23 +1,20 @@
 package presenters.confirmations.internal
 
-import koncurrent.Later
+import kase.Executing
+import kase.ExecutorState
+import kase.Failure
+import kase.Loading
+import kase.Pending
+import kase.Success
 import koncurrent.FailedLater
-import koncurrent.later.catch
-import live.Live
+import koncurrent.Later
 import live.MutableLive
 import live.mutableLiveOf
 import presenters.actions.MutableSimpleAction
 import presenters.confirmations.ConfirmActionsBuilder
 import presenters.confirmations.ConfirmationBox
-import presenters.confirmations.ConfirmationState
-import presenters.states.Failure
-import presenters.states.LazyState
-import presenters.states.Loading
-import presenters.states.Pending
-import presenters.states.Success
 import viewmodel.BaseViewModel
 import viewmodel.ScopeConfig
-import viewmodel.ViewModel
 
 @PublishedApi
 internal class ConfirmationBoxImpl(
@@ -30,7 +27,7 @@ internal class ConfirmationBoxImpl(
 
     private val actions = ConfirmActionsBuilder().apply(actionsBuilder)
 
-    override val state: MutableLive<LazyState<Unit>> = mutableLiveOf(Pending, 2)
+    override val state: MutableLive<ExecutorState<Unit>> = mutableLiveOf(Pending, 2)
 
     override val cancelAction = MutableSimpleAction(
         name = "Cancel",
@@ -50,7 +47,7 @@ internal class ConfirmationBoxImpl(
     }
 
     override fun confirm(): Later<Any?> = try {
-        state.value = Loading(executionMessage)
+        state.value = Executing(message = executionMessage)
         confirmAction()
     } catch (err: Throwable) {
         FailedLater(err)

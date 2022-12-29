@@ -1,15 +1,15 @@
 package confirmations
 
 import expect.expect
+import kase.Failure
+import kase.Loading
+import kase.Pending
+import kase.Success
+import koncurrent.FailedLater
 import koncurrent.Later
-import koncurrent.later.catch
 import live.expect
 import live.toHaveGoneThrough2
 import presenters.confirmations.ConfirmationBox
-import presenters.states.Failure
-import presenters.states.Loading
-import presenters.states.Pending
-import presenters.states.Success
 import viewmodel.ScopeConfig
 import kotlin.test.Test
 
@@ -23,7 +23,7 @@ class ConfirmationBoxTest {
             config = ScopeConfig(Unit)
         ) {
             onConfirm {
-                Later.resolve(5)
+                Later(5)
             }
         }
         expect(box.state).toBeIn(Pending)
@@ -40,7 +40,7 @@ class ConfirmationBoxTest {
         ) {
             onConfirm {
                 confirmed = true
-                Later.resolve(confirmed)
+                Later(confirmed)
             }
         }
         expect(confirmed).toBe(false)
@@ -65,7 +65,7 @@ class ConfirmationBoxTest {
             }
             onConfirm {
                 confirmed = true
-                Later.reject(RuntimeException("Rejecting for fun"))
+                FailedLater(RuntimeException("Rejecting for fun"))
             }
         }
         expect(cancelled).toBe(false)

@@ -3,11 +3,12 @@
 
 package presenters.confirmations
 
+import kase.ExecutorState
 import koncurrent.Later
 import live.Live
 import presenters.actions.MutableSimpleAction
 import presenters.confirmations.internal.ConfirmationBoxImpl
-import presenters.states.LazyState
+import kase.LazyState
 import viewmodel.ScopeConfig
 import kotlin.js.JsExport
 
@@ -15,7 +16,7 @@ interface ConfirmationBox {
     val heading: String
     val details: String
 
-    val state: Live<LazyState<Unit>>
+    val state: Live<ExecutorState<Unit>>
 
     val cancelAction: MutableSimpleAction
 
