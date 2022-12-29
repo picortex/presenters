@@ -24,7 +24,7 @@ interface MutableGenericAction<T> : GenericAction<T>, MutableAction<(T) -> Later
             name: String,
             handler: (T) -> Any?
         ): MutableGenericAction<T> = MutableGenericActionImpl(name) { res ->
-            Later.resolve(res).then { handler(it) }
+            Later(res).then { handler(it) }
         }
     }
 }

@@ -9,7 +9,7 @@ internal class MutableGenericActionImpl<T>(
     override var handler: (T) -> Later<Any?>
 ) : MutableGenericAction<T> {
     override fun onInvoked(h: (T) -> Unit) {
-        handler = { Later.resolve(h(it)) }
+        handler = { Later(h(it)) }
     }
 
     override operator fun invoke(arg: T) = handler(arg)

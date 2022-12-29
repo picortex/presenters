@@ -22,7 +22,7 @@ interface GenericAction<in T> : Action<(T) -> Later<Any?>> {
             name: String,
             handler: (T) -> Unit
         ): GenericAction<T> = MutableGenericActionImpl(name) { res ->
-            Later.resolve(res).then { handler(it) }
+            Later(res).then { handler(it) }
         }
     }
 }

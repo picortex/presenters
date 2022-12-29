@@ -1,8 +1,8 @@
 package presenters.collections.internal
 
-import functions.Function1IO
+import functions.Function1I1R
 import kollections.toIList
-import functions.Function2IO
+import functions.Function2I1R
 import presenters.collections.Page
 
 abstract class AbstractPage<out T> : Page<T> {
@@ -15,6 +15,6 @@ abstract class AbstractPage<out T> : Page<T> {
         items = items.mapIndexed { index, it -> transformer(index, it.item) }.toIList(), capacity, number
     )
 
-    override fun <R> map(transformer: Function1IO<T, R>): Page<R> = map(transformer::invoke)
-    override fun <R> mapIndexed(transformer: Function2IO<Int, T, R>): Page<R> = mapIndexed(transformer::invoke)
+    override fun <R> map(transformer: Function1I1R<T, R>): Page<R> = map(transformer::invoke)
+    override fun <R> mapIndexed(transformer: Function2I1R<Int, T, R>): Page<R> = mapIndexed(transformer::invoke)
 }

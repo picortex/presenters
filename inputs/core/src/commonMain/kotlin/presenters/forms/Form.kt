@@ -11,6 +11,7 @@ import kase.Pending
 import kase.Submitting
 import kase.Success
 import kase.Validating
+import koncurrent.FailedLater
 import koncurrent.Later
 import koncurrent.Thenable
 import koncurrent.thenable.catch
@@ -89,6 +90,6 @@ open class Form<out F : Fields, P, R>(
         }
     } catch (err: Throwable) {
         ui.value = Failure(err) { onRetry { submit() } }
-        Later.reject(err, config.executor)
+        FailedLater(err, config.executor)
     }
 }

@@ -10,7 +10,7 @@ import presenters.collections.internal.PaginationManagerImpl
 inline fun <T> SinglePagePaginator(
     currentPage: Page<T> = Page()
 ): PaginationManager<T> = PaginationManagerImpl(capacity = currentPage.capacity) { _, _ ->
-    Later.resolve(currentPage)
+    Later(currentPage)
 }
 
 inline fun <T> SinglePagePaginator(

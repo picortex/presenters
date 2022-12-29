@@ -1,6 +1,7 @@
 package presenters.collections.internal
 
 import kollections.toIList
+import koncurrent.FailedLater
 import koncurrent.Later
 import koncurrent.later.catch
 import live.MutableLive
@@ -66,10 +67,10 @@ internal class PaginationManagerImpl<out T>(
     override fun loadNextPage() = when (val state = page.value) {
         is Pending -> loadPage(1)
         is Loading -> loadNothing()
-        is Failure -> loadPage(1) // Later.reject(RESOLVE_ERROR)
+        is Failure -> loadPage(1) // FailedLater(RESOLVE_ERROR)
         is Success -> when {
-            state.data.isEmpty -> Later.resolve(state.data)
-            state.data.items.size < state.data.capacity -> Later.resolve(state.data)
+            state.data.isEmpty -> Later(state.data)
+            state.data.items.size < state.data.capacity -> Later(state.data)
             else -> loadPage(state.data.number + 1)
         }
     }
@@ -77,7 +78,7 @@ internal class PaginationManagerImpl<out T>(
     override fun loadPreviousPage() = when (val state = page.value) {
         is Pending -> loadPage(1)
         is Loading -> loadNothing()
-        is Failure -> loadPage(1) // Later.reject(RESOLVE_ERROR)
+        is Failure -> loadPage(1) // FailedLater(RESOLVE_ERROR)
         is Success -> when {
             state.data.number > 1 -> loadPage(state.data.number - 1)
             else -> loadPage(1)
@@ -85,13 +86,13 @@ internal class PaginationManagerImpl<out T>(
     }
 
     override fun loadPage(no: Int): Later<Page<T>> {
-        if (page.value is Loading) return Later.reject(LOADING_ERROR)
+        if (page.value is Loading) return FailedLater(LOADING_ERROR)
         val memorizedPage = ram.readOrNull(no, capacity)
         page.value = Loading("Loading", memorizedPage)
         return try {
             loader(no, capacity)
         } catch (err: Throwable) {
-            Later.reject(err)
+            FailedLater(err)
         }.then {
             ram.write(it)
             page.value = Success(it)
@@ -109,7 +110,7 @@ internal class PaginationManagerImpl<out T>(
         is Success -> loadPage(state.data.number)
     }
 
-    private fun loadNothing() = Later.resolve(Unit)
+    private fun loadNothing() = Later(Unit)
 
     override fun loadFirstPage(): Later<Page<T>> = loadPage(1)
 

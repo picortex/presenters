@@ -1,6 +1,7 @@
 package presenters.confirmations.internal
 
 import koncurrent.Later
+import koncurrent.FailedLater
 import koncurrent.later.catch
 import live.Live
 import live.MutableLive
@@ -45,14 +46,14 @@ internal class ConfirmationBoxImpl(
     override fun cancel(): Later<Any?> = try {
         cancelAction()
     } catch (cause: Throwable) {
-        Later.reject(cause)
+        FailedLater(cause)
     }
 
     override fun confirm(): Later<Any?> = try {
         state.value = Loading(executionMessage)
         confirmAction()
     } catch (err: Throwable) {
-        Later.reject(err)
+        FailedLater(err)
     }.then {
         state.value = Success(Unit)
     }.catch {

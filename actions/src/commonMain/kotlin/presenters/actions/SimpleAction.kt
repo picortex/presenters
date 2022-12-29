@@ -22,7 +22,7 @@ interface SimpleAction : Action<() -> Later<Any?>> {
             name: String,
             handler: () -> Unit
         ): SimpleAction = MutableSimpleActionImpl(name) {
-            Later.resolve(Unit).then { handler() }
+            Later(Unit).then { handler() }
         }
     }
 }

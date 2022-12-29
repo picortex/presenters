@@ -9,7 +9,7 @@ internal class MutableSimpleActionImpl(
     override var handler: () -> Later<Any?>
 ) : MutableSimpleAction {
     override fun onInvoked(h: () -> Unit) {
-        handler = { Later.resolve(h()) }
+        handler = { Later(h()) }
     }
 
     override fun invoke() = handler()

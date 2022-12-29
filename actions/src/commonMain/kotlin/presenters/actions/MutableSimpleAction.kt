@@ -24,7 +24,7 @@ interface MutableSimpleAction : SimpleAction, MutableAction<() -> Later<Any?>> {
             name: String,
             handler: () -> Unit
         ): MutableSimpleAction = MutableSimpleActionImpl(name) {
-            Later.resolve(Unit).then { handler() }
+            Later(Unit).then { handler() }
         }
     }
 }
