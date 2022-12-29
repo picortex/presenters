@@ -1,5 +1,11 @@
 package presenters.confirmations.internal
 
+import actions.Action0I1R
+import actions.action0I0R
+import actions.action0I1R
+import actions.action1I0R
+import actions.mutableAction0I0R
+import actions.mutableAction0I1R
 import kase.Executing
 import kase.ExecutorState
 import kase.Failure
@@ -8,9 +14,9 @@ import kase.Pending
 import kase.Success
 import koncurrent.FailedLater
 import koncurrent.Later
+import koncurrent.Thenable
 import live.MutableLive
 import live.mutableLiveOf
-import presenters.actions.MutableSimpleAction
 import presenters.confirmations.ConfirmActionsBuilder
 import presenters.confirmations.ConfirmationBox
 import viewmodel.BaseViewModel
@@ -29,24 +35,24 @@ internal class ConfirmationBoxImpl(
 
     override val state: MutableLive<ExecutorState<Unit>> = mutableLiveOf(Pending, 2)
 
-    override val cancelAction = MutableSimpleAction(
-        name = "Cancel",
-        handler = actions.actions.firstOrNull {
+    override val cancelAction = mutableAction0I0R("Cancel") {
+        val action = actions.actions.firstOrNull {
             it.name.contentEquals("cancel", ignoreCase = true)
         }?.handler ?: {
             logger.warn("Cancel hasn't been handled yet")
         }
-    )
+        action()
+    }
 
     private val confirmAction = actions.submitAction
 
-    override fun cancel(): Later<Any?> = try {
+    override fun cancel(): Thenable<Any?> = try {
         cancelAction()
     } catch (cause: Throwable) {
         FailedLater(cause)
     }
 
-    override fun confirm(): Later<Any?> = try {
+    override fun confirm(): Thenable<Any?> = try {
         state.value = Executing(message = executionMessage)
         confirmAction()
     } catch (err: Throwable) {

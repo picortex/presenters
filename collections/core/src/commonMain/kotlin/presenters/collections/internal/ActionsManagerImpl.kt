@@ -1,7 +1,8 @@
 package presenters.collections.internal
 
+import actions.Action0I1R
 import kollections.List
-import presenters.actions.SimpleAction
+import live.Live
 import presenters.collections.ActionsManager
 import presenters.collections.ActionManagerBuilder
 import presenters.collections.SelectionManager
@@ -11,6 +12,8 @@ internal class ActionsManagerImpl<T>(
     private val selector: SelectionManager<T>,
     private val builder: ActionManagerBuilder<T>
 ) : ActionsManager<T> {
-    override val actions: List<SimpleAction> get() = builder.buildActions(selector.selected)
-    override fun actionsOf(item: T): List<SimpleAction> = builder.buildSingleSelectActions(item)
+    override val actions: Live<List<Action0I1R<Unit>>> = selector.state.map {
+        builder.buildActions(selector.selected)
+    }
+    override fun actionsOf(item: T): List<Action0I1R<Unit>> = builder.buildSingleSelectActions(item)
 }

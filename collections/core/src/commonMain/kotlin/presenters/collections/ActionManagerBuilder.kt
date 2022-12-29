@@ -1,42 +1,43 @@
 package presenters.collections
 
 import kollections.toIList
-import presenters.actions.SimpleAction
+import actions.Action0I1R
+import actions.action0I1R
 import kollections.List
 
 class ActionManagerBuilder<T> {
-    private var primaryActionsBuilder: MutableList<SimpleAction>.() -> Unit = {}
-    private var singleSelectActionsBuilder: MutableList<SimpleAction>.(T) -> Unit = {}
-    private var multiSelectActionsBuilder: (MutableList<SimpleAction>).(List<T>) -> Unit = {}
-    private var globalSelectActionsBuilder: MutableList<SimpleAction>.(Selected.Global<T>) -> Unit = {}
+    private var primaryActionsBuilder: MutableList<Action0I1R<Unit>>.() -> Unit = {}
+    private var singleSelectActionsBuilder: MutableList<Action0I1R<Unit>>.(T) -> Unit = {}
+    private var multiSelectActionsBuilder: (MutableList<Action0I1R<Unit>>).(List<T>) -> Unit = {}
+    private var globalSelectActionsBuilder: MutableList<Action0I1R<Unit>>.(Selected.Global<T>) -> Unit = {}
 
-    fun MutableList<SimpleAction>.on(name: String, handler: () -> Unit) = add(SimpleAction(name, handler))
+    fun MutableList<Action0I1R<Unit>>.on(name: String, handler: () -> Unit) = add(action0I1R(name, handler))
 
-    fun MutableList<SimpleAction>.onCreate(handler: () -> Unit) = on("Create", handler)
+    fun MutableList<Action0I1R<Unit>>.onCreate(handler: () -> Unit) = on("Create", handler)
 
-    fun MutableList<SimpleAction>.onDelete(handler: () -> Unit) = on("Delete", handler)
+    fun MutableList<Action0I1R<Unit>>.onDelete(handler: () -> Unit) = on("Delete", handler)
 
-    fun MutableList<SimpleAction>.onDeleteAll(handler: () -> Unit) = on("Delete All", handler)
+    fun MutableList<Action0I1R<Unit>>.onDeleteAll(handler: () -> Unit) = on("Delete All", handler)
 
-    fun MutableList<SimpleAction>.onView(handler: () -> Unit) = on("View", handler)
+    fun MutableList<Action0I1R<Unit>>.onView(handler: () -> Unit) = on("View", handler)
 
-    fun MutableList<SimpleAction>.onEdit(handler: () -> Unit) = on("Edit", handler)
+    fun MutableList<Action0I1R<Unit>>.onEdit(handler: () -> Unit) = on("Edit", handler)
 
-    fun MutableList<SimpleAction>.onDuplicate(handler: () -> Unit) = on("Duplicate", handler)
+    fun MutableList<Action0I1R<Unit>>.onDuplicate(handler: () -> Unit) = on("Duplicate", handler)
 
-    fun primary(builder: MutableList<SimpleAction>.() -> Unit) {
+    fun primary(builder: MutableList<Action0I1R<Unit>>.() -> Unit) {
         primaryActionsBuilder = builder
     }
 
-    fun single(builder: MutableList<SimpleAction>.(T) -> Unit) {
+    fun single(builder: MutableList<Action0I1R<Unit>>.(T) -> Unit) {
         singleSelectActionsBuilder = builder
     }
 
-    fun multi(builder: (MutableList<SimpleAction>).(List<T>) -> Unit) {
+    fun multi(builder: (MutableList<Action0I1R<Unit>>).(List<T>) -> Unit) {
         multiSelectActionsBuilder = builder
     }
 
-    fun global(builder: MutableList<SimpleAction>.(Selected.Global<T>) -> Unit) {
+    fun global(builder: MutableList<Action0I1R<Unit>>.(Selected.Global<T>) -> Unit) {
         globalSelectActionsBuilder = builder
     }
 

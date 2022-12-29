@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.presentersStates)
+                api(projects.actionsCore)
                 api(projects.viewmodelCore)
                 api(projects.identifierCore)
             }

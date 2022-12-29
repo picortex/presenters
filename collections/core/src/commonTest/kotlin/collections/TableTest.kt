@@ -10,20 +10,12 @@ import presenters.collections.tableOf
 import kotlin.test.Test
 
 class TableTest {
-
-    fun PersonTableColumns() = columnsOf<Person> {
-        selectable()
-        column("No") { it.number.toString() }
-        column("name") { it.item.name }
-        column("age") { it.item.age.toString() }
-    }
-
     @Test
     fun can_be_assigned_a_paginator() {
         val paginator = CollectionPaginator(Person.List)
         val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, PersonTableColumns())
+        val table = tableOf(paginator, selector, action, Person.columns())
         table.renderToConsole()
         expect(table.currentPageOrNull?.number).toBe(null)
 
@@ -42,7 +34,7 @@ class TableTest {
         val paginator = CollectionPaginator(Person.List)
         val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, PersonTableColumns())
+        val table = tableOf(paginator, selector, action, Person.columns())
         table.loadFirstPage()
         table.renderToConsole()
 
@@ -59,7 +51,7 @@ class TableTest {
         val paginator = CollectionPaginator(Person.List)
         val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, PersonTableColumns())
+        val table = tableOf(paginator, selector, action, Person.columns())
 
         table.loadFirstPage()
         table.renderToConsole()
@@ -82,15 +74,15 @@ class TableTest {
                 on("View ${it.name}") { println("Now viewing ${it.name}") }
             }
         }
-        val table = tableOf(paginator, selector, actions, PersonTableColumns())
+        val table = tableOf(paginator, selector, actions, Person.columns())
 
         table.loadFirstPage()
 
-        expect(table.actions).toBeOfSize(1)
+        expect(table.actions.value).toBeOfSize(1)
 
         table.select(1)
         table.renderToConsole()
 
-        expect(table.actions).toBeOfSize(2)
+        expect(table.actions.value).toBeOfSize(2)
     }
 }

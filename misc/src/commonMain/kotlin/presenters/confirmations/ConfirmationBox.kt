@@ -3,12 +3,12 @@
 
 package presenters.confirmations
 
+import actions.MutableAction0I1R
 import kase.ExecutorState
 import koncurrent.Later
+import koncurrent.Thenable
 import live.Live
-import presenters.actions.MutableSimpleAction
 import presenters.confirmations.internal.ConfirmationBoxImpl
-import kase.LazyState
 import viewmodel.ScopeConfig
 import kotlin.js.JsExport
 
@@ -18,10 +18,10 @@ interface ConfirmationBox {
 
     val state: Live<ExecutorState<Unit>>
 
-    val cancelAction: MutableSimpleAction
+    val cancelAction: MutableAction0I1R<Unit>
 
-    fun cancel(): Later<Any?>
-    fun confirm(): Later<Any?>
+    fun cancel(): Thenable<Any?>
+    fun confirm(): Thenable<Any?>
 
     companion object {
         const val DEFAULT_EXECUTION_MESSAGE: String = "Executing, please wait . . ."

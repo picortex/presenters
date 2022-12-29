@@ -15,27 +15,31 @@ class SelectionManagerImpl<T>(
 
     override val state: MutableLive<SelectorState> = mutableLiveOf(SelectorState.NoSelected)
 
-    override val selected: Selected<T>
-        get() = when (val s = state.value) {
-            is SelectorState.AllSelected -> Selected.Global(
-                exceptions = s.exceptions.loadedFromPaginatorMemory()
-            )
+    override val selected: Selected<T> get() = state.value.mapToSelected()
 
-            is SelectorState.Item -> Selected.Item(
-                paginator.readPageFromMemoryOrEmpty(s.page, paginator.capacity).items.first { row ->
-                    row.number == s.number
-                }.item
-            )
+    private fun SelectorState.mapToSelected(): Selected<T> = when (val s = this) {
+        is SelectorState.AllSelected -> Selected.Global(
+            exceptions = s.exceptions.loadedFromPaginatorMemory()
+        )
 
-            is SelectorState.Items -> Selected.Items(
-                values = s.items.loadedFromPaginatorMemory()
-            )
-
-            is SelectorState.NoSelected -> Selected.None
+        is SelectorState.Item -> try {
+            val items = paginator.readPageFromMemoryOrEmpty(s.page, paginator.capacity).items
+            Selected.Item(items.first { row -> row.number == s.number }.item)
+        } catch (err: Throwable) {
+            Selected.None
         }
 
+        is SelectorState.Items -> Selected.Items(
+            values = s.items.loadedFromPaginatorMemory()
+        )
+
+        is SelectorState.NoSelected -> Selected.None
+    }
+
     private fun List<SelectorState.Item>.loadedFromPaginatorMemory(): List<T> = mapNotNull { item ->
-        paginator.readPageFromMemoryOrEmpty(item.page, paginator.capacity).items.firstOrNull { row -> row.number == item.number }?.item
+        paginator.readPageFromMemoryOrEmpty(item.page, paginator.capacity).items.firstOrNull { row ->
+            row.number == item.number
+        }?.item
     }.toIList()
 
     override fun selectAllRowsInPage(page: Int?) {

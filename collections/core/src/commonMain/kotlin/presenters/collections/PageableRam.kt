@@ -1,8 +1,4 @@
-@file:JsExport
-
 package presenters.collections
-
-import kotlin.js.JsExport
 
 interface PageableRam<T> {
     fun read(page: Int, capacity: Int): Page<T>

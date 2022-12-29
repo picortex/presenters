@@ -7,7 +7,9 @@ import kollections.List
 import kotlin.js.JsExport
 
 sealed class SelectorState {
-    object NoSelected : SelectorState()
+    object NoSelected : SelectorState() {
+        override fun toString() = "No Selected"
+    }
 
     data class Item(val number: Int, val page: Int) : SelectorState()
 
