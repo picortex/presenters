@@ -2,16 +2,17 @@ package presenters.collections
 
 import kotlin.math.max
 
+private fun <D> Table<D>.text(row: Row<D>, col: Column<D>) = when (col) {
+    is Column.Select -> (if (isRowSelectedOnCurrentPage(row.number)) "[x]" else "[ ]")
+    is Column.Data -> col.accessor(row)
+    is Column.Action -> actionsOf(row.item).joinToString(separator = "|") { it.name }
+}
+
 private fun <D> Table<D>.calculateColSizes(gap: Int): MutableMap<Column<D>, Int> {
     val colSizes = mutableMapOf<Column<D>, Int>()
     (paginator.page.value.data ?: Page()).items.forEach { row ->
         columns.forEach { col ->
-            val text = when (col) {
-                is Column.Select -> (if (isRowSelectedOnCurrentPage(row.number)) "[x]" else "[ ]")
-                is Column.Data -> col.accessor(row)
-                is Column.Action -> actionsOf(row.item).joinToString(separator = "|") { it.name }
-            }
-            colSizes[col] = maxOf(colSizes[col] ?: 0, text.length + gap)
+            colSizes[col] = maxOf(colSizes[col] ?: 0, text(row, col).length + gap)
         }
     }
     return colSizes
@@ -42,11 +43,7 @@ fun <D> Table<D>.renderToString(gap: Int = 4) = buildString {
     appendLine()
     (paginator.page.value.data ?: Page()).items.forEach { row ->
         columns.forEach { col ->
-            val text = when (col) {
-                is Column.Select -> (if (isRowSelectedOnCurrentPage(row.number)) "[x]" else "[ ]")
-                is Column.Data -> col.accessor(row)
-                is Column.Action -> actionsOf(row.item).joinToString(separator = "|") { it.name }
-            }
+            val text = text(row, col)
             val size = colSizes[col] ?: 0
             append(text + " ".repeat(size - text.length))
         }

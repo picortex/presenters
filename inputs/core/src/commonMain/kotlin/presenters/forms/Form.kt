@@ -3,8 +3,8 @@
 
 package presenters.forms
 
-import actions.Action1I1R
-import actions.action0I1R
+import actions.Action1
+import actions.constructors.action0I1R
 import kase.Failure
 import kase.FormState
 import kase.Pending
@@ -12,9 +12,7 @@ import kase.Submitting
 import kase.Success
 import kase.Validating
 import koncurrent.FailedLater
-import koncurrent.Later
 import koncurrent.Thenable
-import koncurrent.thenable.catch
 import presenters.collections.*
 import presenters.fields.Invalid
 import presenters.fields.Valid
@@ -40,7 +38,7 @@ open class Form<out F : Fields, P, R>(
         handler()
     }
 
-    private val submitAction: Action1I1R<P, R> = builtActions.submitAction
+    private val submitAction: Action1<P, R> = builtActions.submitAction
 
     private val codec get() = config.codec
 

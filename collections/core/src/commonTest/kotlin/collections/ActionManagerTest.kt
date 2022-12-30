@@ -46,6 +46,7 @@ class ActionManagerTest {
         }
         expect(acts.actions.value).toBeOfSize(1)
         sel.select(row = 1, page = 1)
+        table.renderToConsole()
         expect(acts.actions.value).toBeOfSize(2)
         watcher.stop()
     }

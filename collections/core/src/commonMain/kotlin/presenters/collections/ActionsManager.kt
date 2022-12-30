@@ -2,14 +2,14 @@
 
 package presenters.collections
 
-import actions.Action0I1R
+import actions.Action0
 import kollections.List
 import live.Live
 import kotlin.js.JsExport
 
 @JsExport
 interface ActionsManager<in T> {
-    val actions: Live<List<Action0I1R<Unit>>>
+    val actions: Live<List<Action0<Unit>>>
 
-    fun actionsOf(item: T): List<Action0I1R<Unit>>
+    fun actionsOf(item: T): List<Action0<Unit>>
 }
