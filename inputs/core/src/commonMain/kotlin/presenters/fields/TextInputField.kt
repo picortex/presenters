@@ -1,6 +1,5 @@
 package presenters.fields
 
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.internal.TextBasedValuedFieldImpl
 

@@ -1,42 +1,51 @@
 package presenters.forms.fields
 
 import kash.Currency
-import presenters.fields.*
+import kash.Money
+import presenters.fields.InputLabel
+import presenters.fields.MoneyInputField
+import presenters.fields.SingleValuedField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
-inline fun Fields.money(
-    name: String? = null,
-    label: String? = name,
-    hint: String? = label,
+fun Fields.money(
+    name: String,
+    label: String = name,
+    hint: String = label,
     selectCurrency: Boolean = false,
-    currency: Currency? = null,
-    value: String? = null,
-    isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
-    noinline validator: (String?) -> String? = { it }
-) = getOrCreate { property ->
+    value: Money? = null,
+    currency: Currency? = value?.currency,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    max: Double? = null,
+    min: Double? = null,
+    step: Double? = null
+) = getOrCreate(name) {
     MoneyInputField(
-        name = name ?: property.name,
-        label = label ?: property.name,
-        hint = hint ?: property.name,
+        name = name,
+        label = InputLabel(label, isRequired),
+        hint = hint,
         selectCurrency = selectCurrency,
         currency = currency,
-        value = value,
+        defaultValue = value,
         isReadonly = isReadonly,
         isRequired = isRequired,
-        validator = validator,
+        max = max,
+        min = min,
+        step = step
     )
 }
 
 inline fun Fields.money(
-    property: KProperty<*>,
-    label: String? = property.name,
-    hint: String? = label,
+    name: KProperty<*>,
+    label: String = name.name,
+    hint: String = label,
     selectCurrency: Boolean = false,
-    currency: Currency? = null,
-    value: String? = null,
-    isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
-    noinline validator: (String?) -> String? = { it }
-) = money(property.name, label, hint, selectCurrency, currency, value, isReadonly, isRequired, validator)
+    value: Money? = null,
+    currency: Currency? = value?.currency,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    max: Double? = null,
+    min: Double? = null,
+    step: Double? = null
+) = money(name.name, label, hint, selectCurrency, value, currency, isReadonly, isRequired, max, min, step)

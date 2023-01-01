@@ -7,14 +7,10 @@ import live.Live
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface SingleValuedField<in I, out O : Any> : ValuedField<O> {
+interface SingleValuedField<in I, out O : Any> : ValuedField<O>, Validateable1<I> {
     val input: Live<@UnsafeVariance I?>
     val transformer: (I?) -> O?
     val defaultValue: @UnsafeVariance I?
-
-    fun validate(value: I? = input.value): ValidationResult
-    fun validateSettingInvalidsAsWarnings(value: I? = input.value): ValidationResult
-    fun validateSettingInvalidsAsErrors(value: I? = input.value): ValidationResult
 
     @JsName("setValue")
     fun set(value: I?)

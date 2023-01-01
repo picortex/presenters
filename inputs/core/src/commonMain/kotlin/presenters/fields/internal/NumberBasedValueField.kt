@@ -3,14 +3,14 @@
 
 package presenters.fields.internal
 
-import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
-import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.InputLabel
 import presenters.fields.Invalid
-import presenters.fields.Valid
-import presenters.fields.ValidationResult
+import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
+import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
 import presenters.fields.SingleValuedField.Companion.DEFAULT_VALUE
+import presenters.fields.Valid
+import presenters.fields.ValidationResult
 import kotlin.js.JsExport
 
 abstract class NumberBasedValueField<N : Number>(

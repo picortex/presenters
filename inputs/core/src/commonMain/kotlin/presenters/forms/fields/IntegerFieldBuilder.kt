@@ -1,10 +1,10 @@
 package presenters.forms.fields
 
-import presenters.fields.*
+import presenters.fields.InputLabel
+import presenters.fields.SingleValuedField
 import presenters.fields.internal.IntegerInputField
 import presenters.fields.internal.NumberBasedValueField
 import presenters.forms.Fields
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun Fields.integer(
@@ -12,8 +12,8 @@ inline fun Fields.integer(
     label: String = name,
     hint: String? = label,
     value: Int? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     max: Int? = NumberBasedValueField.DEFAULT_MAX,
     min: Int? = NumberBasedValueField.DEFAULT_MIN,
     step: Int = IntegerInputField.DEFAULT_STEP,
@@ -38,8 +38,8 @@ inline fun Fields.integer(
     label: String = property.name,
     hint: String? = label,
     value: Int? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     max: Int? = NumberBasedValueField.DEFAULT_MAX,
     min: Int? = NumberBasedValueField.DEFAULT_MIN,
     step: Int = IntegerInputField.DEFAULT_STEP,

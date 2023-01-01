@@ -1,10 +1,10 @@
 package presenters.forms.fields
 
-import presenters.fields.*
+import presenters.fields.InputLabel
+import presenters.fields.SingleValuedField
 import presenters.fields.internal.DoubleInputField
 import presenters.fields.internal.NumberBasedValueField
 import presenters.forms.Fields
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 fun Fields.double(
@@ -38,8 +38,8 @@ inline fun Fields.double(
     label: String = property.name,
     hint: String? = label,
     value: Double? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     max: Double? = NumberBasedValueField.DEFAULT_MAX,
     min: Double? = NumberBasedValueField.DEFAULT_MIN,
     step: Double = DoubleInputField.DEFAULT_STEP,

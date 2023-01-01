@@ -2,20 +2,19 @@ package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
-import presenters.fields.InputFieldWithValue
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
 
 class DoubleInputField(
     override val name: String,
-    override val isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
+    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     override val label: InputLabel = InputLabel(name, isRequired),
     override val hint: String = label.text,
     override val defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
+    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     override val max: Double? = DEFAULT_MAX,
     override val min: Double? = DEFAULT_MIN,
-    override val step: Double = DEFAULT_STEP,
+    override val step: Double? = DEFAULT_STEP,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : NumberBasedValueField<Double>(name, isRequired, label, hint, defaultValue, { it?.toDoubleOrNull() }, isReadonly, max, min, step, validator) {
     companion object {

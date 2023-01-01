@@ -12,6 +12,7 @@ import presenters.fields.MultiChoiceValuedField
 import presenters.fields.SingleChoiceValuedField
 import presenters.fields.RangeValuedField
 import presenters.fields.SingleValuedField
+import presenters.fields.Validateable0
 import presenters.fields.ValuedField
 import kotlin.js.JsExport
 
@@ -36,14 +37,17 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
         }
 
     fun validate() {
-        valuesToBeSubmitted.forEach {
-            when (it) {
-                is SingleChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
-                is RangeValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
-                is SingleValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
-                is MultiChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
-            }
+        all.filterIsInstance<Validateable0>().forEach {
+            it.validateSettingInvalidsAsErrors()
         }
+//        valuesToBeSubmitted.forEach {
+//            when (it) {
+//                is SingleChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
+//                is RangeValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
+//                is SingleValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
+//                is MultiChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
+//            }
+//        }
     }
 
     fun clearAll() {

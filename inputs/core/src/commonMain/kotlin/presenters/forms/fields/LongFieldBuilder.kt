@@ -1,10 +1,10 @@
 package presenters.forms.fields
 
-import presenters.fields.*
+import presenters.fields.InputLabel
+import presenters.fields.SingleValuedField
 import presenters.fields.internal.LongInputField
 import presenters.fields.internal.NumberBasedValueField
 import presenters.forms.Fields
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 fun Fields.long(
@@ -12,8 +12,8 @@ fun Fields.long(
     label: String = name,
     hint: String? = label,
     value: Long? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     max: Long? = NumberBasedValueField.DEFAULT_MAX,
     min: Long? = NumberBasedValueField.DEFAULT_MIN,
     step: Long = LongInputField.DEFAULT_STEP,
@@ -38,8 +38,8 @@ inline fun Fields.long(
     label: String = property.name,
     hint: String? = label,
     value: Long? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     max: Long? = NumberBasedValueField.DEFAULT_MAX,
     min: Long? = NumberBasedValueField.DEFAULT_MIN,
     step: Long = LongInputField.DEFAULT_STEP,

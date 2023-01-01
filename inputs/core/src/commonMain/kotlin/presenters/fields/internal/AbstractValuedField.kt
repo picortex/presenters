@@ -46,6 +46,8 @@ abstract class AbstractValuedField<in I, out O : Any>(
 
     abstract override fun validate(value: I?): ValidationResult
 
+    override fun validate(): ValidationResult = validate(input.value)
+
     private fun validateSettingFeedback(value: I?, body: (res: Invalid) -> InputFieldState): ValidationResult {
         val res = validate(value)
         feedback.value = when (res) {
@@ -59,7 +61,11 @@ abstract class AbstractValuedField<in I, out O : Any>(
         InputFieldState.Warning(it.cause.message ?: "", it.cause)
     }
 
+    override fun validateSettingInvalidsAsErrors() = validateSettingInvalidsAsErrors(input.value)
+
     override fun validateSettingInvalidsAsErrors(value: I?) = validateSettingFeedback(value) {
         InputFieldState.Error(it.cause.message ?: "", it.cause)
     }
+
+    override fun validateSettingInvalidsAsWarnings() = validateSettingInvalidsAsWarnings(input.value)
 }

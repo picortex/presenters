@@ -3,12 +3,12 @@ package presenters.forms.fields
 import kollections.Collection
 import kollections.List
 import kollections.serializers.ListSerializer
-import kollections.toIList
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
 import presenters.fields.InputLabel
+import presenters.fields.MultiChoiceValuedField
 import presenters.fields.Option
-import presenters.fields.SelectManyInputField
+import presenters.fields.internal.MultiChoiceSelectValueFieldImpl
 import presenters.fields.SingleValuedField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
@@ -22,8 +22,8 @@ inline fun <reified T : Any> Fields.selectMany(
     value: Collection<T>? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED
-) = getOrCreate(name) {
-    SelectManyInputField(
+): MultiChoiceValuedField<T> = getOrCreate(name) {
+    MultiChoiceSelectValueFieldImpl(
         name = name,
         items = items,
         mapper = mapper,

@@ -19,12 +19,12 @@ class TextMappedInputFieldTest {
     data class Category(val uid: String = "unset", val name: String)
 
     class TestFields : Fields() {
-        val category by textTo(name = "Category") {
+        val category = textTo(name = "Category") {
             Category(name = it ?: "Nothing")
         }
     }
 
-    class TestForm(initializer: FormActionsBuildingBlock<JsonObject,Any?>) : Form<TestFields, JsonObject,Any?>(
+    class TestForm(initializer: FormActionsBuildingBlock<JsonObject, Any?>) : Form<TestFields, JsonObject, Any?>(
         heading = "Test Form",
         details = "A Form for testing TextMappedInputField",
         fields = TestFields(),
@@ -37,7 +37,7 @@ class TextMappedInputFieldTest {
         val form = TestForm {
             onSubmit {
                 println("Submitted with : ${it.toMap()}")
-                Later.resolve(Unit)
+                Later(Unit)
             }
         }
         form.fields.category.type("Test")

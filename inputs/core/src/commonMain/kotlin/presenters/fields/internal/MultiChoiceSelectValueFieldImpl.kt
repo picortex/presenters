@@ -1,18 +1,23 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
-package presenters.fields
+package presenters.fields.internal
 
 import kollections.Collection
 import kollections.List
 import kollections.iEmptyList
+import kollections.iMutableSetOf
 import kollections.toIList
 import kotlinx.serialization.KSerializer
-import live.Live
 import live.mutableLiveOf
-import kotlin.js.JsExport
+import presenters.fields.InputFieldState
+import presenters.fields.InputLabel
+import presenters.fields.Invalid
+import presenters.fields.MultiChoiceValuedField
+import presenters.fields.Option
+import presenters.fields.SingleValuedField
+import presenters.fields.Valid
+import presenters.fields.ValidationResult
 
-class SelectManyInputField<T : Any>(
+@PublishedApi
+internal class MultiChoiceSelectValueFieldImpl<T : Any>(
     override val name: String,
     override val items: Collection<T>,
     val mapper: (T) -> Option,
@@ -21,27 +26,27 @@ class SelectManyInputField<T : Any>(
     override val label: InputLabel = InputLabel(name, isRequired),
     override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY
 ) : MultiChoiceValuedField<T> {
-    val optionLabels get() = options.map { it.label }.toIList()
-    val optionValues get() = options.map { it.value }.toIList()
+    override val optionLabels get() = options.map { it.label }.toIList()
+    override val optionValues get() = options.map { it.value }.toIList()
 
     override val output = mutableLiveOf<List<T>>(iEmptyList())
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
-    val selectedValues = mutableSetOf<String>()
+    override val selectedValues = iMutableSetOf<String>()
 
-    val selectedItems: List<T> get() = items.filter { selectedValues.contains(mapper(it).value) }.toIList()
+    override val selectedItems: List<T> get() = items.filter { selectedValues.contains(mapper(it).value) }.toIList()
 
-    val selectedOptions get() = selectedItems.map(mapper).toIList()
+    override val selectedOptions get() = selectedItems.map(mapper).toIList()
 
-    val options: List<Option>
+    override val options: List<Option>
         get() = items.map {
             val o = mapper(it)
             if (selectedValues.contains(o.value)) o.copy(selected = true) else o
         }.toIList()
 
-    val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toIList()
+    override val optionsWithSelectLabel get() = (listOf(Option("Select $label", "")) + options).toIList()
 
-    val selected get() = options.firstOrNull { it.selected }
+    override val selected get() = options.firstOrNull { it.selected }
 
     private fun updateValue() {
         val selectedItems = items.filter {
@@ -51,34 +56,35 @@ class SelectManyInputField<T : Any>(
         output.value = if (selectedItems.isEmpty()) iEmptyList() else selectedItems
     }
 
-    fun addSelectedItem(item: T) = addSelectedValue(mapper(item).value)
+    override fun addSelectedItem(item: T) = addSelectedValue(mapper(item).value)
 
-    fun addSelectedOption(o: Option) = addSelectedValue(o.value)
+    override fun addSelectedOption(o: Option) = addSelectedValue(o.value)
 
-    fun addSelectedValue(v: String) {
+    override fun addSelectedValue(v: String) {
         selectedValues.add(v)
         updateValue()
     }
 
     private fun findOptionWithLabel(l: String) = options.find { it.label == l }
-    fun addSelectLabel(l: String) {
+
+    override fun addSelectLabel(l: String) {
         findOptionWithLabel(l)?.let { addSelectedValue(it.value) }
     }
 
-    fun unselectOption(o: Option) = unselectValue(o.value)
+    override fun unselectOption(o: Option) = unselectValue(o.value)
 
-    fun unselectItem(i: T) = unselectValue(mapper(i).value)
+    override fun unselectItem(i: T) = unselectValue(mapper(i).value)
 
-    fun unselectValue(v: String) {
+    override fun unselectValue(v: String) {
         selectedValues.remove(v)
         updateValue()
     }
 
-    fun unselectLabel(l: String) {
+    override fun unselectLabel(l: String) {
         findOptionWithLabel(l)?.let { unselectValue(it.value) }
     }
 
-    fun unselectAll() {
+    override fun unselectAll() {
         selectedValues.clear()
         output.value = iEmptyList()
     }
@@ -87,7 +93,7 @@ class SelectManyInputField<T : Any>(
         unselectAll()
     }
 
-    fun toggleSelectedValue(v: String) {
+    override fun toggleSelectedValue(v: String) {
         if (selectedValues.contains(v)) {
             unselectValue(v)
         } else {
@@ -95,11 +101,11 @@ class SelectManyInputField<T : Any>(
         }
     }
 
-    fun toggleSelectedOption(o: Option) = toggleSelectedValue(o.value)
+    override fun toggleSelectedOption(o: Option) = toggleSelectedValue(o.value)
 
-    fun toggleSelectedItem(i: T) = toggleSelectedValue(mapper(i).value)
+    override fun toggleSelectedItem(i: T) = toggleSelectedValue(mapper(i).value)
 
-    fun toggleSelectedLabel(l: String) {
+    override fun toggleSelectedLabel(l: String) {
         findOptionWithLabel(l)?.let { toggleSelectedValue(it.value) }
     }
 

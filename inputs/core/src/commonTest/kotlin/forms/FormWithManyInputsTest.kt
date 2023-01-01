@@ -4,10 +4,10 @@ import expect.expect
 import kase.Submitting
 import kase.Success
 import kase.Validating
+import kollections.List
+import kollections.iListOf
 import kollections.toIList
 import koncurrent.Later
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.iListOf
 import kotlinx.serialization.Serializable
 import live.expect
 import live.toHaveGoneThrough3
@@ -30,11 +30,11 @@ class FormWithManyInputsTest {
     }
 
     class AllFields : Fields() {
-        val name by name(isRequired = true)
-        val username by text(isRequired = true)
-        val address by text(isRequired = true)
-        val color by selectSingle(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
-        val colors by selectMany(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
+        val name = name(isRequired = true)
+        val username = text(name = "username", isRequired = true)
+        val address = text(name = "address", isRequired = true)
+        val color = selectSingle(name = "color", items = Color.values().toIList(), mapper = { Option(it.name) }, isRequired = true)
+        val colors = selectMany(name = "colors", items = Color.values().toIList(), mapper = { Option(it.name) }, isRequired = true)
     }
 
     @Serializable
@@ -57,7 +57,7 @@ class FormWithManyInputsTest {
         ) {
             onSubmit {
                 params = it
-                Later.resolve(it)
+                Later(it)
             }
         }
         form.fields.apply {

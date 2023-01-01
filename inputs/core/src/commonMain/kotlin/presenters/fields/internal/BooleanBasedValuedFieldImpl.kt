@@ -3,11 +3,11 @@ package presenters.fields.internal
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.BooleanInputField
-import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_READONLY
-import presenters.fields.InputFieldWithValue.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.InputLabel
 import presenters.fields.Invalid
 import presenters.fields.SingleValuedField
+import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
+import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.Valid
 import presenters.fields.ValidationResult
 

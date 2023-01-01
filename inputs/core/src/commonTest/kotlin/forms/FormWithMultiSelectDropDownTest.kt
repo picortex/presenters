@@ -28,11 +28,12 @@ class FormWithMultiSelectDropDownTest {
     }
 
     class TestFields : Fields() {
-        val name by name(
+        val name = name(
             isRequired = true
         )
 
-        val color by selectMany(
+        val color = selectMany(
+            name = "color",
             items = Color.values().toIList(),
             mapper = { Option(it.name) },
             isRequired = true
@@ -42,7 +43,7 @@ class FormWithMultiSelectDropDownTest {
     @Test
     fun should_fail_to_submit_when_a_required_nothing_has_been_selected() {
         val form = TestForm(TestFields()) {
-            onSubmit { Later.resolve(0) }
+            onSubmit { Later(0) }
         }
 
         form.fields.apply {
@@ -61,7 +62,7 @@ class FormWithMultiSelectDropDownTest {
     @Ignore // TODO: Define proper params that would accommodate color here
     fun should_submit_when_a_required_select_multi_has_been_selected() {
         val form = TestForm(TestFields()) {
-            onSubmit { Later.resolve(0) }
+            onSubmit { Later(0) }
         }
 
         form.fields.apply {
@@ -77,7 +78,7 @@ class FormWithMultiSelectDropDownTest {
     @Ignore // TODO: Define proper params that would accommodate color here
     fun should_submit_when_a_required_select_multi_has_been_selected_with_multiple_inputs() {
         val form = TestForm(TestFields()) {
-            onSubmit { Later.resolve(0) }
+            onSubmit { Later(0) }
         }
 
         form.fields.apply {

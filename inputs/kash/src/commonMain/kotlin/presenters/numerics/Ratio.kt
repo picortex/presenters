@@ -15,11 +15,11 @@ data class Ratio(
         fun from(value: Number) = Ratio(value.toDouble())
     }
 
-    val asPercentageInt by lazy { value.roundToInt() * 100 }
+    val asPercentageInt = value.roundToInt() * 100
 
-    val asPercentageDouble by lazy { value * 100.0 }
+    val asPercentageDouble = value * 100.0
 
-    val inPercentage: Percentage by lazy { Percentage(value * 100) }
+    val inPercentage: Percentage = Percentage(value * 100)
 
     fun toPercentage() = Percentage(value * 100)
 }

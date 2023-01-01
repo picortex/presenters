@@ -11,6 +11,7 @@ import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
 import presenters.forms.*
+import presenters.forms.fields.name
 import presenters.forms.fields.text
 import kotlin.test.Ignore
 import kotlin.test.Test
@@ -18,8 +19,8 @@ import kotlin.test.Test
 class FormTest {
 
     class PersonFields : Fields() {
-        val name by text(isRequired = true)
-        val details by text()
+        val name = name(isRequired = true)
+        val details = text(name = "details")
     }
 
     @Test
@@ -36,7 +37,7 @@ class FormTest {
         val form = TestForm(PersonFields()) {
             onSubmit {
                 println(it.entries.joinToString { entry -> "${entry.key}=${entry.value}" })
-                Later.resolve(Unit)
+                Later(Unit)
             }
         }
 

@@ -26,11 +26,12 @@ class FormWithSingleSelectDropDownTest {
     }
 
     class TestFields : Fields() {
-        val name by name(
+        val name = name(
             isRequired = true
         )
 
-        val color by selectSingle(
+        val color = selectSingle(
+            name = "color",
             items = Color.values().toIList(),
             mapper = { Option(it.name) },
             isRequired = true
@@ -40,7 +41,7 @@ class FormWithSingleSelectDropDownTest {
     @Test
     fun should_fail_to_submit_when_a_required_select_single_is_not_selected() {
         val form = TestForm(TestFields()) {
-            onSubmit { Later.resolve(0) }
+            onSubmit { Later(0) }
         }
 
         form.fields.apply {
@@ -58,7 +59,7 @@ class FormWithSingleSelectDropDownTest {
     @Test
     fun should_submit_when_a_required_select_single_has_been_selected() {
         val form = TestForm(TestFields()) {
-            onSubmit { Later.resolve(0) }
+            onSubmit { Later(0) }
         }
 
         form.fields.apply {

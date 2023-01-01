@@ -2,15 +2,15 @@ package fields
 
 import expect.expect
 import presenters.forms.Fields
+import presenters.forms.fields.name
 import presenters.forms.fields.number
-import presenters.forms.fields.text
 import kotlin.test.Test
 
 class FieldsTest {
 
     class TestFormFields : Fields() {
-        val name by text()
-        val age by number()
+        val name = name()
+        val age = number(name = "age")
     }
 
     @Test

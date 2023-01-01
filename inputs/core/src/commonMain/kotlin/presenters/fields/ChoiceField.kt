@@ -6,10 +6,6 @@ package presenters.fields
 import kollections.Collection
 import kotlin.js.JsExport
 
-sealed interface ChoiceField<out O> {
+sealed interface ChoiceField<out O> : Validateable0 {
     val items: Collection<O>
-
-    fun validate(): ValidationResult
-    fun validateSettingInvalidsAsWarnings(): ValidationResult
-    fun validateSettingInvalidsAsErrors(): ValidationResult
 }

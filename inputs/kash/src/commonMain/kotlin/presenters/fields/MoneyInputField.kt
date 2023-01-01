@@ -4,62 +4,48 @@
 package presenters.fields
 
 import kash.Currency
+import kash.CurrencySerializer
 import kash.Money
 import kollections.toIList
-import presenters.fields.internal.AbstractTextInputFieldRaw
+import presenters.fields.internal.DoubleInputField
+import presenters.fields.internal.NumberBasedValueField
 import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.reflect.KProperty
 
 class MoneyInputField(
     override val name: String,
-    override val label: String = name,
-    override val hint: String = label,
-    val selectCurrency: Boolean = false,
-    val currency: Currency? = null,
-    value: String? = null,
-    override val isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-    override val isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
-    override val validator: (String?) -> String? = { it }
-) : AbstractTextInputFieldRaw(name, label, hint, value, isReadonly, isRequired, validator) {
+    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    override val label: InputLabel = InputLabel(name, isRequired),
+    hint: String = label.text,
+    defaultValue: Money? = SingleValuedField.DEFAULT_VALUE,
+    val currency: Currency? = defaultValue?.currency,
+    val selectCurrency: Boolean = true,
+    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    max: Double? = NumberBasedValueField.DEFAULT_MAX,
+    min: Double? = NumberBasedValueField.DEFAULT_MIN,
+    step: Double? = DoubleInputField.DEFAULT_STEP,
+) : ValuedField<Money> {
 
-    @JsName("from_property")
-    constructor(
-        name: KProperty<*>,
-        label: String = name.name,
-        hint: String = name.name,
-        selectCurrency: Boolean = false,
-        currency: Currency? = null,
-        value: String? = null,
-        isReadonly: Boolean = InputFieldWithValue.DEFAULT_IS_READONLY,
-        isRequired: Boolean = InputFieldWithValue.DEFAULT_IS_REQUIRED,
-        validator: (String?) -> String? = { it }
-    ) : this(name.name, label, hint, selectCurrency, currency, value, isReadonly, isRequired, validator)
+    val currencies: SingleChoiceValuedField<Currency> = SingleChoiceValuedField(
+        name = "$name-currency",
+        isRequired = isRequired,
+        label = InputLabel("$name currency", isRequired),
+        isReadonly = !selectCurrency,
+        items = Currency.values.toIList(),
+        mapper = { Option(it.name, it.name) },
+        serializer = CurrencySerializer,
+        defaultValue = currency
+    )
 
-    val currencies by lazy {
-        DropDownInputField(
-            name = "$name-currency",
-            label = "Currency",
-            isReadonly = !selectCurrency,
-            options = Currency.values.map {
-                DropDownInputField.Option(
-                    label = it.name,
-                    value = it.name,
-                    selected = it == currency
-                )
-            }.toIList()
-        )
-    }
-
-    val amount by lazy {
-        NumberInputField(
-            name = "$name-value",
-            label = "Value",
-            hint = hint,
-            value = value,
-            isReadonly,
-            isRequired,
-            validator
-        )
-    }
+    val amount: NumberBasedValueField<Double> = DoubleInputField(
+        name = "$name-amount",
+        isRequired = isRequired,
+        label = InputLabel("$name currency", isRequired),
+        hint = hint,
+        defaultValue = defaultValue?.amountAsDouble?.toString(),
+        isReadonly = isReadonly,
+        max = max,
+        min = min,
+        step = step,
+        validator = null
+    )
 }
