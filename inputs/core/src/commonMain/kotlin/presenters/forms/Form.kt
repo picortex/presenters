@@ -21,11 +21,11 @@ import presenters.fields.throwIfInvalid
 import viewmodel.ViewModel
 import kotlin.js.JsExport
 
-open class Form<out F : Fields, P, R>(
+open class Form<out F : Fields, out P, out R>(
     open val heading: String,
     open val details: String,
     open val fields: F,
-    open val config: FormConfig<P>,
+    open val config: FormConfig<@UnsafeVariance P>,
     initializer: FormActionsBuildingBlock<P, R>,
 ) : ViewModel<FormState<R>>(config.of(Pending)) {
 

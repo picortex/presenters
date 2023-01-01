@@ -18,8 +18,8 @@ class TextBasedValuedFieldImpl<O : Any>(
     override val transformer: (String?) -> O?,
     override val defaultValue: String? = null,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
-    open val maxLength: Int? = DEFAULT_MAX_LENGTH,
-    open val minLength: Int? = DEFAULT_MIN_LENGTH,
+    val maxLength: Int? = DEFAULT_MAX_LENGTH,
+    val minLength: Int? = DEFAULT_MIN_LENGTH,
     validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR,
     override val serializer: KSerializer<O>,
 ) : AbstractValuedField<String, O>(name, isRequired, label, defaultValue, transformer, isReadonly, validator), TextBasedValuedField<O> {

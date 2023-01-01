@@ -15,7 +15,7 @@ internal const val DEFAULT_MIN_LENGTH = 2
 internal const val DEFAULT_IS_REQUIRED: Boolean = true
 
 inline fun Fields.name(
-    name: String,
+    name: String = "name",
     label: String = name,
     hint: String? = label,
     value: String? = SingleValuedField.DEFAULT_VALUE,

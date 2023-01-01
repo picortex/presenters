@@ -85,17 +85,14 @@ internal class PaginationManagerImpl<out T>(
     }
 
     override fun loadPage(no: Int): Later<Page<T>> {
-        println("Loading")
         if (page.value is Loading) return FailedLater(LOADING_ERROR)
         val memorizedPage = ram.readOrNull(no, capacity)
-        println("Loading")
         page.value = Loading("Loading", memorizedPage)
         return try {
             loader(no, capacity)
         } catch (err: Throwable) {
             FailedLater(err)
         }.then {
-            println("Storing")
             page.value = Success(ram.write(it))
             it
         }.catch {

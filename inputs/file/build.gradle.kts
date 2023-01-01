@@ -13,7 +13,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(kotlinx.serialization.core)
+                api(projects.presentersInputsCore)
+                api(projects.epsilonFile)
+            }
+        }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(projects.expectCore)
             }
         }
     }
@@ -21,5 +28,5 @@ kotlin {
 
 aSoftOSSLibrary(
     version = asoft.versions.root.get(),
-    description = "A kotlin multiplatform library to present common UI states"
+    description = "A kotlin multiplatform library"
 )
