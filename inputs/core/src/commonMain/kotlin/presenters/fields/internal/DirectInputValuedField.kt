@@ -1,12 +1,8 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
 package presenters.fields.internal
 
 import live.mutableLiveOf
 import presenters.fields.InputLabel
 import presenters.validation.ValidationResult
-import kotlin.js.JsExport
 
 abstract class DirectInputValuedField<O : Any>(
     name: String,

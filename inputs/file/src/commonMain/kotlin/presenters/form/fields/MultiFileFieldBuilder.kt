@@ -5,6 +5,7 @@ import presenters.fields.InputLabel
 import presenters.fields.MultiFileInputField
 import presenters.fields.SingleFileInputField
 import presenters.fields.SingleValuedField
+import presenters.fields.internal.MultiFileInputFieldImpl
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
 import kotlin.reflect.KProperty
@@ -16,8 +17,8 @@ fun Fields.files(
     value: Array<FileBlob>? = null,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     validator: ((Array<FileBlob>?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate(name) {
-    MultiFileInputField(
+): MultiFileInputField = getOrCreate(name) {
+    MultiFileInputFieldImpl(
         name = name,
         label = InputLabel(label, isRequired),
         hint = hint ?: label,

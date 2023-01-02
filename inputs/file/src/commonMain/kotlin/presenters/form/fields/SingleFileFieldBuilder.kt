@@ -4,6 +4,7 @@ import epsilon.FileBlob
 import presenters.fields.InputLabel
 import presenters.fields.SingleFileInputField
 import presenters.fields.SingleValuedField
+import presenters.fields.internal.SingleFileInputFieldImpl
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
 import kotlin.reflect.KProperty
@@ -15,8 +16,8 @@ fun Fields.file(
     value: FileBlob? = null,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     validator: ((FileBlob?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate(name) {
-    SingleFileInputField(
+): SingleFileInputField = getOrCreate(name) {
+    SingleFileInputFieldImpl(
         name = name,
         label = InputLabel(label, isRequired),
         hint = hint ?: label,
