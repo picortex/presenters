@@ -7,7 +7,7 @@ import presenters.fields.OutputList
 import presenters.fields.RawData
 
 @PublishedApi
-internal data class FormattableDataImpl<out I, out O>(
+internal data class FormattedDataImpl<out I, out O>(
     override val raw: I?,
     override val formatted: String,
     override val output: O?
@@ -20,14 +20,14 @@ internal class OutputListImpl<out D>(
 
 inline fun <O> OutputList(value: List<O>): OutputList<O> = OutputListImpl(value)
 
-inline fun <O> RawData(value: O?): RawData<O, O> = FormattableDataImpl(value, "", value)
+inline fun <O> RawData(value: O?): RawData<O, O> = FormattedDataImpl(value, "", value)
 
-inline fun <I, O> RawData(input: I, output: O?): RawData<I, O> = FormattableDataImpl(input, "", output)
+inline fun <I, O> RawData(input: I, output: O?): RawData<I, O> = FormattedDataImpl(input, "", output)
 
-inline fun <O> OutputData(value: O?): OutputData<O> = FormattableDataImpl(value, "", value)
+inline fun <O> OutputData(value: O?): OutputData<O> = FormattedDataImpl(value, "", value)
 
 inline fun <I, O> FormattedData(
     raw: I?,
     formatted: String,
     output: O?
-): FormattedData<I, O> = FormattableDataImpl(raw, formatted, output)
+): FormattedData<I, O> = FormattedDataImpl(raw, formatted, output)

@@ -3,20 +3,21 @@ package presenters.fields.internal
 import live.MutableLive
 import live.mutableLiveOf
 import presenters.fields.FormattedData
+import presenters.fields.Formatter
 import presenters.fields.InputLabel
+import presenters.fields.TransformedInput
 import presenters.validation.ValidationResult
-import kotlin.js.JsExport
 
 abstract class TransformedInputValuedField<I, O : Any>(
     name: String,
     isRequired: Boolean,
     label: InputLabel,
     defaultValue: @UnsafeVariance I?,
-    val formatter: ((O?) -> String?)?,
-    val transformer: (I?) -> O?,
+    override val formatter: Formatter<O>?,
+    final override val transformer: (I?) -> O?,
     isReadonly: Boolean,
     validator: ((I?) -> Unit)?,
-) : AbstractValuedField<I, O>(name, isRequired, label, defaultValue, isReadonly, validator) {
+) : AbstractValuedField<I, O>(name, isRequired, label, defaultValue, isReadonly, validator), TransformedInput<I, O> {
     override val data: MutableLive<FormattedData<I, O>> = mutableLiveOf(toFormattedData(defaultValue))
 
     override fun set(value: I?) {

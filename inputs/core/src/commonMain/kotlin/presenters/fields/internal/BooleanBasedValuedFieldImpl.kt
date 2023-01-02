@@ -21,7 +21,7 @@ internal class BooleanBasedValuedFieldImpl(
     validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : DirectInputValuedField<Boolean>(name, isRequired, label, defaultValue, isReadonly, validator), BooleanInputField {
 
-    override val serializer: KSerializer<Boolean> by lazy { Boolean.serializer() }
+    override val serializer: KSerializer<Boolean> = Boolean.serializer()
 
     override fun validate(value: Boolean?): ValidationResult {
         if (isRequired && value == null) {

@@ -3,6 +3,7 @@ package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
+import presenters.fields.Formatter
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
 
@@ -13,7 +14,7 @@ internal class IntegerInputField(
     label: InputLabel = InputLabel(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    formatter: ((Int?) -> String?)? = null,
+    formatter: Formatter<Int>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     override val max: Int? = DEFAULT_MAX,
     override val min: Int? = DEFAULT_MIN,

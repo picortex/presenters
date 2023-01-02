@@ -1,5 +1,6 @@
 package presenters.forms.fields
 
+import presenters.fields.Formatter
 import presenters.fields.InputLabel
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField
@@ -15,6 +16,7 @@ fun Fields.long(
     value: Long? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    formatter: Formatter<Long>? = null,
     max: Long? = AbstractNumberBasedValueField.DEFAULT_MAX,
     min: Long? = AbstractNumberBasedValueField.DEFAULT_MIN,
     step: Long = LongInputField.DEFAULT_STEP,
@@ -27,6 +29,7 @@ fun Fields.long(
         defaultValue = value?.toString(),
         isReadonly = isReadonly,
         isRequired = isRequired,
+        formatter = formatter,
         max = max,
         min = min,
         step = step,
@@ -41,8 +44,9 @@ inline fun Fields.long(
     value: Long? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    formatter: Formatter<Long>? = null,
     max: Long? = AbstractNumberBasedValueField.DEFAULT_MAX,
     min: Long? = AbstractNumberBasedValueField.DEFAULT_MIN,
     step: Long = LongInputField.DEFAULT_STEP,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = long(property.name, label, hint, value, isReadonly, isRequired, max, min, step, validator)
+) = long(property.name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)

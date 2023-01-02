@@ -2,6 +2,7 @@ package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
+import presenters.fields.Formatter
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
 
@@ -12,7 +13,7 @@ internal class LongInputField(
     label: InputLabel = InputLabel(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    formatter: ((Long?) -> String?)? = null,
+    formatter: Formatter<Long>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     override val max: Long? = DEFAULT_MAX,
     override val min: Long? = DEFAULT_MIN,

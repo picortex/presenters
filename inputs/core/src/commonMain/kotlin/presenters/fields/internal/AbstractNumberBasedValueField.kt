@@ -1,5 +1,6 @@
 package presenters.fields.internal
 
+import presenters.fields.Formatter
 import presenters.fields.InputLabel
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
@@ -11,14 +12,13 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-@PublishedApi
-internal abstract class AbstractNumberBasedValueField<N : Number>(
+abstract class AbstractNumberBasedValueField<N : Number>(
     name: String,
     isRequired: Boolean = DEFAULT_IS_REQUIRED,
     label: InputLabel = InputLabel(name, isRequired),
     final override val hint: String = label.text,
     defaultValue: String? = DEFAULT_VALUE,
-    formatter: ((N?) -> String?)? = null,
+    formatter: Formatter<N>? = null,
     transformer: (String?) -> N?,
     isReadonly: Boolean = DEFAULT_IS_READONLY,
     open val max: N? = DEFAULT_MAX,

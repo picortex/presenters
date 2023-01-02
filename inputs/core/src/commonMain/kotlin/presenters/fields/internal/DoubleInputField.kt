@@ -2,6 +2,7 @@ package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
+import presenters.fields.Formatter
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
 
@@ -12,13 +13,17 @@ internal class DoubleInputField(
     label: InputLabel = InputLabel(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    formatter: ((Double?) -> String?)? = null,
+    formatter: Formatter<Double>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     override val max: Double? = DEFAULT_MAX,
     override val min: Double? = DEFAULT_MIN,
     override val step: Double? = DEFAULT_STEP,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) : AbstractNumberBasedValueField<Double>(name, isRequired, label, hint, defaultValue, formatter, { it?.toDoubleOrNull() }, isReadonly, max, min, step, validator) {
+) : AbstractNumberBasedValueField<Double>(
+    name, isRequired, label, hint, defaultValue, formatter,
+    { it?.replace(",", "")?.toDoubleOrNull() },
+    isReadonly, max, min, step, validator
+) {
 
     override val serializer: KSerializer<Double> = Double.serializer()
 

@@ -5,13 +5,13 @@ import presenters.fields.internal.DoubleInputField
 import presenters.fields.internal.IntegerInputField
 import presenters.fields.internal.LongInputField
 
-inline fun NumberBasedValuedField(
+inline fun DoubleValuedField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     label: InputLabel = InputLabel(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    noinline formatter: ((Double?) -> String?)? = null,
+    formatter: Formatter<Double>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     max: Double? = AbstractNumberBasedValueField.DEFAULT_MAX,
     min: Double? = AbstractNumberBasedValueField.DEFAULT_MIN,
@@ -19,13 +19,13 @@ inline fun NumberBasedValuedField(
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ): NumberBasedValuedField<Double> = DoubleInputField(name, isRequired, label, hint, defaultValue, formatter, isReadonly, max, min, step, validator)
 
-inline fun NumberBasedValuedField(
+inline fun IntegerValuedField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     label: InputLabel = InputLabel(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    noinline formatter: ((Int?) -> String?)? = null,
+    formatter: Formatter<Int>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     max: Int? = AbstractNumberBasedValueField.DEFAULT_MAX,
     min: Int? = AbstractNumberBasedValueField.DEFAULT_MIN,
@@ -33,13 +33,13 @@ inline fun NumberBasedValuedField(
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ): NumberBasedValuedField<Int> = IntegerInputField(name, isRequired, label, hint, defaultValue, formatter, isReadonly, max, min, step, validator)
 
-inline fun NumberBasedValuedField(
+inline fun LongValuedField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     label: InputLabel = InputLabel(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    noinline formatter: ((Long?) -> String?)? = null,
+    formatter: Formatter<Long>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     max: Long? = AbstractNumberBasedValueField.DEFAULT_MAX,
     min: Long? = AbstractNumberBasedValueField.DEFAULT_MIN,

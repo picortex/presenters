@@ -1,5 +1,6 @@
 package presenters.forms.fields
 
+import presenters.fields.Formatter
 import presenters.fields.InputLabel
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField
@@ -15,6 +16,7 @@ fun Fields.double(
     value: Double? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    formatter: Formatter<Double>? = null,
     max: Double? = AbstractNumberBasedValueField.DEFAULT_MAX,
     min: Double? = AbstractNumberBasedValueField.DEFAULT_MIN,
     step: Double = DoubleInputField.DEFAULT_STEP,
@@ -25,6 +27,7 @@ fun Fields.double(
         label = InputLabel(label, isReadonly),
         hint = hint ?: name,
         defaultValue = value?.toString(),
+        formatter = formatter,
         isReadonly = isReadonly,
         isRequired = isRequired,
         max = max,
@@ -41,8 +44,9 @@ inline fun Fields.double(
     value: Double? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    formatter: Formatter<Double>? = null,
     max: Double? = AbstractNumberBasedValueField.DEFAULT_MAX,
     min: Double? = AbstractNumberBasedValueField.DEFAULT_MIN,
     step: Double = DoubleInputField.DEFAULT_STEP,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = double(property.name, label, hint, value, isReadonly, isRequired, max, min, step, validator)
+) = double(property.name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)

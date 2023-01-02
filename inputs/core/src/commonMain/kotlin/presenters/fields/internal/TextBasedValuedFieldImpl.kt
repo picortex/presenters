@@ -1,22 +1,23 @@
 package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
+import presenters.fields.Formatter
+import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
-import presenters.fields.InputLabel
-import presenters.validation.Invalid
+import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
 import presenters.fields.TextBasedValuedField
+import presenters.fields.TransformedInput
+import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
-import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
-import presenters.fields.TransformedInput
 
 open class TextBasedValuedFieldImpl<O : Any>(
     name: String,
     isRequired: Boolean = DEFAULT_IS_REQUIRED,
     label: InputLabel = InputLabel(name, isRequired),
     final override val hint: String = label.capitalizedWithAstrix(),
-    formatter: ((O?) -> String?)? = null,
+    formatter: Formatter<O>? = null,
     transformer: (String?) -> O?,
     defaultValue: String? = null,
     isReadonly: Boolean = DEFAULT_IS_READONLY,
