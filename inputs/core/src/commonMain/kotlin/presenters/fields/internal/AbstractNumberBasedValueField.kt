@@ -25,7 +25,7 @@ internal abstract class AbstractNumberBasedValueField<N : Number>(
     open val min: N? = DEFAULT_MIN,
     open val step: N? = DEFAULT_STEP,
     validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR
-) : FormattedInputValuedField<String, N>(name, isRequired, label, defaultValue, formatter, transformer, isReadonly, validator), NumberBasedValuedField<N>, TransformedInput<String, N> {
+) : TransformedInputValuedField<String, N>(name, isRequired, label, defaultValue, formatter, transformer, isReadonly, validator), NumberBasedValuedField<N>, TransformedInput<String, N> {
 
     abstract fun increment(step: N? = this.step)
 

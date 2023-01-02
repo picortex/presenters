@@ -1,8 +1,6 @@
 package presenters.fields.internal
 
 import kotlinx.serialization.KSerializer
-import live.Live
-import presenters.fields.InputData
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.InputLabel
@@ -26,7 +24,7 @@ class TextBasedValuedFieldImpl<O : Any>(
     val minLength: Int? = DEFAULT_MIN_LENGTH,
     validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR,
     override val serializer: KSerializer<O>,
-) : FormattedInputValuedField<String, O>(name, isRequired, label, defaultValue, formatter, transformer, isReadonly, validator), TextBasedValuedField<O>, TransformedInput<String, O> {
+) : TransformedInputValuedField<String, O>(name, isRequired, label, defaultValue, formatter, transformer, isReadonly, validator), TextBasedValuedField<O>, TransformedInput<String, O> {
 
     companion object {
         val DEFAULT_MAX_LENGTH: Int? = null

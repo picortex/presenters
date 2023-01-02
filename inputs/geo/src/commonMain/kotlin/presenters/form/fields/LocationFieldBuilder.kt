@@ -3,6 +3,7 @@ package presenters.form.fields
 import geo.GeoLocation
 import presenters.fields.LocationInputField
 import presenters.fields.*
+import presenters.fields.internal.LocationInputFieldImpl
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
 import kotlin.reflect.KProperty
@@ -15,8 +16,8 @@ fun Fields.location(
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = getOrCreate(name) {
-    LocationInputField(
+): LocationInputField = getOrCreate(name) {
+    LocationInputFieldImpl(
         name = name,
         label = InputLabel(label, isRequired),
         hint = hint ?: label,

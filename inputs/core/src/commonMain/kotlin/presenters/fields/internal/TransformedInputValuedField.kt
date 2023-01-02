@@ -10,7 +10,7 @@ import presenters.fields.InputLabel
 import presenters.validation.ValidationResult
 import kotlin.js.JsExport
 
-abstract class FormattedInputValuedField<I, O : Any>(
+abstract class TransformedInputValuedField<I, O : Any>(
     name: String,
     isRequired: Boolean,
     label: InputLabel,
