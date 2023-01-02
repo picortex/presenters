@@ -11,11 +11,11 @@ import presenters.validation.ValidationResult
 import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
 import presenters.fields.TransformedInput
 
-class TextBasedValuedFieldImpl<O : Any>(
+open class TextBasedValuedFieldImpl<O : Any>(
     name: String,
     isRequired: Boolean = DEFAULT_IS_REQUIRED,
     label: InputLabel = InputLabel(name, isRequired),
-    override val hint: String = label.capitalizedWithAstrix(),
+    final override val hint: String = label.capitalizedWithAstrix(),
     formatter: ((O?) -> String?)? = null,
     transformer: (String?) -> O?,
     defaultValue: String? = null,
@@ -23,17 +23,12 @@ class TextBasedValuedFieldImpl<O : Any>(
     val maxLength: Int? = DEFAULT_MAX_LENGTH,
     val minLength: Int? = DEFAULT_MIN_LENGTH,
     validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR,
-    override val serializer: KSerializer<O>,
+    final override val serializer: KSerializer<O>,
 ) : TransformedInputValuedField<String, O>(name, isRequired, label, defaultValue, formatter, transformer, isReadonly, validator), TextBasedValuedField<O>, TransformedInput<String, O> {
 
     companion object {
         val DEFAULT_MAX_LENGTH: Int? = null
         val DEFAULT_MIN_LENGTH: Int? = null
-    }
-
-    override fun set(value: String?) {
-        setRaw(value)
-        data.value = toInputData(value)
     }
 
     override fun validate(value: String?): ValidationResult {

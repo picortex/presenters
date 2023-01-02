@@ -1,11 +1,8 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
 package presenters.fields.internal
 
 import live.MutableLive
 import live.mutableLiveOf
-import presenters.fields.FormattableData
+import presenters.fields.FormattedData
 import presenters.fields.InputLabel
 import presenters.validation.ValidationResult
 import kotlin.js.JsExport
@@ -20,16 +17,16 @@ abstract class TransformedInputValuedField<I, O : Any>(
     isReadonly: Boolean,
     validator: ((I?) -> Unit)?,
 ) : AbstractValuedField<I, O>(name, isRequired, label, defaultValue, isReadonly, validator) {
-    override val data: MutableLive<FormattableData<I, O>> = mutableLiveOf(toInputData(defaultValue))
+    override val data: MutableLive<FormattedData<I, O>> = mutableLiveOf(toFormattedData(defaultValue))
 
     override fun set(value: I?) {
         setRaw(value)
-        data.value = toInputData(value)
+        data.value = toFormattedData(value)
     }
 
     override fun clear() {
         clearRaw()
-        data.value = toInputData(null)
+        data.value = toFormattedData(null)
     }
 
     abstract override fun validate(value: I?): ValidationResult
@@ -40,9 +37,9 @@ abstract class TransformedInputValuedField<I, O : Any>(
 
     override fun validateSettingInvalidsAsWarnings() = validateSettingInvalidsAsWarnings(data.value.raw)
 
-    protected fun toInputData(value: I?): FormattableData<I, O> {
+    fun toFormattedData(value: I?): FormattedData<I, O> {
         val o = transformer(value)
-        return FormattableData(
+        return FormattedData(
             raw = value,
             formatted = formatted(value, o),
             output = o

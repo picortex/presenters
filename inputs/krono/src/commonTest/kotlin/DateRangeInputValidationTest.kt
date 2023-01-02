@@ -12,7 +12,7 @@ class DateRangeInputValidationTest {
         val dr = DateRangeInputField("span")
         dr.setStart("2022-01-20")
 
-        expect(dr.data.value).toBe(null)
+        expect(dr.data.value.output).toBe(null)
         val exp = expect(dr.feedback.value).toBe<InputFieldState.Warning>()
         expect(exp.message).toBe("Span end is required")
     }
@@ -21,17 +21,17 @@ class DateRangeInputValidationTest {
     fun should_submit_if_all_start_and_end_dates_are_provided() {
         val dr = DateRangeInputField("span")
         dr.setStart("2022-01-20")
-        println(dr.start.data.value)
-        println(dr.data.value)
+        println(dr.start.data.value.output)
+        println(dr.data.value.output)
         dr.setEnd("2022-01-30")
-        println(dr.end.data.value)
-        println(dr.data.value)
+        println(dr.end.data.value.output)
+        println(dr.data.value.output)
 
         val actual = Range(
             start = LocalDate(2022, 1, 20),
             end = LocalDate(2022, 1, 30)
         )
-        expect(dr.data.value).toBe(actual)
+        expect(dr.data.value.output).toBe(actual)
         expect(dr.feedback.value).toBe<InputFieldState.Empty>()
     }
 
@@ -41,7 +41,7 @@ class DateRangeInputValidationTest {
         dr.setStart("2022-01-30")
         dr.setEnd("2022-01-20")
 
-        expect(dr.data.value).toBe(null)
+        expect(dr.data.value.output).toBe(null)
         val exp = expect(dr.feedback.value).toBe<InputFieldState.Warning>()
         expect(exp.message).toBe("Span can't range from 2022-01-30 to 2022-01-20")
     }

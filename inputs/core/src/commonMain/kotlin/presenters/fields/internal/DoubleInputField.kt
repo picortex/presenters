@@ -24,12 +24,12 @@ internal class DoubleInputField(
 
     override fun increment(step: Double?) {
         val value = data.value.output ?: 0.0
-        data.value = toInputData((value + (step ?: DEFAULT_STEP)).toString())
+        data.value = toFormattedData((value + (step ?: DEFAULT_STEP)).toString())
     }
 
     override fun decrement(step: Double?) {
         val value = data.value.output ?: 0.0
-        data.value = toInputData((value - (step ?: DEFAULT_STEP)).toString())
+        data.value = toFormattedData((value - (step ?: DEFAULT_STEP)).toString())
     }
 
     companion object {

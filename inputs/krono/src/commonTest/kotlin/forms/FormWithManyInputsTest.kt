@@ -26,9 +26,9 @@ class FormWithManyInputsTest {
     }
 
     class AllFields : Fields() {
-        val name by name(isRequired = true)
-        val dob by date(isRequired = true)
-        val color by selectSingle(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
+        val name = name(isRequired = true)
+        val dob = date(name = "dob", isRequired = true)
+        val color = selectSingle(name = "color", items = Color.values().toIList(), mapper = { Option(it.name) }, isRequired = true)
     }
 
     @Serializable
@@ -49,7 +49,7 @@ class FormWithManyInputsTest {
         ) {
             onSubmit {
                 params = it
-                Later.resolve(it)
+                Later(it)
             }
         }
         form.fields.apply {

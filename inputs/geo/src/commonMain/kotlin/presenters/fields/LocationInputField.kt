@@ -12,6 +12,4 @@ import presenters.validation.Valid
 import presenters.validation.ValidationResult
 import kotlin.js.JsExport
 
-interface LocationInputField : SingleValuedField<String, GeoLocation> {
-    val hint: String?
-}
+typealias LocationInputField = TextBasedValuedField<GeoLocation>

@@ -12,12 +12,14 @@ inline fun Fields.dateRange(
     limit: Range<LocalDate>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((String?, String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((LocalDate?, LocalDate?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = getOrCreate(name) {
     DateRangeInputField(
         name = name,
         label = InputLabel(label, isRequired),
         limit = limit,
+        defaultStart = value?.start,
+        defaultEnd = value?.end,
         isReadonly = isReadonly,
         isRequired = isRequired,
         validator = validator,
@@ -31,5 +33,5 @@ inline fun Fields.dateRange(
     limit: Range<LocalDate>? = null,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((String?, String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    noinline validator: ((LocalDate?, LocalDate?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = dateRange(name.name, label, value, limit, isReadonly, isRequired, validator)

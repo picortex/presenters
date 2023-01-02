@@ -6,8 +6,12 @@ package presenters.fields
 import kotlinx.serialization.KSerializer
 import krono.LocalDate
 import krono.serializers.LocalDateIsoSerializer
+import live.Live
+import live.MutableLive
 import live.mutableLiveOf
 import presenters.fields.internal.AbstractRangeField
+import presenters.fields.internal.DateInputFieldImpl
+import presenters.fields.internal.OutputData
 import kotlin.js.JsExport
 
 class DateRangeInputField(
@@ -18,8 +22,10 @@ class DateRangeInputField(
     defaultStart: LocalDate? = null,
     defaultEnd: LocalDate? = null,
     override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    validator: ((String?, String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) : AbstractRangeField<String, LocalDate>(name, isRequired, label, DateInputField.DEFAULT_DATE_TRANSFORMER, limit, isReadonly, validator) {
+    validator: ((LocalDate?, LocalDate?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+) : AbstractRangeField<String, LocalDate>(name, isRequired, label, DateInputFieldImpl.DEFAULT_DATE_TRANSFORMER, limit, isReadonly, validator) {
+
+    override val data = mutableLiveOf(OutputData(Range.of(defaultStart, defaultEnd)))
 
     override val start = DateInputField(
         name = "$name-start", isRequired,
@@ -42,10 +48,10 @@ class DateRangeInputField(
     private fun update(s: LocalDate?, e: LocalDate?) {
         if (s != null && e != null) {
             if (s <= e) {
-                data.value = Range(s, e)
+                data.value = OutputData(Range(s, e))
                 feedback.value = InputFieldState.Empty
             } else {
-                data.value = null
+                data.value = OutputData(null)
                 val message = "${label.capitalizedWithoutAstrix()} can't range from $s to $e"
                 feedback.value = InputFieldState.Warning(message, IllegalArgumentException(message))
             }
@@ -59,20 +65,24 @@ class DateRangeInputField(
     }
 
     override fun setStart(value: String?) {
-        start.input.value = value
-        val s = start.data.value
-        val e = end.data.value
+//        start.data.value = value
+        start.set(value)
+        val s = start.data.value.output
+        val e = end.data.value.output
         update(s, e)
     }
 
     override fun setEnd(value: String?) {
-        end.input.value = value
-        val s = start.data.value
-        val e = end.data.value
+//        end.input.value = value
+        end.set(value)
+        val s = start.data.value.output
+        val e = end.data.value.output
         update(s, e)
     }
 
-    override val serializer: KSerializer<Range<LocalDate>> by lazy { Range.serializer(LocalDateIsoSerializer) }
+    override val serializer: KSerializer<Range<LocalDate>> = inputSerializer
 
-    override val data = mutableLiveOf<Range<LocalDate>?>(null)
+    private companion object {
+        val inputSerializer = Range.serializer(LocalDateIsoSerializer)
+    }
 }

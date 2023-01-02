@@ -25,12 +25,12 @@ internal class IntegerInputField(
 
     override fun increment(step: Int?) {
         val value = data.value.output ?: 0
-        data.value = toInputData(((value) + (step ?: DEFAULT_STEP)).toString())
+        data.value = toFormattedData(((value) + (step ?: DEFAULT_STEP)).toString())
     }
 
     override fun decrement(step: Int?) {
         val value = data.value.output ?: 0
-        data.value = toInputData(((value) - (step ?: DEFAULT_STEP)).toString())
+        data.value = toFormattedData(((value) - (step ?: DEFAULT_STEP)).toString())
     }
 
     companion object {

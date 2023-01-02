@@ -29,12 +29,12 @@ internal class LongInputField(
 
     override fun increment(step: Long?) {
         val value = data.value.output ?: 0
-        data.value = toInputData(((value) + (step ?: DEFAULT_STEP)).toString())
+        data.value = toFormattedData(((value) + (step ?: DEFAULT_STEP)).toString())
     }
 
     override fun decrement(step: Long?) {
         val value = data.value.output ?: 0
-        data.value = toInputData(((value) - (step ?: DEFAULT_STEP)).toString())
+        data.value = toFormattedData(((value) - (step ?: DEFAULT_STEP)).toString())
     }
 
     companion object {
