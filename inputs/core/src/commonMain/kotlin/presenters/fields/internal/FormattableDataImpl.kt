@@ -22,6 +22,8 @@ inline fun <O> OutputList(value: List<O>): OutputList<O> = OutputListImpl(value)
 
 inline fun <O> RawData(value: O?): RawData<O, O> = FormattableDataImpl(value, "", value)
 
+inline fun <I, O> RawData(input: I, output: O?): RawData<I, O> = FormattableDataImpl(input, "", output)
+
 inline fun <O> OutputData(value: O?): OutputData<O> = FormattableDataImpl(value, "", value)
 
 inline fun <I, O> FormattedData(

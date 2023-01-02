@@ -16,7 +16,7 @@ class MoneyInputFieldTest {
         val res = money.validate()
         expect(res).toBe<Valid>()
 
-        expect(money.data.value).toBe(200.TZS)
+        expect(money.data.value.output).toBe(200.TZS)
     }
 
     @Test
@@ -26,6 +26,6 @@ class MoneyInputFieldTest {
         money.amount.type("5000")
         money.amount.type("00")
 
-        expect(money.data.value).toBe(200.TZS)
+        expect(money.data.value.output).toBe(200.TZS)
     }
 }

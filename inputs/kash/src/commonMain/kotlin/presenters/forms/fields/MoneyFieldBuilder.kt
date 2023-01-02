@@ -5,6 +5,7 @@ import kash.Money
 import presenters.fields.InputLabel
 import presenters.fields.MoneyInputField
 import presenters.fields.SingleValuedField
+import presenters.fields.internal.MoneyInputFieldImpl
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
@@ -20,8 +21,8 @@ fun Fields.money(
     max: Double? = null,
     min: Double? = null,
     step: Double? = null
-) = getOrCreate(name) {
-    MoneyInputField(
+): MoneyInputField = getOrCreate(name) {
+    MoneyInputFieldImpl(
         name = name,
         label = InputLabel(label, isRequired),
         hint = hint,
