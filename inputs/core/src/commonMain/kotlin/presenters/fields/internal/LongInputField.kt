@@ -5,36 +5,39 @@ import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
 
-class LongInputField(
-    override val name: String,
-    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
-    override val hint: String = label.text,
-    override val defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+@PublishedApi
+internal class LongInputField(
+    name: String,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    label: InputLabel = InputLabel(name, isRequired),
+    hint: String = label.text,
+    defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
+    formatter: ((Long?) -> String?)? = null,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     override val max: Long? = DEFAULT_MAX,
     override val min: Long? = DEFAULT_MIN,
     override val step: Long = DEFAULT_STEP,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) : NumberBasedValueField<Long>(name, isRequired, label, hint, defaultValue, { it?.toLongOrNull() }, isReadonly, max, min, step, validator) {
-    companion object {
-        val DEFAULT_STEP = 1L
-    }
+) : AbstractNumberBasedValueField<Long>(name, isRequired, label, hint, defaultValue, formatter, { it?.toLongOrNull() }, isReadonly, max, min, step, validator) {
 
-    override val serializer: KSerializer<Long> by lazy { Long.serializer() }
+    override val serializer: KSerializer<Long> = Long.serializer()
 
-    val valueAsDouble get() = output.value?.toDouble()
-    val maxAsDouble get() = this.max?.toDouble()
-    val minAsDouble get() = this.min?.toDouble()
-    val stepAsDouble get() = this.step.toDouble()
+    val valueAsDouble get() = data.value.output?.toDouble()
+    val maxAsDouble = this.max?.toDouble()
+    val minAsDouble = this.min?.toDouble()
+    val stepAsDouble = this.step.toDouble()
 
     override fun increment(step: Long?) {
-        val value = output.value ?: 0
-        input.value = ((value) + (step ?: DEFAULT_STEP)).toString()
+        val value = data.value.output ?: 0
+        data.value = toInputData(((value) + (step ?: DEFAULT_STEP)).toString())
     }
 
     override fun decrement(step: Long?) {
-        val value = output.value ?: 0
-        input.value = ((value) - (step ?: DEFAULT_STEP)).toString()
+        val value = data.value.output ?: 0
+        data.value = toInputData(((value) - (step ?: DEFAULT_STEP)).toString())
+    }
+
+    companion object {
+        val DEFAULT_STEP = 1L
     }
 }

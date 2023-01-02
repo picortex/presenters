@@ -3,56 +3,44 @@
 
 package presenters.fields.internal
 
-import live.MutableLive
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
 import presenters.fields.InputLabel
-import presenters.fields.Invalid
 import presenters.fields.SingleValuedField
-import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
-import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
-import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
-import presenters.fields.SingleValuedField.Companion.DEFAULT_VALUE
-import presenters.fields.Valid
-import presenters.fields.ValidationResult
+import presenters.validation.Invalid
+import presenters.validation.Valid
+import presenters.validation.ValidationResult
 import kotlin.js.JsExport
 
-abstract class AbstractValuedField<in I, out O : Any>(
-    override val name: String,
-    override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
-    override val defaultValue: @UnsafeVariance I? = DEFAULT_VALUE,
-    override val transformer: (I?) -> O?,
-    override val isReadonly: Boolean = DEFAULT_IS_READONLY,
-    val validator: ((I?) -> Unit)? = DEFAULT_VALIDATOR,
-    override val input: MutableLive<@UnsafeVariance I?> = mutableLiveOf(defaultValue),
-    override val output: MutableLive<@UnsafeVariance O?> = input.map { transformOrNull(it, transformer) }
+abstract class AbstractValuedField<I, out O : Any>(
+    final override val name: String,
+    final override val isRequired: Boolean,
+    final override val label: InputLabel,
+    final override val defaultValue: @UnsafeVariance I?,
+    final override val isReadonly: Boolean,
+    val validator: ((I?) -> Unit)?,
 ) : SingleValuedField<I, O> {
-    override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
+    final override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
-    override fun set(value: I?) {
+    protected fun setRaw(value: I?) {
         val res = validate(value)
         feedback.value = when (res) {
             is Invalid -> InputFieldState.Warning(res.cause.message ?: "Unknown", res.cause)
-            Valid -> InputFieldState.Empty
+            is Valid -> InputFieldState.Empty
         }
-        input.value = value
     }
 
-    override fun clear() {
-        input.value = null
+    protected fun clearRaw() {
         feedback.value = InputFieldState.Empty
     }
 
     abstract override fun validate(value: I?): ValidationResult
 
-    override fun validate(): ValidationResult = validate(input.value)
-
     private fun validateSettingFeedback(value: I?, body: (res: Invalid) -> InputFieldState): ValidationResult {
         val res = validate(value)
         feedback.value = when (res) {
             is Invalid -> body(res)
-            Valid -> InputFieldState.Empty
+            is Valid -> InputFieldState.Empty
         }
         return res
     }
@@ -61,11 +49,7 @@ abstract class AbstractValuedField<in I, out O : Any>(
         InputFieldState.Warning(it.cause.message ?: "", it.cause)
     }
 
-    override fun validateSettingInvalidsAsErrors() = validateSettingInvalidsAsErrors(input.value)
-
     override fun validateSettingInvalidsAsErrors(value: I?) = validateSettingFeedback(value) {
         InputFieldState.Error(it.cause.message ?: "", it.cause)
     }
-
-    override fun validateSettingInvalidsAsWarnings() = validateSettingInvalidsAsWarnings(input.value)
 }

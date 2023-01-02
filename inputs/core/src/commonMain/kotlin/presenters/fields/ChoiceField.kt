@@ -4,6 +4,7 @@
 package presenters.fields
 
 import kollections.Collection
+import presenters.validation.Validateable0
 import kotlin.js.JsExport
 
 sealed interface ChoiceField<out O> : Validateable0 {

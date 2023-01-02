@@ -1,9 +1,10 @@
 package presenters.forms.fields
 
 import presenters.fields.InputLabel
+import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.DoubleInputField
-import presenters.fields.internal.NumberBasedValueField
+import presenters.fields.internal.AbstractNumberBasedValueField
 import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
@@ -14,11 +15,11 @@ fun Fields.double(
     value: Double? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    max: Double? = NumberBasedValueField.DEFAULT_MAX,
-    min: Double? = NumberBasedValueField.DEFAULT_MIN,
+    max: Double? = AbstractNumberBasedValueField.DEFAULT_MAX,
+    min: Double? = AbstractNumberBasedValueField.DEFAULT_MIN,
     step: Double = DoubleInputField.DEFAULT_STEP,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): NumberBasedValueField<Double> = getOrCreate(name) {
+): NumberBasedValuedField<Double> = getOrCreate(name) {
     DoubleInputField(
         name = name,
         label = InputLabel(label, isReadonly),
@@ -40,8 +41,8 @@ inline fun Fields.double(
     value: Double? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    max: Double? = NumberBasedValueField.DEFAULT_MAX,
-    min: Double? = NumberBasedValueField.DEFAULT_MIN,
+    max: Double? = AbstractNumberBasedValueField.DEFAULT_MAX,
+    min: Double? = AbstractNumberBasedValueField.DEFAULT_MIN,
     step: Double = DoubleInputField.DEFAULT_STEP,
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) = double(property.name, label, hint, value, isReadonly, isRequired, max, min, step, validator)

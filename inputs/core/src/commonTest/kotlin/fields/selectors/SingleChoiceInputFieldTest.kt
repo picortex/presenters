@@ -3,7 +3,7 @@ package fields.selectors
 import expect.expect
 import kollections.toIList
 import kotlinx.serialization.Serializable
-import presenters.fields.Invalid
+import presenters.validation.Invalid
 import presenters.fields.Option
 import presenters.fields.SingleChoiceValuedField
 import kotlin.test.Test
@@ -23,7 +23,7 @@ class SingleChoiceInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectValue("Red")
-        expect(color.output.value).toBe(Color.Red)
+        expect(color.data.value.output).toBe(Color.Red)
     }
 
     @Test
@@ -35,7 +35,7 @@ class SingleChoiceInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        expect(color.output.value).toBe(Color.Green)
+        expect(color.data.value.output).toBe(Color.Green)
     }
 
     @Test
@@ -47,11 +47,11 @@ class SingleChoiceInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        expect(color.output.value).toBe(Color.Green)
+        expect(color.data.value.output).toBe(Color.Green)
 
         color.unselect()
 
-        expect(color.output.value).toBe(null)
+        expect(color.data.value.output).toBe(null)
     }
 
     @Test
@@ -65,7 +65,7 @@ class SingleChoiceInputFieldTest {
         )
 
         color.selectItem(Color.Green)
-        expect(color.output.value).toBe(Color.Green)
+        expect(color.data.value.output).toBe(Color.Green)
 
         color.unselect()
         val res = color.validate() as Invalid

@@ -1,12 +1,11 @@
 package fields.phone
 
 import expect.expect
-import expect.expectFailure
 import expect.toBe
 import kotlinx.coroutines.test.runTest
-import presenters.fields.Invalid
+import presenters.validation.Invalid
 import presenters.fields.PhoneInputField
-import presenters.fields.Valid
+import presenters.validation.Valid
 import kotlin.test.Test
 
 class PhoneInputValidationTest {
@@ -23,6 +22,6 @@ class PhoneInputValidationTest {
         val phone = PhoneInputField("phone")
         phone.set("0752748674")
         expect(phone.validate()).toBe<Valid>()
-        expect(phone.output.value).toBe("0752748674")
+        expect(phone.data.value).toBe("0752748674")
     }
 }

@@ -1,4 +1,4 @@
-package presenters.fields
+package presenters.validation
 
 interface Validateable1<in T> : Validateable0 {
     fun validate(value: T?): ValidationResult

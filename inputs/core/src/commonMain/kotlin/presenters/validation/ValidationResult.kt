@@ -1,6 +1,6 @@
 @file:JsExport
 
-package presenters.fields
+package presenters.validation
 
 import kotlin.js.JsExport
 

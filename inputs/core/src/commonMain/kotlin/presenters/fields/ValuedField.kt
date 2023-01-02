@@ -7,9 +7,9 @@ import kotlinx.serialization.KSerializer
 import live.Live
 import kotlin.js.JsExport
 
-sealed interface ValuedField<out O : Any> : InputField {
+interface ValuedField<out O : Any> : InputField {
     val feedback: Live<InputFieldState>
-    val output: Live<O?>
+    val data: Live<OutputData<O>>
     val isReadonly: Boolean
     val isRequired: Boolean
     val serializer: KSerializer<@UnsafeVariance O>

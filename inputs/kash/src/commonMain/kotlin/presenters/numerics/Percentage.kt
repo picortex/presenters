@@ -28,11 +28,9 @@ data class Percentage(
         fun fromRatio(ratio: Double) = Percentage(ratio * 100)
     }
 
-    val asInt by lazy { asDouble.roundToInt() }
+    val asInt = asDouble.roundToInt()
 
-    val asRatio by lazy { asDouble / 100.0 }
-
-    val inRatio by lazy { Ratio(asRatio) }
+    val asRatio = asDouble / 100.0
 
     fun toRatio() = Ratio(asRatio)
 }

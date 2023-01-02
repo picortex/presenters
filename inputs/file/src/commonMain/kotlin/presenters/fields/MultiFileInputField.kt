@@ -8,6 +8,9 @@ import epsilon.serializers.FileBlobSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ArraySerializer
 import presenters.fields.internal.AbstractValuedField
+import presenters.validation.Invalid
+import presenters.validation.Valid
+import presenters.validation.ValidationResult
 import kotlin.js.JsExport
 
 class MultiFileInputField(
@@ -36,7 +39,7 @@ class MultiFileInputField(
     }
 
     fun add(file: FileBlob) {
-        val files = output.value ?: arrayOf()
+        val files = data.value ?: arrayOf()
         set(files + file)
     }
 }

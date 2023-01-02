@@ -1,36 +1,31 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
 package presenters.fields.internal
 
 import presenters.fields.InputLabel
-import presenters.fields.Invalid
+import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.SingleValuedField.Companion.DEFAULT_VALIDATOR
 import presenters.fields.SingleValuedField.Companion.DEFAULT_VALUE
-import presenters.fields.Valid
-import presenters.fields.ValidationResult
-import kotlin.js.JsExport
+import presenters.fields.TransformedInput
+import presenters.validation.Invalid
+import presenters.validation.Valid
+import presenters.validation.ValidationResult
 
-abstract class NumberBasedValueField<N : Number>(
-    override val name: String,
-    override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
-    open val hint: String = label.text,
+@PublishedApi
+internal abstract class AbstractNumberBasedValueField<N : Number>(
+    name: String,
+    isRequired: Boolean = DEFAULT_IS_REQUIRED,
+    label: InputLabel = InputLabel(name, isRequired),
+    final override val hint: String = label.text,
     defaultValue: String? = DEFAULT_VALUE,
-    override val transformer: (String?) -> N?,
-    override val isReadonly: Boolean = DEFAULT_IS_READONLY,
+    formatter: ((N?) -> String?)? = null,
+    transformer: (String?) -> N?,
+    isReadonly: Boolean = DEFAULT_IS_READONLY,
     open val max: N? = DEFAULT_MAX,
     open val min: N? = DEFAULT_MIN,
     open val step: N? = DEFAULT_STEP,
     validator: ((String?) -> Unit)? = DEFAULT_VALIDATOR
-) : AbstractValuedField<String, N>(name, isRequired, label, defaultValue, transformer, isReadonly, validator) {
-    companion object {
-        val DEFAULT_STEP: Nothing? = null
-        val DEFAULT_MAX: Nothing? = null
-        val DEFAULT_MIN: Nothing? = null
-    }
+) : FormattedInputValuedField<String, N>(name, isRequired, label, defaultValue, formatter, transformer, isReadonly, validator), NumberBasedValuedField<N>, TransformedInput<String, N> {
 
     abstract fun increment(step: N? = this.step)
 
@@ -57,5 +52,16 @@ abstract class NumberBasedValueField<N : Number>(
         } catch (err: Throwable) {
             Invalid(err)
         }
+    }
+
+    override fun type(text: String) {
+        val old = data.value.raw ?: ""
+        for (i in 0..text.lastIndex) set(old + text.substring(0..i))
+    }
+
+    companion object {
+        val DEFAULT_STEP: Nothing? = null
+        val DEFAULT_MAX: Nothing? = null
+        val DEFAULT_MIN: Nothing? = null
     }
 }

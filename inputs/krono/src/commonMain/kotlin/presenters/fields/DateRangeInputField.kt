@@ -4,7 +4,6 @@
 package presenters.fields
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.nullable
 import krono.LocalDate
 import krono.serializers.LocalDateIsoSerializer
 import live.mutableLiveOf
@@ -43,10 +42,10 @@ class DateRangeInputField(
     private fun update(s: LocalDate?, e: LocalDate?) {
         if (s != null && e != null) {
             if (s <= e) {
-                output.value = Range(s, e)
+                data.value = Range(s, e)
                 feedback.value = InputFieldState.Empty
             } else {
-                output.value = null
+                data.value = null
                 val message = "${label.capitalizedWithoutAstrix()} can't range from $s to $e"
                 feedback.value = InputFieldState.Warning(message, IllegalArgumentException(message))
             }
@@ -61,19 +60,19 @@ class DateRangeInputField(
 
     override fun setStart(value: String?) {
         start.input.value = value
-        val s = start.output.value
-        val e = end.output.value
+        val s = start.data.value
+        val e = end.data.value
         update(s, e)
     }
 
     override fun setEnd(value: String?) {
         end.input.value = value
-        val s = start.output.value
-        val e = end.output.value
+        val s = start.data.value
+        val e = end.data.value
         update(s, e)
     }
 
     override val serializer: KSerializer<Range<LocalDate>> by lazy { Range.serializer(LocalDateIsoSerializer) }
 
-    override val output = mutableLiveOf<Range<LocalDate>?>(null)
+    override val data = mutableLiveOf<Range<LocalDate>?>(null)
 }

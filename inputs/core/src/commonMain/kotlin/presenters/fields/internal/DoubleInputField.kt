@@ -5,31 +5,34 @@ import kotlinx.serialization.builtins.serializer
 import presenters.fields.InputLabel
 import presenters.fields.SingleValuedField
 
-class DoubleInputField(
-    override val name: String,
-    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
-    override val hint: String = label.text,
-    override val defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+@PublishedApi
+internal class DoubleInputField(
+    name: String,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    label: InputLabel = InputLabel(name, isRequired),
+    hint: String = label.text,
+    defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
+    formatter: ((Double?) -> String?)? = null,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
     override val max: Double? = DEFAULT_MAX,
     override val min: Double? = DEFAULT_MIN,
     override val step: Double? = DEFAULT_STEP,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) : NumberBasedValueField<Double>(name, isRequired, label, hint, defaultValue, { it?.toDoubleOrNull() }, isReadonly, max, min, step, validator) {
-    companion object {
-        val DEFAULT_STEP = 1.0
-    }
+) : AbstractNumberBasedValueField<Double>(name, isRequired, label, hint, defaultValue, formatter, { it?.toDoubleOrNull() }, isReadonly, max, min, step, validator) {
 
-    override val serializer: KSerializer<Double> by lazy { Double.serializer() }
+    override val serializer: KSerializer<Double> = Double.serializer()
 
     override fun increment(step: Double?) {
-        val value = output.value ?: 0.0
-        input.value = (value + (step ?: DEFAULT_STEP)).toString()
+        val value = data.value.output ?: 0.0
+        data.value = toInputData((value + (step ?: DEFAULT_STEP)).toString())
     }
 
     override fun decrement(step: Double?) {
-        val value = output.value ?: 0.0
-        input.value = ((value) - (step ?: DEFAULT_STEP)).toString()
+        val value = data.value.output ?: 0.0
+        data.value = toInputData((value - (step ?: DEFAULT_STEP)).toString())
+    }
+
+    companion object {
+        val DEFAULT_STEP = 1.0
     }
 }

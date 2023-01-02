@@ -3,14 +3,12 @@
 
 package presenters.fields
 
-import live.Live
+import presenters.validation.Validateable1
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface SingleValuedField<in I, out O : Any> : ValuedField<O>, Validateable1<I> {
-    val input: Live<@UnsafeVariance I?>
-    val transformer: (I?) -> O?
-    val defaultValue: @UnsafeVariance I?
+interface SingleValuedField<I, out O : Any> : ValuedField<O>, Validateable1<I> {
+    val defaultValue: I?
 
     @JsName("setValue")
     fun set(value: I?)

@@ -17,11 +17,11 @@ class FieldsTest {
     fun should_easily_interact_with_text_fields() {
         val fields = TestFormFields()
         val name = fields.name
-        val watcher = name.output.watch {
+        val watcher = name.data.watch {
             println("Watcher Value: $it")
         }
         name.type("Anderson")
         watcher.stop()
-        expect(name.output.value).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 }

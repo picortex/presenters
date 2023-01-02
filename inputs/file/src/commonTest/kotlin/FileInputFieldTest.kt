@@ -11,7 +11,7 @@ class FileInputFieldTest {
 
         input.set(FakeFileBlob())
 
-        expect(input.output.value).toBe(FakeFileBlob())
+        expect(input.data.value).toBe(FakeFileBlob())
     }
 
     @Test
@@ -19,9 +19,9 @@ class FileInputFieldTest {
         val input = MultiFileInputField(name = "image")
         input.add(FakeFileBlob())
 
-        expect(input.output.value).toBeNonNull()
+        expect(input.data.value).toBeNonNull()
 
-        val (file1) = input.output.value ?: arrayOf()
+        val (file1) = input.data.value ?: arrayOf()
 
         expect(file1).toBe(FakeFileBlob())
     }
@@ -32,9 +32,9 @@ class FileInputFieldTest {
         input.add(FakeFileBlob(name = "file1.tmp"))
         input.add(FakeFileBlob(name = "file2.tmp"))
 
-        expect(input.output.value).toBeNonNull()
+        expect(input.data.value).toBeNonNull()
 
-        val (file1, file2) = input.output.value ?: arrayOf()
+        val (file1, file2) = input.data.value ?: arrayOf()
 
         expect(file1).toBe(FakeFileBlob(name = "file1.tmp"))
         expect(file2).toBe(FakeFileBlob(name = "file2.tmp"))

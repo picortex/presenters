@@ -9,12 +9,13 @@ import kotlinx.serialization.KSerializer
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
 import presenters.fields.InputLabel
-import presenters.fields.Invalid
+import presenters.validation.Invalid
 import presenters.fields.MultiChoiceValuedField
 import presenters.fields.Option
+import presenters.fields.OutputList
 import presenters.fields.SingleValuedField
-import presenters.fields.Valid
-import presenters.fields.ValidationResult
+import presenters.validation.Valid
+import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class MultiChoiceSelectValueFieldImpl<T : Any>(
@@ -29,7 +30,8 @@ internal class MultiChoiceSelectValueFieldImpl<T : Any>(
     override val optionLabels get() = options.map { it.label }.toIList()
     override val optionValues get() = options.map { it.value }.toIList()
 
-    override val output = mutableLiveOf<List<T>>(iEmptyList())
+    override val data = mutableLiveOf<OutputList<T>>(OutputList(iEmptyList()))
+
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
     override val selectedValues = iMutableSetOf<String>()
@@ -53,7 +55,7 @@ internal class MultiChoiceSelectValueFieldImpl<T : Any>(
             val o = mapper(it)
             selectedValues.contains(o.value)
         }.toIList()
-        output.value = if (selectedItems.isEmpty()) iEmptyList() else selectedItems
+        data.value = OutputList(if (selectedItems.isEmpty()) iEmptyList() else selectedItems)
     }
 
     override fun addSelectedItem(item: T) = addSelectedValue(mapper(item).value)
@@ -86,7 +88,7 @@ internal class MultiChoiceSelectValueFieldImpl<T : Any>(
 
     override fun unselectAll() {
         selectedValues.clear()
-        output.value = iEmptyList()
+        data.value = OutputList(iEmptyList())
     }
 
     override fun clear() {
@@ -110,7 +112,7 @@ internal class MultiChoiceSelectValueFieldImpl<T : Any>(
     }
 
     override fun validate(): ValidationResult {
-        if (isRequired && output.value.isNullOrEmpty()) {
+        if (isRequired && data.value.isNullOrEmpty()) {
             return Invalid(IllegalArgumentException("${label.capitalizedWithoutAstrix()} is required"))
         }
         return Valid

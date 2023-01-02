@@ -7,25 +7,28 @@ import kash.Currency
 import kash.CurrencySerializer
 import kash.Money
 import kollections.toIList
-import presenters.fields.internal.DoubleInputField
-import presenters.fields.internal.NumberBasedValueField
+import kotlinx.serialization.KSerializer
+import live.mutableLiveOf
+import live.watch
+import presenters.fields.internal.AbstractValuedField
+import presenters.validation.ValidationResult
 import kotlin.js.JsExport
 
 class MoneyInputField(
-    override val name: String,
-    override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
+    name: String,
+    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    label: InputLabel = InputLabel(name, isRequired),
     hint: String = label.text,
     defaultValue: Money? = SingleValuedField.DEFAULT_VALUE,
-    val currency: Currency? = defaultValue?.currency,
-    val selectCurrency: Boolean = true,
-    override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    max: Double? = NumberBasedValueField.DEFAULT_MAX,
-    min: Double? = NumberBasedValueField.DEFAULT_MIN,
-    step: Double? = DoubleInputField.DEFAULT_STEP,
-) : ValuedField<Money> {
+    currency: Currency? = defaultValue?.currency,
+    selectCurrency: Boolean = true,
+    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
+    max: Double? = null,
+    min: Double? = null,
+    step: Double? = null,
+) : AbstractValuedField<String, Money>(name, isRequired, label, null, { error("") }, isReadonly, null) {
 
-    val currencies: SingleChoiceValuedField<Currency> = SingleChoiceValuedField(
+    val currency: SingleChoiceValuedField<Currency> = SingleChoiceValuedField(
         name = "$name-currency",
         isRequired = isRequired,
         label = InputLabel("$name currency", isRequired),
@@ -36,7 +39,7 @@ class MoneyInputField(
         defaultValue = currency
     )
 
-    val amount: NumberBasedValueField<Double> = DoubleInputField(
+    val amount: NumberBasedValuedField<Double> = NumberBasedValuedField(
         name = "$name-amount",
         isRequired = isRequired,
         label = InputLabel("$name currency", isRequired),
@@ -48,4 +51,18 @@ class MoneyInputField(
         step = step,
         validator = null
     )
+
+    override val data = mutableLiveOf<Money?>(null)
+
+    init {
+        watch(this.currency.data, amount.data) { curncy, amnt ->
+            val a = amnt ?: return@watch
+            val c = curncy ?: return@watch
+            data.value = Money.of(a, c)
+        }
+    }
+
+    override fun validate(value: String?): ValidationResult = amount.validate(value)
+
+    override val serializer: KSerializer<Money> = Money.serializer()
 }

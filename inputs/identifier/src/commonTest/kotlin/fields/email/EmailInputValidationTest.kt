@@ -1,12 +1,11 @@
 package fields.email
 
 import expect.expect
-import expect.expectFailure
 import expect.toBe
 import kotlinx.coroutines.test.runTest
 import presenters.fields.EmailInputField
-import presenters.fields.Invalid
-import presenters.fields.Valid
+import presenters.validation.Invalid
+import presenters.validation.Valid
 import kotlin.test.Test
 
 class EmailInputValidationTest {
@@ -23,6 +22,6 @@ class EmailInputValidationTest {
         val email = EmailInputField("email")
         email.type("andy@lamax.com")
         expect(email.validate()).toBe<Valid>()
-        expect(email.output.value).toBe("andy@lamax.com")
+        expect(email.data.value).toBe("andy@lamax.com")
     }
 }

@@ -41,7 +41,7 @@ class TextMappedInputFieldTest {
             }
         }
         form.fields.category.type("Test")
-        expect(form.fields.category.output.value).toBe(Category(name = "Test"))
+        expect(form.fields.category.data.value.output).toBe(Category(name = "Test"))
         form.submit().await()
     }
 }

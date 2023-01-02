@@ -7,12 +7,13 @@ import kotlinx.serialization.KSerializer
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
 import presenters.fields.InputLabel
-import presenters.fields.Invalid
+import presenters.validation.Invalid
 import presenters.fields.Option
+import presenters.fields.OutputData
 import presenters.fields.SingleChoiceValuedField
 import presenters.fields.SingleValuedField
-import presenters.fields.Valid
-import presenters.fields.ValidationResult
+import presenters.validation.Valid
+import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class SingleChoiceValuedFieldImpl<T : Any>(
@@ -26,10 +27,10 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
     override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY
 ) : SingleChoiceValuedField<T> {
 
-    override val output = mutableLiveOf(defaultValue)
+    override val data = mutableLiveOf(OutputData(defaultValue))
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
-    override val selectedItem: T? get() = output.value
+    override val selectedItem: T? get() = data.value.output
 
     override val selectedOption: Option? get() = selectedItem?.let(mapper)?.copy(selected = true)
 
@@ -39,13 +40,13 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
         emptyList()
     } + items.toList().map {
         val o = mapper(it)
-        if (it == output.value) o.copy(selected = true) else o
+        if (it == data.value) o.copy(selected = true) else o
     }).toIList()
 
     override fun select(option: Option) = selectValue(option.value)
 
     override fun selectValue(optionValue: String) {
-        output.value = items.find { mapper(it).value == optionValue }
+        data.value = OutputData(items.find { mapper(it).value == optionValue })
     }
 
     override fun selectLabel(optionLabel: String) {
@@ -56,7 +57,7 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
     override fun selectItem(item: T) = select(mapper(item))
 
     override fun unselect() {
-        output.value = null
+        data.value = OutputData(null)
     }
 
     override fun clear() {
@@ -64,7 +65,7 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
     }
 
     override fun validate(): ValidationResult {
-        if (isRequired && output.value == null) {
+        if (isRequired && data.value.output == null) {
             return Invalid(IllegalArgumentException("${label.capitalizedWithoutAstrix()} is required"))
         }
         return Valid

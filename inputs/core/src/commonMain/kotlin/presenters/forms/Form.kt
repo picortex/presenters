@@ -14,10 +14,10 @@ import kase.Validating
 import koncurrent.FailedLater
 import koncurrent.Thenable
 import presenters.collections.*
-import presenters.fields.Invalid
-import presenters.fields.Valid
-import presenters.fields.ValidationResult
-import presenters.fields.throwIfInvalid
+import presenters.validation.Invalid
+import presenters.validation.Valid
+import presenters.validation.ValidationResult
+import presenters.validation.throwIfInvalid
 import viewmodel.ViewModel
 import kotlin.js.JsExport
 
@@ -40,7 +40,7 @@ open class Form<out F : Fields, out P, out R>(
 
     private val submitAction: Action1<P, R> = builtActions.submitAction
 
-    private val codec get() = config.codec
+    private val codec = config.codec
 
     fun cancel() = try {
         cancelAction.invoke()
@@ -56,7 +56,7 @@ open class Form<out F : Fields, out P, out R>(
         if (invalids.isNotEmpty()) {
             val message = simpleTableOf(invalids) {
                 column("Field") { it.item.label.capitalizedWithoutAstrix() }
-                column("Value") { it.item.output.value.toString() }
+                column("Value") { it.item.data.value.toString() }
                 column("Reason") { it.item.feedback.value.asError?.message ?: "Unknown" }
             }.renderToString()
             logger.error(message)

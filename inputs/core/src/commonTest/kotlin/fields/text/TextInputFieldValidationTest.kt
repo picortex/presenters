@@ -1,12 +1,11 @@
 package fields.text
 
 import expect.expect
-import expect.expectFailure
 import expect.toBe
 import kotlinx.coroutines.test.runTest
-import presenters.fields.Invalid
+import presenters.validation.Invalid
 import presenters.fields.TextInputField
-import presenters.fields.Valid
+import presenters.validation.Valid
 import kotlin.test.Test
 
 class TextInputFieldValidationTest {
@@ -15,16 +14,16 @@ class TextInputFieldValidationTest {
     fun should_pass_validation_if_it_the_field_is_not_required_and_input_has_not_been_set() {
         val name = TextInputField(name = "Test")
         name.validate()
-        expect(name.output.value).toBe(null)
+        expect(name.data.value.output).toBe(null)
     }
 
     @Test
     fun should_fail_validation_if_the_input_is_required_and_no_input_has_been_provided() = runTest {
         val name = TextInputField(name = "Test", isRequired = true)
-        expect(name.output.value).toBe(null)
+        expect(name.data.value.output).toBe(null)
         val res = expect(name.validate()).toBe<Invalid>()
         expect(res.cause.message).toBe("Test is required")
-        expect(name.output.value).toBe(null)
+        expect(name.data.value.output).toBe(null)
     }
 
     @Test
@@ -32,7 +31,7 @@ class TextInputFieldValidationTest {
         val name = TextInputField(name = "test", label = "Test")
         name.type("Anderson")
         expect(name.validate()).toBe<Valid>()
-        expect(name.output.value).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 
     @Test
@@ -40,7 +39,7 @@ class TextInputFieldValidationTest {
         val name = TextInputField(name = "test", label = "Test", maxLength = 20)
         name.type("Anderson")
         expect(name.validate()).toBe<Valid>()
-        expect(name.output.value).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 
     @Test
@@ -56,7 +55,7 @@ class TextInputFieldValidationTest {
         val name = TextInputField(name = "test", label = "Test")
         name.type("Anderson")
         expect(name.validate()).toBe<Valid>()
-        expect(name.output.value).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 
     @Test
@@ -64,7 +63,7 @@ class TextInputFieldValidationTest {
         val name = TextInputField(name = "test", label = "Test", minLength = 5)
         name.type("Anderson")
         expect(name.validate()).toBe<Valid>()
-        expect(name.output.value).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 
     @Test
@@ -80,7 +79,7 @@ class TextInputFieldValidationTest {
         val name = TextInputField(name = "test", label = "Test", minLength = 3, maxLength = 10)
         name.type("Anderson")
         expect(name.validate()).toBe<Valid>()
-        expect(name.output.value).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 
     @Test
@@ -89,7 +88,7 @@ class TextInputFieldValidationTest {
         name.set("")
         val res = expect(name.validate()).toBe<Invalid>()
         expect(res.cause.message).toBe("Test is required")
-        expect(name.output.value).toBe("")
+        expect(name.data.value.output).toBe("")
     }
 
     @Test
@@ -101,6 +100,6 @@ class TextInputFieldValidationTest {
         name.type("Anderson")
         val res = expect(name.validate()).toBe<Invalid>()
         expect(res.cause.message).toBe("Bad name Anderson")
-        expect(name.output.value).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 }

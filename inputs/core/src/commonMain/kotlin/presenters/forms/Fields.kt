@@ -8,11 +8,7 @@ import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
 import presenters.fields.InputField
 import presenters.fields.InputFieldState
-import presenters.fields.MultiChoiceValuedField
-import presenters.fields.SingleChoiceValuedField
-import presenters.fields.RangeValuedField
-import presenters.fields.SingleValuedField
-import presenters.fields.Validateable0
+import presenters.validation.Validateable0
 import presenters.fields.ValuedField
 import kotlin.js.JsExport
 
@@ -20,11 +16,11 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
 
     internal val all get() = cache.values
 
-    fun encodedValuesToJson(codec: StringFormat) = valuesToBeSubmitted.associate {
+    internal fun encodedValuesToJson(codec: StringFormat) = valuesToBeSubmitted.associate {
         it.name to it
     }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, field) ->
         val serializer = field.serializer as KSerializer<Any>
-        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.output.value)}"""
+        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.data.value.output)}"""
     }
 
     internal val allInvalid get() = valuesToBeSubmitted.filter { it.feedback.value is InputFieldState.Error }
@@ -33,7 +29,7 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
 
     internal val valuesToBeSubmitted
         get() = valueFields.filterNot {
-            !it.isRequired && (it.output.value == null || it.output.value.toString().isBlank())
+            !it.isRequired && (it.data.value.output == null || it.data.value.output.toString().isBlank())
         }
 
     fun validate() {
