@@ -15,12 +15,14 @@ interface MoneyInputField : ValuedField<Money>, Validateable0 {
     val currency: SingleChoiceValuedField<Currency>
     val amount: TextBasedValuedField<Double>
 
+    @JsName("setCurrencyValue")
+    fun setCurrency(currency: Currency)
+
     fun setCurrency(value: String)
 
     @JsName("setAmountString")
     fun setAmount(value: String)
 
-    @JsName("setAmount")
     fun setAmount(number: Double)
 
     @JsName("setAmountInt")

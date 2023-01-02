@@ -12,12 +12,13 @@ import presenters.fields.MoneyInputField
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.DoubleValuedField
 import presenters.fields.FormattedData
+import presenters.fields.InputFieldState
 import presenters.fields.MoneyInputFormatter
 import presenters.fields.Option
-import presenters.fields.RawData
 import presenters.fields.SingleChoiceValuedField
 import presenters.fields.SingleValuedField
 import presenters.validation.Invalid
+import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 @PublishedApi
@@ -91,26 +92,34 @@ internal class MoneyInputFieldImpl(
         data.value = FormattedData(null, "", null)
     }
 
-    override fun validateSettingInvalidsAsErrors(): ValidationResult {
-        TODO("Not yet implemented")
+    override fun validateSettingInvalidsAsErrors() = validateSettingInvalidsAsErrors(data.value.raw)
+
+    override fun validateSettingInvalidsAsWarnings() = validateSettingInvalidsAsWarnings(data.value.raw)
+
+    private fun validateSettingFeedback(value: String?, body: (res: Invalid) -> InputFieldState): ValidationResult {
+        val res = validate(value)
+        feedback.value = when (res) {
+            is Invalid -> body(res)
+            is Valid -> InputFieldState.Empty
+        }
+        return res
     }
 
-    override fun validateSettingInvalidsAsWarnings(): ValidationResult {
-        TODO("Not yet implemented")
+    override fun validateSettingInvalidsAsWarnings(value: String?) = validateSettingFeedback(value) {
+        InputFieldState.Warning(it.cause.message ?: "", it.cause)
+    }
+
+    override fun validateSettingInvalidsAsErrors(value: String?) = validateSettingFeedback(value) {
+        InputFieldState.Error(it.cause.message ?: "", it.cause)
     }
 
     override fun setAmount(value: String) = amount.set(value)
 
     override fun setCurrency(value: String) = currency.selectValue(value)
 
+    override fun setCurrency(value: Currency) = currency.selectItem(value)
+
     override fun setAmount(number: Double) = amount.set(number.toString())
 
     override fun setAmount(number: Number) = amount.set(number.toString())
-
-    private companion object {
-        fun toDoubleForgivingErrors(it: String?): Double? {
-            val str = it ?: return null
-            return str.replace(",", "").toDoubleOrNull()
-        }
-    }
 }
