@@ -27,11 +27,11 @@ class FormWithManyInputsTest {
     }
 
     class AllFields : Fields() {
-        val name by name(isRequired = true)
-        val email by email(isRequired = true)
-        val phone by phone(isRequired = true)
-        val color by selectSingle(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
-        val colors by selectMany(items = Color.values().toIList(), { Option(it.name) }, isRequired = true)
+        val name = name(isRequired = true)
+        val email = email(name = "email", isRequired = true)
+        val phone = phone(name = "phone", isRequired = true)
+        val color = selectSingle(name = "color", items = Color.values().toIList(), mapper = { Option(it.name) }, isRequired = true)
+        val colors = selectMany(name = "colors", items = Color.values().toIList(), mapper = { Option(it.name) }, isRequired = true)
     }
 
     @Serializable
@@ -54,7 +54,7 @@ class FormWithManyInputsTest {
         ) {
             onSubmit {
                 params = it
-                Later.resolve(it)
+                Later(it)
             }
         }
         form.fields.apply {

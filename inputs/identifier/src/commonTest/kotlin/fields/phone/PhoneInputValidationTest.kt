@@ -22,6 +22,6 @@ class PhoneInputValidationTest {
         val phone = PhoneInputField("phone")
         phone.set("0752748674")
         expect(phone.validate()).toBe<Valid>()
-        expect(phone.data.value).toBe("0752748674")
+        expect(phone.data.value.output).toBe("0752748674")
     }
 }

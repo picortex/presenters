@@ -22,6 +22,6 @@ class EmailInputValidationTest {
         val email = EmailInputField("email")
         email.type("andy@lamax.com")
         expect(email.validate()).toBe<Valid>()
-        expect(email.data.value).toBe("andy@lamax.com")
+        expect(email.data.value.output).toBe("andy@lamax.com")
     }
 }
