@@ -7,7 +7,7 @@ import presenters.validation.Validateable1
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface SingleValuedField<I, out O : Any> : ValuedField<O>, Validateable1<I> {
+interface SingleValuedField<I, O> : ValuedField<O>, Validateable1<I> {
     val defaultValue: I?
 
     @JsName("setValue")

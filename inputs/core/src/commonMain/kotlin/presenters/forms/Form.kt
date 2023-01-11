@@ -4,7 +4,7 @@
 package presenters.forms
 
 import actions.Action1
-import actions.constructors.action0I1R
+import actions.action0I1R
 import kase.Failure
 import kase.FormState
 import kase.Pending
@@ -50,7 +50,7 @@ open class Form<out F : Fields, out P, out R>(
 
     fun exit() = cancel()
 
-    open fun validate(): ValidationResult {
+    fun validate(): ValidationResult {
         fields.validate()
         val invalids = fields.allInvalid
         if (invalids.isNotEmpty()) {

@@ -1,12 +1,10 @@
 package presenters.collections
 
-import presenters.collections.internal.ScrollableListImpl
-import viewmodel.ViewModelConfig
-import kotlin.jvm.JvmSynthetic
+import kollections.iEmptyList
+import presenters.collections.internal.DataCollectionImpl
 
-@JvmSynthetic
-fun <T> scrollableListOf(
+inline fun <T> scrollableListOf(
     paginator: PaginationManager<T>,
     selector: SelectionManager<T>,
     actionsManager: ActionsManager<T>
-): ScrollableList<T> = ScrollableListImpl(paginator, selector, actionsManager)
+): ScrollableList<T> = DataCollectionImpl(paginator, selector, actionsManager, iEmptyList())

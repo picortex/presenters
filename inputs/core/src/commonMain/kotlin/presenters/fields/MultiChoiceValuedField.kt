@@ -11,7 +11,7 @@ import live.Live
 import live.mutableLiveOf
 import kotlin.js.JsExport
 
-interface MultiChoiceValuedField<out O> : ChoiceField<O>, ValuedField<List<O>> {
+interface MultiChoiceValuedField<O> : ChoiceField<O>, ValuedField<List<O>> {
     val optionLabels: List<String>
     val optionValues: List<String>
 

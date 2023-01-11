@@ -35,7 +35,7 @@ internal class MoneyInputFieldImpl(
     min: Double? = null,
     step: Double? = null,
     validator: ((String?) -> Unit)? = null
-) : AbstractValuedField<String, Money>(name, isRequired, label, defaultValue?.toFormattedString(), isReadonly, validator), MoneyInputField {
+) : AbstractSingleValuedField<String, Money>(name, isRequired, label, defaultValue?.toFormattedString(), isReadonly, validator), MoneyInputField {
 
     override val data = mutableLiveOf<FormattedData<String, Money>>(FormattedData(null, "", defaultValue))
 

@@ -11,7 +11,7 @@ abstract class DirectInputValuedField<O : Any>(
     defaultValue: @UnsafeVariance O?,
     isReadonly: Boolean,
     validator: ((O?) -> Unit)?,
-) : AbstractValuedField<O, O>(name, isRequired, label, defaultValue, isReadonly, validator) {
+) : AbstractSingleValuedField<O, O>(name, isRequired, label, defaultValue, isReadonly, validator) {
     override val data = mutableLiveOf(OutputData(defaultValue))
 
     override fun set(value: O?) {

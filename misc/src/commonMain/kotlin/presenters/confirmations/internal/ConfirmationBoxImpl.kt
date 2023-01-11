@@ -1,6 +1,6 @@
 package presenters.confirmations.internal
 
-import actions.constructors.mutableAction0I0R
+import actions.mutableAction0I0R
 import kase.Executing
 import kase.ExecutorState
 import kase.Failure
@@ -39,13 +39,13 @@ internal class ConfirmationBoxImpl(
 
     private val confirmAction = actions.submitAction
 
-    override fun cancel(): Thenable<Any?> = try {
+    override fun cancel(): Thenable<Unit> = try {
         cancelAction()
     } catch (cause: Throwable) {
         FailedLater(cause)
     }
 
-    override fun confirm(): Thenable<Any?> = try {
+    override fun confirm(): Thenable<Unit> = try {
         state.value = Executing(message = executionMessage)
         confirmAction()
     } catch (err: Throwable) {

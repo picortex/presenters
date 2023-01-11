@@ -23,7 +23,7 @@ internal class DateInputFieldImpl(
     val minDate: LocalDate? = DEFAULT_MIN_DATE,
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : TextBasedValuedFieldImpl<LocalDate>(
-    name = name, isRequired = isRequired, label = label,
+    name = name, isRequired = isRequired, label = label, defaultValue = defaultValue,
     hint = hint, formatter = null, transformer = DEFAULT_DATE_TRANSFORMER,
     isReadonly = isReadonly, validator = validator, serializer = LocalDateIsoSerializer
 ) {

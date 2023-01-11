@@ -6,7 +6,7 @@ package presenters.fields
 import presenters.validation.Validateable0
 import kotlin.js.JsExport
 
-interface RangeValuedField<I, out O : Any> : ValuedField<Range<O>>, Validateable0 {
+interface RangeValuedField<I, O> : ValuedField<Range<O>>, Validateable0 {
     val start: SingleValuedField<I, O>
     val end: SingleValuedField<I, O>
     val transformer: (I?) -> O?

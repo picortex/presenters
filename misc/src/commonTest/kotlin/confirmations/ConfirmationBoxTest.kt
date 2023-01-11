@@ -1,8 +1,8 @@
 package confirmations
 
 import expect.expect
+import kase.Executing
 import kase.Failure
-import kase.Loading
 import kase.Pending
 import kase.Success
 import koncurrent.FailedLater
@@ -46,7 +46,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.state).toHaveGoneThrough2<Loading<*>, Success<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Success<*>>()
         expect(confirmed).toBe(true)
     }
 
@@ -72,9 +72,30 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.state).toHaveGoneThrough2<Loading<*>, Failure<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Failure<*>>()
         expect(cancelled).toBe(false)
         expect(confirmed).toBe(true)
+    }
+
+    @Test
+    fun a_confirmation_box_can_be_cancelled() {
+        var cancelled = false
+
+        val box = ConfirmationBox(
+            heading = "Delete George",
+            details = "Are you sure you want to delete George?",
+            config = ScopeConfig(Unit)
+        ) {
+            onCancel {
+                cancelled = true
+            }
+            onConfirm {
+                FailedLater(RuntimeException("Rejecting for fun"))
+            }
+        }
+        expect(cancelled).toBe(false)
+        box.cancel()
+        expect(cancelled).toBe(true)
     }
 
     @Test
@@ -99,7 +120,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.state).toHaveGoneThrough2<Loading<*>, Failure<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Failure<*>>()
         expect(cancelled).toBe(false)
         expect(confirmed).toBe(true)
     }
@@ -122,7 +143,7 @@ class ConfirmationBoxTest {
             println("Error: ${it.message}")
         }
         println("after catching")
-        expect(box.state).toHaveGoneThrough2<Loading<*>, Failure<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Failure<*>>()
         expect(caught).toBe(true)
     }
 }

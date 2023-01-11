@@ -1,7 +1,7 @@
 package presenters.collections
 
 import kollections.toIList
-import presenters.collections.internal.TableImpl
+import presenters.collections.internal.DataCollectionImpl
 import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
@@ -10,7 +10,7 @@ fun <T> tableOf(
     selector: SelectionManager<T>,
     actionsManager: ActionsManager<T>,
     columns: List<Column<T>>
-): Table<T> = TableImpl(paginator, selector, actionsManager, columns.toIList())
+): Table<T> = DataCollectionImpl(paginator, selector, actionsManager, columns.toIList())
 
 @JvmSynthetic
 fun <T> simpleTableOf(
@@ -22,5 +22,5 @@ fun <T> simpleTableOf(
     val selector = SelectionManager(paginator)
     val actions = actionsOf(selector) {}
     val cols = columnsOf(builder)
-    return TableImpl(paginator, selector, actions, cols)
+    return DataCollectionImpl(paginator, selector, actions, cols)
 }

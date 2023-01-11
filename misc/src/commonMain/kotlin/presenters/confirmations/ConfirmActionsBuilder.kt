@@ -2,7 +2,7 @@ package presenters.confirmations
 
 import actions.Action0
 import actions.builders.Action0I1RBuilder
-import actions.constructors.action0I1RLater
+import actions.action0I1RLater
 import koncurrent.Later
 
 class ConfirmActionsBuilder : Action0I1RBuilder<Unit>() {

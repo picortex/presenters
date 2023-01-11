@@ -19,8 +19,6 @@ private fun <D> Table<D>.calculateColSizes(gap: Int): MutableMap<Column<D>, Int>
 }
 
 fun <D> Table<D>.renderToString(gap: Int = 4) = buildString {
-    appendLine()
-    appendLine()
     val colSizes = calculateColSizes(gap)
     columns.forEach {
         if (it is Column.Select) {

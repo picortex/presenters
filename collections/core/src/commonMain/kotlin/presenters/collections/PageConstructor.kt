@@ -1,6 +1,7 @@
 package presenters.collections
 
 import kollections.iListOf
+import kotlin.collections.Collection
 import kollections.toIList
 import presenters.collections.internal.PageImpl
 

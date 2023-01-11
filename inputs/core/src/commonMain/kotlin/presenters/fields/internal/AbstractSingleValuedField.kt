@@ -1,6 +1,3 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
 package presenters.fields.internal
 
 import live.mutableLiveOf
@@ -10,9 +7,8 @@ import presenters.fields.SingleValuedField
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
-import kotlin.js.JsExport
 
-abstract class AbstractValuedField<I, out O : Any>(
+abstract class AbstractSingleValuedField<I, O>(
     final override val name: String,
     final override val isRequired: Boolean,
     final override val label: InputLabel,

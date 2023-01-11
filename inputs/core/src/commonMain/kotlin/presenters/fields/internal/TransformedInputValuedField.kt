@@ -17,7 +17,7 @@ abstract class TransformedInputValuedField<I, O : Any>(
     final override val transformer: (I?) -> O?,
     isReadonly: Boolean,
     validator: ((I?) -> Unit)?,
-) : AbstractValuedField<I, O>(name, isRequired, label, defaultValue, isReadonly, validator), TransformedInput<I, O> {
+) : AbstractSingleValuedField<I, O>(name, isRequired, label, defaultValue, isReadonly, validator), TransformedInput<I, O> {
     override val data: MutableLive<FormattedData<I, O>> = mutableLiveOf(toFormattedData(defaultValue))
 
     override fun set(value: I?) {

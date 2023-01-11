@@ -2,7 +2,7 @@ package presenters.collections
 
 import kollections.toIList
 import actions.Action0
-import actions.constructors.action0I1R
+import actions.action0I1R
 import kollections.List
 
 class ActionManagerBuilder<T> {

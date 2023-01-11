@@ -2,7 +2,7 @@ package presenters.forms
 
 import actions.Action1
 import actions.builders.Action0I1RBuilder
-import actions.constructors.action1I1RLater
+import actions.action1I1RLater
 import koncurrent.Later
 
 class FormActionsBuilder<P, R> : Action0I1RBuilder<Unit>() {

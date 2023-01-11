@@ -5,4 +5,4 @@ package presenters.fields
 
 import kotlin.js.JsExport
 
-interface NumberBasedValuedField<out N : Number> : TextBasedValuedField<N>
+interface NumberBasedValuedField<N : Number> : TextBasedValuedField<N>
