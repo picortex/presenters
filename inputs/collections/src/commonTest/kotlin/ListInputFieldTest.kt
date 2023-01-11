@@ -1,19 +1,19 @@
 import expect.expect
-import presenters.fields.ListInput
+import presenters.fields.ListInputField
 import kotlin.test.Test
 
 class ListInputFieldTest {
 
     @Test
     fun should_be_able_to_add_items_to_the_list() {
-        val input = ListInput<String>("items")
+        val input = ListInputField<String>("items")
         input.add("S1")
         expect(input.data.value.output).toContain("S1")
     }
 
     @Test
     fun should_be_able_to_remove_items_from_the_list() {
-        val input = ListInput<String>(name = "items")
+        val input = ListInputField<String>(name = "items")
         input.add("S1")
         input.add("S2")
         input.add("S3")

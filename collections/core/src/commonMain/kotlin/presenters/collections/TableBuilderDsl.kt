@@ -13,6 +13,14 @@ fun <T> tableOf(
 ): Table<T> = DataCollectionImpl(paginator, selector, actionsManager, columns.toIList())
 
 @JvmSynthetic
+fun <T> tableOf(
+    paginator: PaginationManager<T>,
+    selector: SelectionManager<T>,
+    actionsManager: ActionsManager<T>,
+    builder: ColumnsBuilder<T>.() -> Unit
+): Table<T> = DataCollectionImpl(paginator, selector, actionsManager, columnsOf(builder))
+
+@JvmSynthetic
 fun <T> simpleTableOf(
     items: Collection<T>,
     builder: ColumnsBuilder<T>.() -> Unit
