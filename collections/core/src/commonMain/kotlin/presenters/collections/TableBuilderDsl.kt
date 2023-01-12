@@ -1,8 +1,16 @@
 package presenters.collections
 
+import kollections.iEmptyList
 import kollections.toIList
 import presenters.collections.internal.DataCollectionImpl
 import kotlin.jvm.JvmSynthetic
+
+@JvmSynthetic
+fun <T> tableOf(
+    paginator: PaginationManager<T>,
+    selector: SelectionManager<T>,
+    actionsManager: ActionsManager<T>
+): Table<T> = DataCollectionImpl(paginator, selector, actionsManager, iEmptyList())
 
 @JvmSynthetic
 fun <T> tableOf(
