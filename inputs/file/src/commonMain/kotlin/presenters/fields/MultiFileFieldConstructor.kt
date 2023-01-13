@@ -4,8 +4,12 @@ import epsilon.FileBlob
 import presenters.fields.internal.MultiFileInputFieldImpl
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
+import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlin.reflect.KProperty
 
+@JsName("multiFileInputField")
+@JsExport
 inline fun MultiFileInputField(
     name: String,
     label: String = name,

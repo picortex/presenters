@@ -11,7 +11,8 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-class MultiFileInputFieldImpl(
+@PublishedApi
+internal class MultiFileInputFieldImpl(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
     label: InputLabel = InputLabel(name, isRequired),
