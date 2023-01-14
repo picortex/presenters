@@ -7,6 +7,7 @@ import kotlin.js.JsExport
 
 @Serializable
 sealed class View {
+
     @Serializable
     object TableView : View()
 
