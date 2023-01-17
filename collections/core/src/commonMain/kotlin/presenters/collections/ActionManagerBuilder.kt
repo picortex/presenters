@@ -11,19 +11,42 @@ class ActionManagerBuilder<T> {
     private var multiSelectActionsBuilder: (MutableList<Action0<Unit>>).(List<T>) -> Unit = {}
     private var globalSelectActionsBuilder: MutableList<Action0<Unit>>.(Selected.Global<T>) -> Unit = {}
 
-    fun MutableList<Action0<Unit>>.on(name: String, handler: () -> Unit) = add(action0I1R(name, handler))
+    inline fun MutableList<Action0<Unit>>.on(
+        name: String,
+        noinline handler: () -> Unit
+    ) = add(action0I1R(name, handler))
 
-    fun MutableList<Action0<Unit>>.onCreate(handler: () -> Unit) = on("Create", handler)
+    inline fun MutableList<Action0<Unit>>.onCreate(
+        noinline handler: () -> Unit
+    ) = on("Create", handler)
 
-    fun MutableList<Action0<Unit>>.onDelete(handler: () -> Unit) = on("Delete", handler)
+    inline fun MutableList<Action0<Unit>>.onAdd(
+        noinline handler: () -> Unit
+    ) = on("Add", handler)
 
-    fun MutableList<Action0<Unit>>.onDeleteAll(handler: () -> Unit) = on("Delete All", handler)
+    inline fun MutableList<Action0<Unit>>.onAddAll(
+        noinline handler: () -> Unit
+    ) = on("Add all", handler)
 
-    fun MutableList<Action0<Unit>>.onView(handler: () -> Unit) = on("View", handler)
+    inline fun MutableList<Action0<Unit>>.onDelete(
+        noinline handler: () -> Unit
+    ) = on("Delete", handler)
 
-    fun MutableList<Action0<Unit>>.onEdit(handler: () -> Unit) = on("Edit", handler)
+    inline fun MutableList<Action0<Unit>>.onDeleteAll(
+        noinline handler: () -> Unit
+    ) = on("Delete all", handler)
 
-    fun MutableList<Action0<Unit>>.onDuplicate(handler: () -> Unit) = on("Duplicate", handler)
+    inline fun MutableList<Action0<Unit>>.onView(
+        noinline handler: () -> Unit
+    ) = on("View", handler)
+
+    inline fun MutableList<Action0<Unit>>.onEdit(
+        noinline handler: () -> Unit
+    ) = on("Edit", handler)
+
+    inline fun MutableList<Action0<Unit>>.onDuplicate(
+        noinline handler: () -> Unit
+    ) = on("Duplicate", handler)
 
     fun primary(builder: MutableList<Action0<Unit>>.() -> Unit) {
         primaryActionsBuilder = builder
