@@ -4,6 +4,7 @@ import expect.expect
 import expect.toBe
 import presenters.collections.Selected
 import presenters.collections.CollectionPaginator
+import presenters.collections.SelectedItem
 import presenters.collections.SelectionManager
 import presenters.collections.internal.SelectionManagerImpl
 import viewmodel.ViewModelConfig
@@ -208,7 +209,7 @@ class SelectorTest {
         selector.toggleSelectionOfRowInCurrentPage(row = 1)
         expect(selector.isRowSelectedOnCurrentPage(row = 1)).toBe(true, "Row 1 / Page 2: was supposed to be selected")
 
-        expect(selector.selected).toBe<Selected.Item<Person>>()
+        expect(selector.selected).toBe<SelectedItem<Person>>()
     }
 
     @Test
@@ -225,6 +226,6 @@ class SelectorTest {
         selector.select(Person.List[3])
         expect(selector.isRowSelectedOnPage(row = 4, page = 1)).toBe(true, "Row 4 / Page 1: was supposed to be selected")
 
-        expect(selector.selected).toBe<Selected.Item<Person>>()
+        expect(selector.selected).toBe<SelectedItem<Person>>()
     }
 }

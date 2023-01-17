@@ -30,6 +30,7 @@ interface PaginationManager<out T> {
     fun loadFirstPage(): Later<Page<T>>
     fun loadLastPage(): Later<Page<T>>
     fun forEachPage(block: (Page<T>) -> Unit)
+    fun findRow(row: Int, page: Int): SelectedItem<T>?
 
     companion object {
         val DEFAULT_CAPACITY = 10

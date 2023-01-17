@@ -13,6 +13,7 @@ import kase.LazyState
 import kase.Loading
 import kase.Pending
 import kase.Success
+import presenters.collections.SelectedItem
 
 @PublishedApi
 internal class PaginationManagerImpl<out T>(
@@ -113,6 +114,10 @@ internal class PaginationManagerImpl<out T>(
     override fun loadFirstPage(): Later<Page<T>> = loadPage(1)
 
     override fun loadLastPage(): Later<Page<T>> = loadPage(-1)
+
+    override fun findRow(row: Int, page: Int): SelectedItem<T>? {
+        TODO("Not yet implemented")
+    }
 
     companion object {
         val RESOLVE_ERROR = Throwable("Can't resolve page number while paginator is in a failure state")

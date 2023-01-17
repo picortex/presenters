@@ -1,37 +1,28 @@
 @file:JsExport
+@file:Suppress("NON_EXPORTABLE_TYPE")
 
 package presenters.collections
 
 import kollections.List
 import kotlin.js.JsExport
 
-@Suppress("NON_EXPORTABLE_TYPE")
-sealed class Selected<out T> {
+sealed class Selected<out T>
 
-    object None : Selected<Nothing>()
+object SelectedNone : Selected<Nothing>()
 
-    data class Item<out T>(
-        val value: T
-    ) : Selected<T>()
+data class SelectedItem<out T>(
+    val page: Page<T>,
+    val row: Row<T>
+) : Selected<T>()
 
-    data class Items<out T>(
-        val values: List<T>
-    ) : Selected<T>()
+data class SelectedPage<out T>(
+    val page: Page<T>
+) : Selected<T>()
 
-    data class Global<out T>(
-        val exceptions: List<T>
-    ) : Selected<T>()
+data class SelectedItems<out T>(
+    val values: List<SelectedItem<T>>
+) : Selected<T>()
 
-    val isNone get() = this is None
-    val asNone get() = this as None
-
-    val isItem get() = this is Item
-    val asItem get() = this as Item
-
-    val isItems get() = this is Items
-    val asItems get() = this as Items
-
-    val isGlobal get() = this is Global
-    val asGlobal get() = this as Global
-
-}
+data class SelectedGlobal<out T>(
+    val exceptions: List<Row<T>>
+) : Selected<T>()

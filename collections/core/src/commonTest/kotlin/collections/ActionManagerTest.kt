@@ -38,7 +38,7 @@ class ActionManagerTest {
         pag.loadFirstPage()
         val table = tableOf(pag, sel, acts, Person.columns())
         table.renderToConsole()
-        sel.state.watch(mode = WatchMode.Eagerly) {
+        sel.selected.watch(mode = WatchMode.Eagerly) {
             println("Selector: $it")
         }
         val watcher = acts.actions.watch(mode = WatchMode.Eagerly) {

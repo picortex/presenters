@@ -9,11 +9,12 @@ import presenters.collections.SelectionManager
 
 @PublishedApi
 internal class ActionsManagerImpl<T>(
-    private val selector: SelectionManager<T>,
+    selector: SelectionManager<T>,
     private val builder: ActionManagerBuilder<T>
 ) : ActionsManager<T> {
-    override val actions: Live<List<Action0<Unit>>> = selector.state.map {
-        builder.buildActions(selector.selected)
+    override val actions: Live<List<Action0<Unit>>> = selector.selected.map {
+        builder.buildActions(it)
     }
+
     override fun actionsOf(item: T): List<Action0<Unit>> = builder.buildSingleSelectActions(item)
 }

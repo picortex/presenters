@@ -9,7 +9,7 @@ class ActionManagerBuilder<T> {
     private var primaryActionsBuilder: MutableList<Action0<Unit>>.() -> Unit = {}
     private var singleSelectActionsBuilder: MutableList<Action0<Unit>>.(T) -> Unit = {}
     private var multiSelectActionsBuilder: (MutableList<Action0<Unit>>).(List<T>) -> Unit = {}
-    private var globalSelectActionsBuilder: MutableList<Action0<Unit>>.(Selected.Global<T>) -> Unit = {}
+    private var globalSelectActionsBuilder: MutableList<Action0<Unit>>.(SelectedGlobal<T>) -> Unit = {}
 
     inline fun MutableList<Action0<Unit>>.on(
         name: String,
@@ -60,7 +60,7 @@ class ActionManagerBuilder<T> {
         multiSelectActionsBuilder = builder
     }
 
-    fun global(builder: MutableList<Action0<Unit>>.(Selected.Global<T>) -> Unit) {
+    fun global(builder: MutableList<Action0<Unit>>.(SelectedGlobal<T>) -> Unit) {
         globalSelectActionsBuilder = builder
     }
 
@@ -70,15 +70,16 @@ class ActionManagerBuilder<T> {
 
     fun buildMultiSelectActions(selected: List<T>) = buildList { multiSelectActionsBuilder(selected) }.toIList()
 
-    fun buildGlobalSelectActions(state: Selected.Global<T>) = buildList { globalSelectActionsBuilder(state) }.toIList()
+    fun buildGlobalSelectActions(state: SelectedGlobal<T>) = buildList { globalSelectActionsBuilder(state) }.toIList()
 
     fun buildActions(selected: Selected<T>) = buildList {
         addAll(buildPrimaryActions())
         when (selected) {
-            is Selected.None -> {}
-            is Selected.Item -> addAll(buildSingleSelectActions(selected.value))
-            is Selected.Items -> addAll(buildMultiSelectActions(selected.values))
-            is Selected.Global -> addAll(buildGlobalSelectActions(selected))
+            is SelectedNone -> {}
+            is SelectedItem -> addAll(buildSingleSelectActions(selected.row.item))
+            is SelectedPage -> addAll(buildMultiSelectActions((selected.page.items).map { it.item }.toIList()))
+            is SelectedItems -> addAll(buildMultiSelectActions(selected.values.map { it.row.item }))
+            is SelectedGlobal -> addAll(buildGlobalSelectActions(selected))
         }
     }.toIList()
 }

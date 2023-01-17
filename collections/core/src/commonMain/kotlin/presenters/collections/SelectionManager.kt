@@ -1,3 +1,4 @@
+@file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE", "WRONG_EXPORTED_DECLARATION")
 
 package presenters.collections
@@ -10,8 +11,7 @@ import kotlin.js.JsName
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
 
-@JsExport
-interface SelectionManager<in T> {
+interface SelectionManager<T> {
     // ---------------------------------Selections--------------------------
     fun selectAllItemsInTheCurrentPage()
 
@@ -96,9 +96,7 @@ interface SelectionManager<in T> {
     fun unSelectRowInPage(row: Int, page: Int)
 
     // ---------------------------------SelectionGetters--------------------------
-    val selected: Selected<@UnsafeVariance T>
-
-    val state: MutableLive<SelectorState>
+    val selected: MutableLive<Selected<T>>
 
     companion object {
         @JvmStatic
