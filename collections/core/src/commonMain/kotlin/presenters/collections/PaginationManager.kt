@@ -15,10 +15,7 @@ interface PaginationManager<out T> {
     val continuous: List<Row<T>>
     val currentPageOrNull get() = page.value.data
     var capacity: Int
-    fun readPageFromMemory(page: Int, cap: Int): Page<T>
-    fun readPageFromMemoryOrNull(page: Int, cap: Int): Page<T>?
     fun readPageFromMemoryOrEmpty(page: Int, cap: Int): Page<T>
-    fun writePageToMemory(page: Page<@UnsafeVariance T>): Page<T>?
     fun wipeMemory()
     fun clearPages()
     fun updateLoader(loader: (no: Int, capacity: Int) -> Later<Page<@UnsafeVariance T>>)
@@ -30,7 +27,7 @@ interface PaginationManager<out T> {
     fun loadFirstPage(): Later<Page<T>>
     fun loadLastPage(): Later<Page<T>>
     fun forEachPage(block: (Page<T>) -> Unit)
-    fun findRow(row: Int, page: Int): SelectedItem<T>?
+    fun findRow(page: Int, row: Int): SelectedItem<T>?
 
     companion object {
         val DEFAULT_CAPACITY = 10

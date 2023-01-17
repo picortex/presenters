@@ -16,13 +16,14 @@ import kase.Success
 import presenters.collections.SelectedItem
 
 @PublishedApi
-internal class PaginationManagerImpl<out T>(
+internal class PaginationManagerImpl<T>(
     override var capacity: Int,
-    private val ram: PageableRamInMemory<T> = PageableRamInMemory(),
     private var loader: (no: Int, capacity: Int) -> Later<Page<T>>
 ) : PaginationManager<T> {
 
-    override val page: MutableLive<LazyState<Page<@UnsafeVariance T>>> = mutableLiveOf(Pending)
+    private val cache: PageCacheManager<T> = PageCacheManager()
+
+    override val page: MutableLive<LazyState<Page<T>>> = mutableLiveOf(Pending)
 
     override val continuous
         get() = buildList {
@@ -33,23 +34,17 @@ internal class PaginationManagerImpl<out T>(
 
     override fun forEachPage(block: (Page<T>) -> Unit) {
         var i = 1
-        var page = ram.readOrNull(i, capacity)
+        var page = cache.load(capacity, i)
         while (page != null) {
             block(page)
             i++
-            page = ram.readOrNull(i, capacity)
+            page = cache.load(capacity, i)
         }
     }
 
-    override fun readPageFromMemory(page: Int, cap: Int): Page<T> = ram.read(page, capacity)
+    override fun readPageFromMemoryOrEmpty(page: Int, cap: Int): Page<T> = cache.load(capacity, page) ?: Page(capacity = capacity, number = page)
 
-    override fun readPageFromMemoryOrNull(page: Int, cap: Int): Page<T>? = ram.readOrNull(page, capacity)
-
-    override fun readPageFromMemoryOrEmpty(page: Int, cap: Int): Page<T> = ram.readOrNull(page, capacity) ?: Page(capacity = capacity, number = page)
-
-    override fun writePageToMemory(page: Page<@UnsafeVariance T>): Page<T> = ram.write(page)
-
-    override fun wipeMemory() = ram.wipe()
+    override fun wipeMemory() = cache.clear()
 
     override fun clearPages() {
         wipeMemory()
@@ -87,14 +82,14 @@ internal class PaginationManagerImpl<out T>(
 
     override fun loadPage(no: Int): Later<Page<T>> {
         if (page.value is Loading) return FailedLater(LOADING_ERROR)
-        val memorizedPage = ram.readOrNull(no, capacity)
+        val memorizedPage = cache.load(capacity, no)
         page.value = Loading("Loading", memorizedPage)
         return try {
             loader(no, capacity)
         } catch (err: Throwable) {
             FailedLater(err)
         }.then {
-            page.value = Success(ram.write(it))
+            page.value = Success(cache.save(capacity, it))
             it
         }.catch {
             page.value = Failure(it, data = memorizedPage)
@@ -115,9 +110,7 @@ internal class PaginationManagerImpl<out T>(
 
     override fun loadLastPage(): Later<Page<T>> = loadPage(-1)
 
-    override fun findRow(row: Int, page: Int): SelectedItem<T>? {
-        TODO("Not yet implemented")
-    }
+    override fun findRow(page: Int, row: Int) = cache.load(capacity, page, row)
 
     companion object {
         val RESOLVE_ERROR = Throwable("Can't resolve page number while paginator is in a failure state")
