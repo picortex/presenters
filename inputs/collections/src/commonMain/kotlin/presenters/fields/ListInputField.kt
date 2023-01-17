@@ -11,4 +11,5 @@ interface ListInputField<E> : ValuedField<List<E>> {
     val maxItems: Int?
     fun add(item: E)
     fun remove(item: E)
+    fun update(item: E, updater: () -> E)
 }

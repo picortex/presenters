@@ -34,6 +34,14 @@ internal class ListInputFieldImpl<E>(
         }.toIList())
     }
 
+    override fun update(item: E, updater: () -> E) {
+        val list = data.value.output.toMutableList()
+        val idx = list.indexOf(item)
+        list.remove(item)
+        list.add(idx, updater())
+        data.value = OutputList(list.toIList())
+    }
+
     override fun clear() {
         data.value = OutputList(iEmptyList())
     }
