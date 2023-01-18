@@ -7,19 +7,24 @@ import kollections.Map
 import kollections.Set
 import kotlin.js.JsExport
 
-sealed class Selected<out T>
+sealed interface Selected<out T> {
+    val asNone get() = this as? SelectedNone
+    val asSelectedItem get() = this as? SelectedItem
+    val asSelectedItems get() = this as? SelectedItems
+    val asSelectedGlobal get() = this as? SelectedGlobal
+}
 
-object SelectedNone : Selected<Nothing>()
+object SelectedNone : Selected<Nothing>
 
 data class SelectedItem<out T>(
     val page: Page<T>,
     val row: Row<T>
-) : Selected<T>()
+) : Selected<T>
 
-data class SelectedItems<T>(
-    val values: Map<Page<T>, Set<Row<T>>>
-) : Selected<T>()
+data class SelectedItems<out T>(
+    val values: Map<Page<@UnsafeVariance T>, Set<Row<T>>>
+) : Selected<T>
 
 data class SelectedGlobal<out T>(
     val exceptions: Set<SelectedItem<T>>
-) : Selected<T>()
+) : Selected<T>
