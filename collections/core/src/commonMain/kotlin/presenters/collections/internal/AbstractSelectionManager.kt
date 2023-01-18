@@ -22,28 +22,9 @@ abstract class AbstractSelectionManager<T>(
 
     abstract fun selectRow(row: Int, page: Int?)
 
-    data class Position(val page: Int, val row: Int)
-
-    private fun findPosition(obj: T): Position? {
-        var rowNumber: Int? = null
-        var pageNumber: Int? = null
-        paginator.forEachPage { page ->
-            val found = page.items.find { it.item == obj }
-            // If already found, don't keep looking
-            if (rowNumber == null) pageNumber = page.number
-
-            // If already found, don't keep looking
-            if (rowNumber == null) rowNumber = found?.number
-            if (found != null) return@forEachPage // TODO: This doesn't work. Find a way to quickly terminate out of this loop
-        }
-        val r = rowNumber
-        val p = pageNumber
-        return if (r != null && p != null) Position(p, r) else null
-    }
-
     override fun select(obj: T) {
-        val pos = findPosition(obj)
-        if (pos != null) select(pos.row, pos.page)
+        val pos = paginator.find(obj) ?: return
+        select(pos.row.number, pos.page.number)
     }
 
     override fun addSelection(row: Int) = addRowSelection(row, currentLoadedPage?.number)
@@ -51,8 +32,8 @@ abstract class AbstractSelectionManager<T>(
     override fun addSelection(row: Int, page: Int) = addRowSelection(row, page)
 
     override fun addSelection(obj: T) {
-        val pos = findPosition(obj)
-        if (pos != null) addRowSelection(pos.row, pos.page)
+        val pos = paginator.find(obj) ?: return
+        addRowSelection(pos.row.number, pos.page.number)
     }
 
     abstract fun addRowSelection(row: Int, page: Int?)

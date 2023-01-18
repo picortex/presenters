@@ -9,13 +9,13 @@ import live.Live
 import presenters.collections.internal.PaginationManagerImpl
 import kase.LazyState
 import kotlin.js.JsExport
+import kotlin.js.JsName
 
-interface PaginationManager<out T> {
+interface PaginationManager<T> {
     val page: Live<LazyState<Page<T>>>
     val continuous: List<Row<T>>
     val currentPageOrNull get() = page.value.data
     var capacity: Int
-    fun readPageFromMemoryOrEmpty(page: Int, cap: Int): Page<T>
     fun wipeMemory()
     fun clearPages()
     fun updateLoader(loader: (no: Int, capacity: Int) -> Later<Page<@UnsafeVariance T>>)
@@ -27,7 +27,15 @@ interface PaginationManager<out T> {
     fun loadFirstPage(): Later<Page<T>>
     fun loadLastPage(): Later<Page<T>>
     fun forEachPage(block: (Page<T>) -> Unit)
-    fun findRow(page: Int, row: Int): SelectedItem<T>?
+
+    @JsName("findRow")
+    fun find(row: Int, page: Int): SelectedItem<T>?
+
+    @JsName("findItem")
+    fun find(item: T): SelectedItem<T>?
+
+    @JsName("findPage")
+    fun find(page: Int): Page<T>?
 
     companion object {
         val DEFAULT_CAPACITY = 10

@@ -1,18 +1,21 @@
 package presenters.collections.internal
 
-import kollections.List
-import kollections.iListOf
+import kollections.iMapOf
+import kollections.iSetOf
+import kollections.to
 import kollections.toIList
+import kollections.toIMap
+import kollections.toISet
 import live.MutableLive
 import live.mutableLiveOf
+import presenters.collections.Page
 import presenters.collections.PaginationManager
+import presenters.collections.Row
 import presenters.collections.Selected
 import presenters.collections.SelectedGlobal
 import presenters.collections.SelectedItem
 import presenters.collections.SelectedItems
 import presenters.collections.SelectedNone
-import presenters.collections.SelectedPage
-import presenters.collections.SelectorState
 
 class SelectionManagerImpl<T>(
     private val paginator: PaginationManager<T>
@@ -20,145 +23,122 @@ class SelectionManagerImpl<T>(
 
     override val selected: MutableLive<Selected<T>> = mutableLiveOf(SelectedNone)
 
-    private fun SelectorState.mapToSelected(): Selected<T> {
-        TODO()
-//        when (val s = this) {
-//            is SelectorState.AllSelected -> Selected.Global(
-//                exceptions = s.exceptions.loadedFromPaginatorMemory()
-//            )
-//
-//            is SelectorState.Item -> try {
-//                val items = paginator.readPageFromMemoryOrEmpty(s.page, paginator.capacity).items
-//                Selected.Item(items.first { row -> row.number == s.number }.item)
-//            } catch (err: Throwable) {
-//                Selected.None
-//            }
-//
-//            is SelectorState.Items -> Selected.Items(
-//                values = s.items.loadedFromPaginatorMemory()
-//            )
-//
-//            is SelectorState.NoSelected -> Selected.None
-//        }
-    }
-
-    private fun List<SelectorState.Item>.loadedFromPaginatorMemory(): List<T> = mapNotNull { item ->
-        paginator.readPageFromMemoryOrEmpty(item.page, paginator.capacity).items.firstOrNull { row ->
-            row.number == item.number
-        }?.item
-    }.toIList()
-
     override fun selectAllRowsInPage(page: Int?) {
-        val p = page ?: return
-        val rows = paginator.readPageFromMemoryOrEmpty(p, paginator.capacity)
-        TODO()
-//        state.value = SelectorState.Items(
-//            items = rows.items.map { SelectorState.Item(it.number, p) }.toIList()
-//        )
+        val pageNo = page ?: return
+        val p = paginator.find(pageNo) ?: return
+        selected.value = SelectedItems(
+            values = iMapOf(p to p.items.toISet())
+        )
     }
 
     override fun selectAllItemsInAllPages() {
-        TODO()
-//        state.value = SelectorState.AllSelected(exceptions = iListOf())
+        selected.value = SelectedGlobal(iSetOf())
     }
 
     override fun unSelectAllItemsInAllPages() {
-        TODO()
-//        state.value = SelectorState.NoSelected
+        selected.value = SelectedNone
+    }
+
+    private fun SelectedItems<T>.unSelectAllRowsInPage(page: Int?): Selected<T> {
+        val map = values.mapValues { it.value.toMutableSet() }.toMutableMap()
+        val p = map.keys.find { it.number == page } ?: return this
+        map.remove(p)
+        return readjustSelectedItems(map)
     }
 
     override fun unSelectAllRowsInPage(page: Int?) {
-        TODO()
-//        state.value = when (val s = state.value) {
-//            is SelectorState.NoSelected -> SelectorState.NoSelected
-//            is SelectorState.Item -> if (s.page == page) SelectorState.NoSelected else s
-//            is SelectorState.Items -> {
-//                val items = s.items.filter { it.page != page }.toIList()
-//                when {
-//                    items.size > 1 -> SelectorState.Items(items)
-//                    items.size == 1 -> items.first()
-//                    else -> SelectorState.NoSelected
-//                }
-//            }
-//
-//            is SelectorState.AllSelected -> SelectorState.NoSelected
-//        }
+        selected.value = when (val s = selected.value) {
+            is SelectedNone -> s
+            is SelectedItem -> if (s.page.number == page) SelectedNone else s
+            is SelectedItems -> s.unSelectAllRowsInPage(page)
+            is SelectedGlobal -> SelectedNone
+        }
     }
 
-    override fun isPageSelectedButPartially(page: Int?): Boolean {
-        TODO()
-//        when (val s = state.value) {
-//            is SelectorState.NoSelected -> false
-//            is SelectorState.Item -> s.page == page
-//            is SelectorState.Items -> s.items.any { it.page == page }
-//            is SelectorState.AllSelected -> true
-//        }
+    private fun SelectedItems<T>.isPageSelectedButPartially(page: Int?): Boolean {
+        val entry = values.find { it.key.number == page } ?: return false
+        return entry.key.capacity != entry.value.size
     }
 
-    override fun isPageSelectedWithNoExceptions(page: Int?): Boolean {
-        val p = page ?: return false
-        TODO()
-//        return when (val s = state.value) {
-//            is SelectorState.NoSelected -> false
-//            is SelectorState.Item -> false
-//            is SelectorState.Items -> {
-//                paginator.readPageFromMemoryOrEmpty(p, paginator.capacity).items.map { row ->
-//                    s.items.find { it.page == p && it.number == row.number } != null
-//                }.all { it }
-//            }
-//
-//            is SelectorState.AllSelected -> true
-//        }
+    override fun isPageSelectedButPartially(page: Int?): Boolean = when (val s = selected.value) {
+        is SelectedNone -> false
+        is SelectedItem -> s.page.number == page
+        is SelectedItems -> s.isPageSelectedButPartially(page)
+        is SelectedGlobal -> s.exceptions.any { it.page.number == page }
+    }
+
+    private fun SelectedItems<T>.isPageSelectedWithNoExceptions(page: Int?): Boolean {
+        val entry = values.find { it.key.number == page } ?: return false
+        return entry.key.capacity == entry.value.size
+    }
+
+    override fun isPageSelectedWithNoExceptions(page: Int?): Boolean = when (val s = selected.value) {
+        is SelectedNone -> false
+        is SelectedItem -> false
+        is SelectedItems -> s.isPageSelectedWithNoExceptions(page)
+        is SelectedGlobal -> !s.exceptions.any { it.page.number == page }
+    }
+
+    private fun SelectedItems<T>.unselectRowFromPage(row: Int, page: Int): Selected<T> {
+        val map = values.mapValues { it.value.toMutableSet() }.toMutableMap()
+        val p = map.keys.find { it.number == page } ?: return this
+        val r = map[p]?.find { it.number == row } ?: return this
+        map[p]?.remove(r)
+        if (map[p].isNullOrEmpty()) map.remove(p)
+        return readjustSelectedItems(map)
+    }
+
+    private fun readjustSelectedItems(map: Map<Page<T>, Set<Row<T>>>): Selected<T> {
+        return if (map.size == 1 && map.entries.first().value.size == 1) {
+            val entry = map.entries.first()
+            SelectedItem(entry.key, entry.value.first())
+        } else {
+            SelectedItems(map.mapValues { it.value.toISet() }.toIMap())
+        }
     }
 
     override fun unSelectRowFromPage(row: Int, page: Int?) {
-        TODO()
-//        state.value = when (val s = state.value) {
-//            is SelectorState.NoSelected -> SelectorState.NoSelected
-//            is SelectorState.Item -> if (s.page == page && s.number == row) SelectorState.NoSelected else s
-//            is SelectorState.Items -> {
-//                val items = s.items.filter { it.page != page && it.number != row }.toIList()
-//                when {
-//                    items.size > 1 -> SelectorState.Items(items)
-//                    items.size == 1 -> items.first()
-//                    else -> SelectorState.NoSelected
-//                }
-//            }
-//
-//            is SelectorState.AllSelected -> if (page != null) s.copy(
-//                exceptions = (s.exceptions.toMutableList() + SelectorState.Item(row, page)).toIList()
-//            ) else s
-//        }
+        val pageNo = page ?: return
+        selected.value = when (val s = selected.value) {
+            is SelectedNone -> s
+            is SelectedItem -> if (s.page.number == page && s.row.number == row) SelectedNone else s
+            is SelectedItems -> s.unselectRowFromPage(row, pageNo)
+            is SelectedGlobal -> SelectedGlobal(s.exceptions.filter { it.page.number == page && it.row.number == row }.toISet())
+        }
+    }
+
+    private fun SelectedItem<T>.addRowSelection(row: Int, page: Int): Selected<T> {
+        val item = paginator.find(row, page) ?: return this
+        return SelectedItems(iMapOf(item.page to iSetOf(this.row, item.row)))
+    }
+
+    private fun SelectedItems<T>.addRowSelection(row: Int, page: Int): Selected<T> {
+        val item = paginator.find(row, page) ?: return this
+        val map = values.mapValues { it.value.toMutableSet() }.toMutableMap()
+        map.getOrPut(item.page) { mutableSetOf() }.add(item.row)
+        return SelectedItems(map.mapValues { it.value.toISet() }.toIMap())
     }
 
     override fun addRowSelection(row: Int, page: Int?) {
         val pageNo = page ?: return
-        TODO()
-//        state.value = when (val s = state.value) {
-//            is SelectorState.NoSelected -> SelectorState.Item(row, pageNo)
-//            is SelectorState.Item -> SelectorState.Items(
-//                items = iListOf(s, SelectorState.Item(row, pageNo))
-//            )
-//
-//            is SelectorState.Items -> SelectorState.Items(
-//                items = (s.items.toMutableList() + SelectorState.Item(row, pageNo)).toIList()
-//            )
-//
-//            is SelectorState.AllSelected -> SelectorState.Item(row, pageNo)
-//        }
+        selected.value = when (val s = selected.value) {
+            is SelectedNone -> paginator.find(row, pageNo) ?: return
+            is SelectedItem -> s.addRowSelection(row, pageNo)
+            is SelectedItems -> s.addRowSelection(row, pageNo)
+            is SelectedGlobal -> SelectedGlobal(s.exceptions.filter { it.page.number == page && it.row.number == row }.toISet())
+        }
     }
 
     override fun selectRow(row: Int, page: Int?) {
         val p = page ?: return
-        val item = paginator.findRow(row, page)
-        TODO()
+        val item = paginator.find(row, page = p) ?: return
+        selected.value = item
     }
 
     override fun isRowItemSelected(row: Int, page: Int?) = when (val s = selected.value) {
         is SelectedNone -> false
         is SelectedItem -> s.row.number == row && s.page.number == page
-        is SelectedItems -> s.values.any { it.page.number == page && it.row.number == row }
-        is SelectedPage -> s.page.number == page
-        is SelectedGlobal -> !s.exceptions.map { it.number }.contains(row)
+        is SelectedItems -> s.values.toIList().any { (p, rows) -> p.number == page && rows.map { it.number }.contains(row) }
+        is SelectedGlobal -> !s.exceptions.any { it.page.number == page && it.row.number == row }
     }
 }

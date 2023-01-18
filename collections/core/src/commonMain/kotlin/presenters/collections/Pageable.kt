@@ -5,6 +5,6 @@ package presenters.collections
 
 import kotlin.js.JsExport
 
-interface Pageable<out T> {
+interface Pageable<T> {
     val paginator: PaginationManager<T>
 }

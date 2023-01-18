@@ -4,13 +4,23 @@ import expect.expect
 import expect.toBe
 import presenters.collections.Selected
 import presenters.collections.CollectionPaginator
+import presenters.collections.SelectedGlobal
 import presenters.collections.SelectedItem
+import presenters.collections.SelectedItems
+import presenters.collections.SelectedNone
 import presenters.collections.SelectionManager
 import presenters.collections.internal.SelectionManagerImpl
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
 class SelectorTest {
+
+    fun Selected<*>.prettyString() = when (this) {
+        is SelectedNone -> "None"
+        is SelectedItem -> "Selected(page=${page.number},row=${row.number},item=${row.number})"
+        is SelectedItems -> "SelectedItems{${values.joinToString(" , ") { "Page ${it.key.number} -> Rows ${it.value.map { it.number }}" }}}"
+        is SelectedGlobal -> "Selected All"
+    }
 
     @Test
     fun should_select_a_row_by_number() {
@@ -85,6 +95,9 @@ class SelectorTest {
 
         selector.addSelection(1)
         selector.addSelection(2)
+
+        expect(selector.isRowSelectedOnCurrentPage(row = 2)).toBe(true, "Row 2 / Page 1: was not selected")
+        expect(selector.isRowSelectedOnCurrentPage(row = 1)).toBe(true, "Row 1 / Page 1: was not selected")
 
         paginator.loadNextPage()
         expect(paginator.currentPageOrNull?.number).toBe(2)
@@ -209,11 +222,11 @@ class SelectorTest {
         selector.toggleSelectionOfRowInCurrentPage(row = 1)
         expect(selector.isRowSelectedOnCurrentPage(row = 1)).toBe(true, "Row 1 / Page 2: was supposed to be selected")
 
-        expect(selector.selected).toBe<SelectedItem<Person>>()
+        expect(selector.selected.value).toBe<SelectedItem<Person>>()
     }
 
     @Test
-    fun should_be_able_to_selecte_by_object_instance() {
+    fun should_be_able_to_select_by_object_instance() {
         val paginator = CollectionPaginator(Person.List, capacity = 5)
         val selector = SelectionManagerImpl(paginator)
 
@@ -226,6 +239,6 @@ class SelectorTest {
         selector.select(Person.List[3])
         expect(selector.isRowSelectedOnPage(row = 4, page = 1)).toBe(true, "Row 4 / Page 1: was supposed to be selected")
 
-        expect(selector.selected).toBe<SelectedItem<Person>>()
+        expect(selector.selected.value).toBe<SelectedItem<Person>>()
     }
 }

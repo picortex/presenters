@@ -3,7 +3,8 @@
 
 package presenters.collections
 
-import kollections.List
+import kollections.Map
+import kollections.Set
 import kotlin.js.JsExport
 
 sealed class Selected<out T>
@@ -15,14 +16,10 @@ data class SelectedItem<out T>(
     val row: Row<T>
 ) : Selected<T>()
 
-data class SelectedPage<out T>(
-    val page: Page<T>
-) : Selected<T>()
-
-data class SelectedItems<out T>(
-    val values: List<SelectedItem<T>>
+data class SelectedItems<T>(
+    val values: Map<Page<T>, Set<Row<T>>>
 ) : Selected<T>()
 
 data class SelectedGlobal<out T>(
-    val exceptions: List<Row<T>>
+    val exceptions: Set<SelectedItem<T>>
 ) : Selected<T>()

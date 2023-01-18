@@ -33,16 +33,10 @@ internal class PaginationManagerImpl<T>(
         }.toIList()
 
     override fun forEachPage(block: (Page<T>) -> Unit) {
-        var i = 1
-        var page = cache.load(capacity, i)
-        while (page != null) {
-            block(page)
-            i++
-            page = cache.load(capacity, i)
-        }
+        cache.records[capacity]?.pages?.values?.sortedBy { it.number }?.forEach(block)
     }
 
-    override fun readPageFromMemoryOrEmpty(page: Int, cap: Int): Page<T> = cache.load(capacity, page) ?: Page(capacity = capacity, number = page)
+    override fun find(item: T) = cache.load(item, capacity)
 
     override fun wipeMemory() = cache.clear()
 
@@ -62,7 +56,7 @@ internal class PaginationManagerImpl<T>(
     override fun loadNextPage() = when (val state = page.value) {
         is Pending -> loadPage(1)
         is Loading -> loadNothing()
-        is Failure -> loadPage(1) // FailedLater(RESOLVE_ERROR)
+        is Failure -> loadPage(1)
         is Success -> when {
             state.data.isEmpty -> Later(state.data)
             state.data.items.size < state.data.capacity -> Later(state.data)
@@ -82,14 +76,14 @@ internal class PaginationManagerImpl<T>(
 
     override fun loadPage(no: Int): Later<Page<T>> {
         if (page.value is Loading) return FailedLater(LOADING_ERROR)
-        val memorizedPage = cache.load(capacity, no)
+        val memorizedPage = cache.load(page = no, capacity)
         page.value = Loading("Loading", memorizedPage)
         return try {
             loader(no, capacity)
         } catch (err: Throwable) {
             FailedLater(err)
         }.then {
-            page.value = Success(cache.save(capacity, it))
+            page.value = Success(cache.save(it))
             it
         }.catch {
             page.value = Failure(it, data = memorizedPage)
@@ -110,7 +104,9 @@ internal class PaginationManagerImpl<T>(
 
     override fun loadLastPage(): Later<Page<T>> = loadPage(-1)
 
-    override fun findRow(page: Int, row: Int) = cache.load(capacity, page, row)
+    override fun find(row: Int, page: Int) = cache.load(row, page, capacity)
+
+    override fun find(page: Int) = cache.load(page, capacity)
 
     companion object {
         val RESOLVE_ERROR = Throwable("Can't resolve page number while paginator is in a failure state")

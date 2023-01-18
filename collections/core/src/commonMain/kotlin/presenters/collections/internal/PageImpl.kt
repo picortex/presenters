@@ -24,4 +24,12 @@ internal data class PageImpl<out T>(
 
     override fun <R> map(transformer: Function1<T, R>): Page<R> = map(transformer::invoke)
     override fun <R> mapIndexed(transformer: Function2<Int, T, R>): Page<R> = mapIndexed(transformer::invoke)
+
+    override fun toString(): String = buildString {
+        appendLine("Page(number = $number, capacity= $capacity")
+        items.forEach {
+            appendLine("  ${it.number}. ${it.item}")
+        }
+        appendLine(")")
+    }
 }
