@@ -10,7 +10,6 @@ import presenters.collections.SelectedItems
 import presenters.collections.SelectedNone
 import presenters.collections.SelectionManager
 import presenters.collections.internal.SelectionManagerImpl
-import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
 class SelectorTest {
@@ -18,7 +17,7 @@ class SelectorTest {
     fun Selected<*>.prettyString() = when (this) {
         is SelectedNone -> "None"
         is SelectedItem -> "Selected(page=${page.number},row=${row.number},item=${row.number})"
-        is SelectedItems -> "SelectedItems{${values.joinToString(" , ") { "Page ${it.key.number} -> Rows ${it.value.map { it.number }}" }}}"
+        is SelectedItems -> "SelectedItems{${page.joinToString(" , ") { "Page ${it.key.number} -> Rows ${it.value.map { it.number }}" }}}"
         is SelectedGlobal -> "Selected All"
     }
 

@@ -27,7 +27,7 @@ class SelectionManagerImpl<T>(
         val pageNo = page ?: return
         val p = paginator.find(pageNo) ?: return
         selected.value = SelectedItems(
-            values = iMapOf(p to p.items.toISet())
+            page = iMapOf(p to p.items.toISet())
         )
     }
 
@@ -40,7 +40,7 @@ class SelectionManagerImpl<T>(
     }
 
     private fun SelectedItems<T>.unSelectAllRowsInPage(page: Int?): Selected<T> {
-        val map = values.mapValues { it.value.toMutableSet() }.toMutableMap()
+        val map = this.page.mapValues { it.value.toMutableSet() }.toMutableMap()
         val p = map.keys.find { it.number == page } ?: return this
         map.remove(p)
         return readjustSelectedItems(map)
@@ -56,7 +56,7 @@ class SelectionManagerImpl<T>(
     }
 
     private fun SelectedItems<T>.isPageSelectedButPartially(page: Int?): Boolean {
-        val entry = values.find { it.key.number == page } ?: return false
+        val entry = this.page.find { it.key.number == page } ?: return false
         return entry.key.capacity != entry.value.size
     }
 
@@ -68,7 +68,7 @@ class SelectionManagerImpl<T>(
     }
 
     private fun SelectedItems<T>.isPageSelectedWithNoExceptions(page: Int?): Boolean {
-        val entry = values.find { it.key.number == page } ?: return false
+        val entry = this.page.find { it.key.number == page } ?: return false
         return entry.key.capacity == entry.value.size
     }
 
@@ -80,7 +80,7 @@ class SelectionManagerImpl<T>(
     }
 
     private fun SelectedItems<T>.unselectRowFromPage(row: Int, page: Int): Selected<T> {
-        val map = values.mapValues { it.value.toMutableSet() }.toMutableMap()
+        val map = this.page.mapValues { it.value.toMutableSet() }.toMutableMap()
         val p = map.keys.find { it.number == page } ?: return this
         val r = map[p]?.find { it.number == row } ?: return this
         map[p]?.remove(r)
@@ -114,7 +114,7 @@ class SelectionManagerImpl<T>(
 
     private fun SelectedItems<T>.addRowSelection(row: Int, page: Int): Selected<T> {
         val item = paginator.find(row, page) ?: return this
-        val map = values.mapValues { it.value.toMutableSet() }.toMutableMap()
+        val map = this.page.mapValues { it.value.toMutableSet() }.toMutableMap()
         map.getOrPut(item.page) { mutableSetOf() }.add(item.row)
         return SelectedItems(map.mapValues { it.value.toISet() }.toIMap())
     }
@@ -138,7 +138,7 @@ class SelectionManagerImpl<T>(
     override fun isRowItemSelected(row: Int, page: Int?) = when (val s = selected.value) {
         is SelectedNone -> false
         is SelectedItem -> s.row.number == row && s.page.number == page
-        is SelectedItems -> s.values.toIList().any { (p, rows) -> p.number == page && rows.map { it.number }.contains(row) }
+        is SelectedItems -> s.page.toIList().any { (p, rows) -> p.number == page && rows.map { it.number }.contains(row) }
         is SelectedGlobal -> !s.exceptions.any { it.page.number == page && it.row.number == row }
     }
 }

@@ -77,7 +77,7 @@ class ActionManagerBuilder<T> {
         when (selected) {
             is SelectedNone -> {}
             is SelectedItem -> addAll(buildSingleSelectActions(selected.row.item))
-            is SelectedItems -> addAll(buildMultiSelectActions(selected.values.toIList().flatMap { (_, v) -> v }.map { it.item }.toIList()))
+            is SelectedItems -> addAll(buildMultiSelectActions(selected.page.toIList().flatMap { (_, v) -> v }.map { it.item }.toIList()))
             is SelectedGlobal -> addAll(buildGlobalSelectActions(selected))
         }
     }.toIList()

@@ -22,7 +22,7 @@ data class SelectedItem<out T>(
 ) : Selected<T>
 
 data class SelectedItems<out T>(
-    val values: Map<Page<@UnsafeVariance T>, Set<Row<T>>>
+    val page: Map<Page<@UnsafeVariance T>, Set<Row<T>>>
 ) : Selected<T>
 
 data class SelectedGlobal<out T>(
