@@ -6,7 +6,6 @@ import actions.Action0
 import actions.builders.Action0I1RBuilder
 import kollections.List
 import kollections.toIList
-import kollections.toIMap
 
 class ActionsManagerBuilder<T> @PublishedApi internal constructor(
     primary: MutableList<Action0<Unit>> = mutableListOf(),
@@ -53,9 +52,9 @@ class ActionsManagerBuilder<T> @PublishedApi internal constructor(
         globalActionsContainer.add(builder)
     }
 
-    private inline fun Collection<Action0<Unit>>.applyFilters() = filterNot {
-        filters.contains(it.name)
-    }.associateBy { it.name }.values.toIList()
+    private inline fun Collection<Action0<Unit>>.applyFilters() = associateBy {
+        it.name
+    }.filterKeys { !filters.contains(it.lowercase()) }.values.toIList()
 
     fun buildPrimaryActions() = primaryActions.actions.applyFilters()
 

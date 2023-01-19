@@ -64,14 +64,34 @@ class ActionManagerTest {
         table.renderToConsole()
         expect(actions.current.value).toBeOfSize(2)
         sel.unSelectAllItemsInAllPages()
-        println("Before: ${actions.current.value}")
         table.manageActions { acts ->
             acts.addSingle("View") {
                 println("Viewing ${it.name}")
             }
         }
         sel.select(row = 1, page = 1)
-        println("After: ${actions.current.value}")
         expect(actions.current.value).toBeOfSize(3)
+    }
+
+    @Test
+    fun should_delete_actions_after_table_creations() {
+        val pag = CollectionPaginator(Person.List)
+        val sel = SelectionManager(pag)
+        val actions = actionsOf(sel) {
+            primary {
+                onCreate { println("Create things") }
+            }
+
+            single {
+                onEdit { println("Edit ${it.name}") }
+            }
+        }
+        pag.loadFirstPage()
+        val table = tableOf(pag, sel, actions, Person.columns())
+        table.manageActions { acts ->
+            acts.remove("Create")
+        }
+        sel.select(row = 1, page = 1)
+        expect(actions.current.value).toBeOfSize(1)
     }
 }
