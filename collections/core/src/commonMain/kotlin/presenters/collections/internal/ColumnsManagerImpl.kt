@@ -30,9 +30,4 @@ internal class ColumnsManagerImpl<D>(
         columns.add(Column.Data(name, accessor))
         return this
     }
-
-    override fun finish(columns: List<Column<D>>) = DataCollectionImpl(
-        paginator, selector, actionsManager,
-        ColumnsManagerImpl(paginator, selector, actionsManager, columns.toMutableList())
-    )
 }

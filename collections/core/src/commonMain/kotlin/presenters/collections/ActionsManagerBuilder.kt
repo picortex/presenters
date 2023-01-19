@@ -54,7 +54,9 @@ class ActionsManagerBuilder<T> @PublishedApi internal constructor(
 
     private inline fun Collection<Action0<Unit>>.applyFilters() = associateBy {
         it.name
-    }.filterKeys { !filters.contains(it.lowercase()) }.values.toIList()
+    }.filterKeys {
+        !filters.contains(it.lowercase())
+    }.values.toIList()
 
     fun buildPrimaryActions() = primaryActions.actions.applyFilters()
 

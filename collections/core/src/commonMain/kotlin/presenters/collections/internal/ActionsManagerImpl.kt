@@ -1,6 +1,5 @@
 package presenters.collections.internal
 
-import actions.Action0
 import kollections.List
 import presenters.collections.ActionsManager
 import presenters.collections.ActionsManagerBuilder
@@ -37,5 +36,5 @@ internal class ActionsManagerImpl<T>(
         return this
     }
 
-    override fun of(item: T): List<Action0<Unit>> = builder.buildSingleSelectActions(item)
+    override fun of(item: T) = builder.buildSingleSelectActions(item)
 }

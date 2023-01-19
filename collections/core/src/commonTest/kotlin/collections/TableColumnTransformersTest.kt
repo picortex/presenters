@@ -15,11 +15,11 @@ class TableColumnTransformersTest {
         val paginator = CollectionPaginator(Person.List)
         val selector = SelectionManager(paginator)
         val action = actionsOf(selector) {}
-        var table = tableOf(paginator, selector, action, Person.columns())
+        val table = tableOf(paginator, selector, action, Person.columns())
         table.loadFirstPage()
         table.renderToConsole()
         expect(table.columns.get()).toBeOfSize(4)
-        table = table.columns.remove("name").finish()
+        table.columns.remove("name")
         table.renderToConsole()
         expect(table.columns.get()).toBeOfSize(3)
     }

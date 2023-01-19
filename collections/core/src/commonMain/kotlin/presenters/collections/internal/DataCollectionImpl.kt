@@ -23,7 +23,10 @@ internal class DataCollectionImpl<T>(
 
     override val rows: List<Row<T>> get() = paginator.continuous
 
-    override fun manageColumns(block: (ColumnsManager<T>) -> Unit) = columns.apply(block).finish()
+    override fun manageColumns(block: (ColumnsManager<T>) -> Unit): DataCollectionImpl<T> {
+        columns.apply(block)
+        return this
+    }
 
     override fun manageActions(block: (ActionsManager<T>) -> Unit): DataCollectionImpl<T> {
         actions.apply(block)

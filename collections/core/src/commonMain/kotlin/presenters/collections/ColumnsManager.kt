@@ -11,5 +11,4 @@ interface ColumnsManager<D> {
     fun get(): List<Column<D>>
     fun add(name: String, accessor: (Row<D>) -> String): ColumnsManager<D>
     fun remove(name: String): ColumnsManager<D>
-    fun finish(columns: List<Column<D>> = get()) : Table<D>
 }
