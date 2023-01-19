@@ -2,10 +2,11 @@ package presenters.collections.internal
 
 import presenters.collections.Row
 
-data class RowImpl<out D>(
+@PublishedApi
+internal data class RowImpl<out D>(
     override val index: Int,
     override val item: D,
-    override val number: Int = index + 1
 ) : Row<D> {
-    override fun toString(): String = "Row( $number. $item)"
+    override val number = index + 1
+    override fun toString(): String = "Row($number. $item)"
 }

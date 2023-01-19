@@ -2,6 +2,7 @@ package presenters.collections
 
 import kollections.iEmptyList
 import kollections.toIList
+import presenters.collections.internal.ColumnsManagerImpl
 import presenters.collections.internal.DataCollectionImpl
 import kotlin.jvm.JvmSynthetic
 
@@ -10,15 +11,21 @@ fun <T> tableOf(
     paginator: PaginationManager<T>,
     selector: SelectionManager<T>,
     actionsManager: ActionsManager<T>
-): Table<T> = DataCollectionImpl(paginator, selector, actionsManager, iEmptyList())
+): Table<T> = DataCollectionImpl(
+    paginator, selector, actionsManager,
+    ColumnsManagerImpl(paginator, selector, actionsManager, iEmptyList())
+)
 
 @JvmSynthetic
 fun <T> tableOf(
     paginator: PaginationManager<T>,
     selector: SelectionManager<T>,
     actionsManager: ActionsManager<T>,
-    columns: List<Column<T>>
-): Table<T> = DataCollectionImpl(paginator, selector, actionsManager, columns.toIList())
+    columns: Collection<Column<T>>
+): Table<T> = DataCollectionImpl(
+    paginator, selector, actionsManager,
+    ColumnsManagerImpl(paginator, selector, actionsManager, columns.toIList())
+)
 
 @JvmSynthetic
 fun <T> tableOf(
@@ -26,7 +33,10 @@ fun <T> tableOf(
     selector: SelectionManager<T>,
     actionsManager: ActionsManager<T>,
     builder: ColumnsBuilder<T>.() -> Unit
-): Table<T> = DataCollectionImpl(paginator, selector, actionsManager, columnsOf(builder))
+): Table<T> = DataCollectionImpl(
+    paginator, selector, actionsManager,
+    ColumnsManagerImpl(paginator, selector, actionsManager, columnsOf(builder))
+)
 
 @JvmSynthetic
 fun <T> simpleTableOf(
@@ -36,7 +46,8 @@ fun <T> simpleTableOf(
     val paginator = SinglePagePaginator(items)
     paginator.loadFirstPage()
     val selector = SelectionManager(paginator)
-    val actions = actionsOf(selector) {}
-    val cols = columnsOf(builder)
-    return DataCollectionImpl(paginator, selector, actions, cols)
+    return DataCollectionImpl(
+        paginator, selector, actionsOf(),
+        ColumnsManagerImpl(paginator, selector, actionsOf(), columnsOf(builder))
+    )
 }

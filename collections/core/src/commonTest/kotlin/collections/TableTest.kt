@@ -14,8 +14,7 @@ class TableTest {
     fun can_be_assigned_a_paginator() {
         val paginator = CollectionPaginator(Person.List)
         val selector = SelectionManager(paginator)
-        val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, Person.columns())
+        val table = tableOf(paginator, selector, actionsOf(), Person.columns())
         table.renderToConsole()
         expect(table.currentPageOrNull?.number).toBe(null)
 
@@ -33,8 +32,7 @@ class TableTest {
     fun should_be_able_to_select_table_items() {
         val paginator = CollectionPaginator(Person.List)
         val selector = SelectionManager(paginator)
-        val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, Person.columns())
+        val table = tableOf(paginator, selector, actionsOf(), Person.columns())
         table.loadFirstPage()
         table.renderToConsole()
 
@@ -50,8 +48,7 @@ class TableTest {
     fun should_be_able_to_select_the_whole_current_page() {
         val paginator = CollectionPaginator(Person.List)
         val selector = SelectionManager(paginator)
-        val action = actionsOf(selector) {}
-        val table = tableOf(paginator, selector, action, Person.columns())
+        val table = tableOf(paginator, selector, actionsOf(), Person.columns())
 
         table.loadFirstPage()
         table.renderToConsole()
