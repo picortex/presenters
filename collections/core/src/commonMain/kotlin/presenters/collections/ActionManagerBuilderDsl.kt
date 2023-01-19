@@ -1,11 +1,13 @@
 package presenters.collections
 
 import presenters.collections.internal.ActionsManagerImpl
-import presenters.collections.internal.EmptyActionsManagerImpl
 
-fun <T> actionsOf(
+inline fun <T> actionsOf(
     selector: SelectionManager<T>,
-    builder: ActionManagerBuilder<T>.() -> Unit
-): ActionsManager<T> = ActionsManagerImpl(selector, ActionManagerBuilder<T>().apply(builder))
+    builder: ActionsManagerBuilder<T>.() -> Unit
+): ActionsManager<T> = ActionsManagerImpl(selector, ActionsManagerBuilder<T>().apply(builder))
 
-fun <T> actionsOf(): ActionsManager<T> = EmptyActionsManagerImpl
+inline fun <T> actionsOf(): ActionsManager<T> = ActionsManagerImpl(
+    selector = SelectionManager(SinglePagePaginator()),
+    builder = ActionsManagerBuilder()
+)

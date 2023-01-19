@@ -3,6 +3,7 @@
 
 package presenters.collections
 
+import live.Live
 import live.MutableLive
 import presenters.collections.internal.SelectionManagerImpl
 import viewmodel.ViewModelConfig
@@ -96,13 +97,5 @@ interface SelectionManager<T> {
     fun unSelectRowInPage(row: Int, page: Int)
 
     // ---------------------------------SelectionGetters--------------------------
-    val selected: MutableLive<Selected<T>>
-
-    companion object {
-        @JvmStatic
-        @JvmName("create")
-        operator fun <T> invoke(
-            paginator: PaginationManager<T>
-        ): SelectionManager<T> = SelectionManagerImpl(paginator)
-    }
+    val selected: Live<Selected<T>>
 }

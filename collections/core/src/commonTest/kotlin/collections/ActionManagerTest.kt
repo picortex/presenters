@@ -18,15 +18,14 @@ class ActionManagerTest {
         val pag = SinglePagePaginator(Person.List)
         val sel = SelectionManager(pag)
         val acts = actionsOf(sel) {}
-
-        expect(acts.actions.value).toBeEmpty()
+        expect(acts.current.value).toBeEmpty()
     }
 
     @Test
     fun should_not_crash_if_there_is_a_selected_item_and_there_are_no_current_actions() {
         val pag = CollectionPaginator(Person.List)
         val sel = SelectionManager(pag)
-        val acts = actionsOf(sel) {
+        val actions = actionsOf(sel) {
             primary {
                 onCreate { println("Create things") }
             }
@@ -36,18 +35,43 @@ class ActionManagerTest {
             }
         }
         pag.loadFirstPage()
-        val table = tableOf(pag, sel, acts, Person.columns())
+        val table = tableOf(pag, sel, actions, Person.columns())
         table.renderToConsole()
-        sel.selected.watch(mode = WatchMode.Eagerly) {
-            println("Selector: $it")
-        }
-        val watcher = acts.actions.watch(mode = WatchMode.Eagerly) {
-            println("${it.size} Actions found")
-        }
-        expect(acts.actions.value).toBeOfSize(1)
+        expect(actions.current.value).toBeOfSize(1)
         sel.select(row = 1, page = 1)
         table.renderToConsole()
-        expect(acts.actions.value).toBeOfSize(2)
-        watcher.stop()
+        expect(actions.current.value).toBeOfSize(2)
+    }
+
+    @Test
+    fun should_add_actions_after_table_creations() {
+        val pag = CollectionPaginator(Person.List)
+        val sel = SelectionManager(pag)
+        val actions = actionsOf(sel) {
+            primary {
+                onCreate { println("Create things") }
+            }
+
+            single {
+                onEdit { println("Edit ${it.name}") }
+            }
+        }
+        pag.loadFirstPage()
+        val table = tableOf(pag, sel, actions, Person.columns())
+        table.renderToConsole()
+        expect(actions.current.value).toBeOfSize(1)
+        sel.select(row = 1, page = 1)
+        table.renderToConsole()
+        expect(actions.current.value).toBeOfSize(2)
+        sel.unSelectAllItemsInAllPages()
+        println("Before: ${actions.current.value}")
+        table.manageActions { acts ->
+            acts.addSingle("View") {
+                println("Viewing ${it.name}")
+            }
+        }
+        sel.select(row = 1, page = 1)
+        println("After: ${actions.current.value}")
+        expect(actions.current.value).toBeOfSize(3)
     }
 }

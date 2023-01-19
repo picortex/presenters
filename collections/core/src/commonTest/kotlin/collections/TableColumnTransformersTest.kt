@@ -23,4 +23,19 @@ class TableColumnTransformersTest {
         table.renderToConsole()
         expect(table.columns.get()).toBeOfSize(3)
     }
+
+    @Test
+    fun should_be_able_to_filter_out_columns_after_the_table_has_been_created_using_the_manage_columns() {
+        val paginator = CollectionPaginator(Person.List)
+        val selector = SelectionManager(paginator)
+        val action = actionsOf(selector) {}
+        val table = tableOf(paginator, selector, action, Person.columns()).manageColumns { columns ->
+            columns.add("Nick Name") {
+                it.item.name + it.item.age
+            }
+        }
+        table.loadFirstPage()
+        table.renderToConsole()
+        expect(table.columns.get()).toBeOfSize(5)
+    }
 }

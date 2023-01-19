@@ -13,7 +13,7 @@ fun <T> tableOf(
     actionsManager: ActionsManager<T>
 ): Table<T> = DataCollectionImpl(
     paginator, selector, actionsManager,
-    ColumnsManagerImpl(paginator, selector, actionsManager, iEmptyList())
+    ColumnsManagerImpl(paginator, selector, actionsManager, mutableListOf())
 )
 
 @JvmSynthetic
@@ -24,7 +24,7 @@ fun <T> tableOf(
     columns: Collection<Column<T>>
 ): Table<T> = DataCollectionImpl(
     paginator, selector, actionsManager,
-    ColumnsManagerImpl(paginator, selector, actionsManager, columns.toIList())
+    ColumnsManagerImpl(paginator, selector, actionsManager, columns.toMutableList())
 )
 
 @JvmSynthetic
@@ -35,7 +35,7 @@ fun <T> tableOf(
     builder: ColumnsBuilder<T>.() -> Unit
 ): Table<T> = DataCollectionImpl(
     paginator, selector, actionsManager,
-    ColumnsManagerImpl(paginator, selector, actionsManager, columnsOf(builder))
+    ColumnsManagerImpl(paginator, selector, actionsManager, columnsOf(builder).toMutableList())
 )
 
 @JvmSynthetic
@@ -48,6 +48,6 @@ fun <T> simpleTableOf(
     val selector = SelectionManager(paginator)
     return DataCollectionImpl(
         paginator, selector, actionsOf(),
-        ColumnsManagerImpl(paginator, selector, actionsOf(), columnsOf(builder))
+        ColumnsManagerImpl(paginator, selector, actionsOf(), columnsOf(builder).toMutableList())
     )
 }

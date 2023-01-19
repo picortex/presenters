@@ -1,8 +1,11 @@
+@file:JsExport
+@file:Suppress("NON_EXPORTABLE_TYPE")
+
 package presenters.collections
 
 import kotlin.js.JsExport
 
-@JsExport
-interface Actionable<in T> {
-    val actionsManager: ActionsManager<T>
+
+interface Actionable<T> {
+    val actions: ActionsManager<T>
 }

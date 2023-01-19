@@ -75,11 +75,11 @@ class TableTest {
 
         table.loadFirstPage()
 
-        expect(table.actions.value).toBeOfSize(1)
+        expect(table.actions.get()).toBeOfSize(1)
 
         table.select(1)
         table.renderToConsole()
 
-        expect(table.actions.value).toBeOfSize(2)
+        expect(table.actions.get()).toBeOfSize(2)
     }
 }

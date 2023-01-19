@@ -2,7 +2,6 @@ package presenters.collections.internal
 
 import kollections.List
 import presenters.collections.ActionsManager
-import presenters.collections.Column
 import presenters.collections.ColumnsManager
 import presenters.collections.DataCollection
 import presenters.collections.PaginationManager
@@ -15,11 +14,19 @@ import presenters.collections.Table
 internal class DataCollectionImpl<T>(
     override val paginator: PaginationManager<T>,
     override val selector: SelectionManager<T>,
-    override val actionsManager: ActionsManager<T>,
+    override val actions: ActionsManager<T>,
     override val columns: ColumnsManager<T>
 ) : Table<T>, ScrollableList<T>, DataCollection<T>,
     PaginationManager<T> by paginator,
     SelectionManager<T> by selector,
-    ActionsManager<T> by actionsManager {
+    ActionsManager<T> by actions {
+
     override val rows: List<Row<T>> get() = paginator.continuous
+
+    override fun manageColumns(block: (ColumnsManager<T>) -> Unit) = columns.apply(block).finish()
+
+    override fun manageActions(block: (ActionsManager<T>) -> Unit): DataCollectionImpl<T> {
+        actions.apply(block)
+        return this
+    }
 }

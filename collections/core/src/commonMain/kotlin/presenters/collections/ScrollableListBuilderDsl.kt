@@ -1,6 +1,5 @@
 package presenters.collections
 
-import kollections.iEmptyList
 import presenters.collections.internal.ColumnsManagerImpl
 import presenters.collections.internal.DataCollectionImpl
 
@@ -10,5 +9,5 @@ inline fun <T> scrollableListOf(
     actionsManager: ActionsManager<T>
 ): ScrollableList<T> = DataCollectionImpl(
     paginator, selector, actionsManager,
-    ColumnsManagerImpl(paginator, selector, actionsManager, iEmptyList())
+    ColumnsManagerImpl(paginator, selector, actionsManager, mutableListOf())
 )

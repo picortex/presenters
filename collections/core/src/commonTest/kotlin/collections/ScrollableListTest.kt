@@ -94,7 +94,7 @@ class ScrollableListTest {
         list.loadFirstPage()
         list.select(row = 1)
 
-        expect(list.actions.value).toBeOfSize(2)
+        expect(list.actions.get()).toBeOfSize(2)
     }
 
     @Test
