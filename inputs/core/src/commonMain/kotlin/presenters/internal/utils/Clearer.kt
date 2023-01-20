@@ -2,7 +2,7 @@ package presenters.internal.utils
 
 import live.MutableLive
 import presenters.fields.InputFieldState
-import presenters.fields.properties.Clearable
+import presenters.properties.Clearable
 
 class Clearer<O>(
     private val value: O,

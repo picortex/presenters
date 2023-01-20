@@ -3,7 +3,7 @@
 
 package presenters
 
-import presenters.fields.properties.Labeled
+import presenters.properties.Labeled
 import kotlin.js.JsExport
 
 data class ButtonInputField(

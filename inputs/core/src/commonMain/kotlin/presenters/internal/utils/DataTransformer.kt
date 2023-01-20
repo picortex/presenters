@@ -4,7 +4,7 @@ import presenters.fields.FormattedData
 import presenters.fields.Formatter
 import presenters.fields.internal.FormattedData
 
-internal class DataTransformer<I : Any, O : Any>(
+class DataTransformer<I : Any, O : Any>(
     val formatter: Formatter<O>?,
     val transformer: (I?) -> O?
 ) {

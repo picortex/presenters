@@ -11,7 +11,7 @@ import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
 import presenters.internal.utils.Typer
-import presenters.internal.validators.CompoundValidator
+import presenters.internal.validators.CompoundValidator1
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.NumberRangeValidator
 import presenters.internal.validators.RequirementValidator
@@ -34,7 +34,7 @@ internal abstract class AbstractNumberInputField<N : Number>(
     final override val data = mutableLiveOf(default)
     final override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
 
-    private val dv = CompoundValidator(
+    private val dv = CompoundValidator1(
         feedback,
         RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
         NumberRangeValidator(feedback, label.capitalizedWithoutAstrix(), max, min),
@@ -53,7 +53,7 @@ internal abstract class AbstractNumberInputField<N : Number>(
     override fun clear() = clearer.clear()
 
     override fun set(double: Double) = setter.set(double.toString())
-    
+
     override fun set(integer: Int) = setter.set(integer.toString())
 
     override fun validate(value: N?) = dv.validate(value)

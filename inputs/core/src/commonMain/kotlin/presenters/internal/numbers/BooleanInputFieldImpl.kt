@@ -10,7 +10,7 @@ import presenters.fields.InputFieldState
 import presenters.fields.internal.OutputData
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.OutputSetter
-import presenters.internal.validators.CompoundValidator
+import presenters.internal.validators.CompoundValidator1
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RequirementValidator
 
@@ -28,7 +28,7 @@ internal class BooleanInputFieldImpl(
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
     override val serializer: KSerializer<Boolean> = Boolean.serializer()
 
-    private val bv = CompoundValidator(
+    private val bv = CompoundValidator1(
         feedback,
         RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
         LambdaValidator(feedback, validator)

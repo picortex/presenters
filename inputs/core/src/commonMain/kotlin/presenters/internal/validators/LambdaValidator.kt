@@ -6,7 +6,7 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-internal class LambdaValidator<T>(
+class LambdaValidator<T>(
     override val feedback: MutableLive<InputFieldState>,
     private val lambda: ((T?) -> Unit)?
 ) : AbstractValidate1<T>(feedback) {

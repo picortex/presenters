@@ -6,7 +6,7 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-internal class TextValidator(
+class TextValidator(
     override val feedback: MutableLive<InputFieldState>,
     val label: String,
     val isRequired: Boolean,

@@ -1,72 +1,76 @@
 package presenters.fields.internal
 
+import kotlinx.serialization.KSerializer
 import krono.LocalDate
 import krono.LocalDateOrNull
 import krono.serializers.LocalDateIsoSerializer
+import live.MutableLive
+import live.mutableLiveOf
+import presenters.DateInputField
 import presenters.fields.InputFieldState
 import presenters.Label
-import presenters.fields.SingleValuedField
+import presenters.Range
+import presenters.fields.Formatter
+import presenters.internal.utils.Clearer
+import presenters.internal.utils.DataTransformer
+import presenters.internal.utils.FormattedOutputSetter
+import presenters.internal.validators.CompoundValidator1
+import presenters.internal.validators.CompoundValidator2
+import presenters.internal.validators.LambdaValidator
+import presenters.internal.validators.RangeValidator1
+import presenters.internal.validators.RangeValidator2
+import presenters.internal.validators.RequirementValidator
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class DateInputFieldImpl(
-    name: String,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: Label = Label(name, isRequired),
-    hint: String = label.text,
-    defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    val pattern: String = DEFAULT_PATTERN,
-    val maxDate: LocalDate? = DEFAULT_MAX_DATE,
-    val minDate: LocalDate? = DEFAULT_MIN_DATE,
-    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) : TextBasedValuedFieldImpl<LocalDate>(
-    name = name, isRequired = isRequired, label = label, defaultValue = defaultValue,
-    hint = hint, formatter = null, transformer = DEFAULT_DATE_TRANSFORMER,
-    isReadonly = isReadonly, validator = validator, serializer = LocalDateIsoSerializer
-) {
-    override fun set(value: String?) {
-        val res = validate(value)
-        val date = LocalDateOrNull(value)
-        feedback.value = when {
-            res is Invalid -> InputFieldState.Warning(res.cause.message ?: "Unknown", res.cause)
-            date == null -> InputFieldState.Warning("Invalid date $value", IllegalArgumentException("Invalid date $value"))
-            else -> InputFieldState.Empty
-        }
-        data.value = toFormattedData(value)
-    }
+    override val name: String,
+    override val isRequired: Boolean = false,
+    override val label: Label = Label(name, isRequired),
+    override val hint: String = label.text,
+    private val value: LocalDate? = null,
+    override val isReadonly: Boolean = false,
+    override val pattern: String = DEFAULT_PATTERN,
+    override val max: LocalDate? = DEFAULT_MAX_DATE,
+    override val min: LocalDate? = DEFAULT_MIN_DATE,
+    private val validator: ((LocalDate?) -> Unit)? = null
+) : DateInputField {
+    private val default = FormattedData<String, LocalDate>(null, "", value)
+    override val data = mutableLiveOf(default)
+    override val serializer: KSerializer<LocalDate> = LocalDateIsoSerializer
+    override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
+    override val formatter: Formatter<LocalDate> = DEFAULT_FORMATTER
+    override val transformer: (String?) -> LocalDate? = DEFAULT_DATE_TRANSFORMER
 
-    override fun validate(value: String?): ValidationResult {
-        val date = LocalDateOrNull(value)
-        val tag = label.capitalizedWithoutAstrix()
-        if (isRequired && date == null) {
-            return Invalid(IllegalArgumentException("$tag is required"))
-        }
+    private val dv1 = CompoundValidator1(
+        feedback,
+        RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
+        RangeValidator1(feedback, label.capitalizedWithoutAstrix(), max, min),
+        LambdaValidator(feedback, validator)
+    )
 
-        val max = maxDate
-        if (max != null && date != null && date > max) {
-            return Invalid(IllegalArgumentException("$tag must be before ${max.format(pattern)}"))
-        }
+    private val trnsfrm = DataTransformer(formatter, transformer)
+    private val setter = FormattedOutputSetter(data, feedback, trnsfrm, dv1)
 
-        val min = minDate
-        if (min != null && date != null && date < min) {
-            return Invalid(IllegalArgumentException("$tag must be after ${min.format(pattern)}"))
-        }
+    override fun set(value: String) = setter.set(value)
 
-        return try {
-            validator?.invoke(value)
-            Valid
-        } catch (err: Throwable) {
-            Invalid(err)
-        }
-    }
+    private val clearer = Clearer(default, data, feedback)
+    override fun clear() = clearer.clear()
+
+    override fun validate(value: LocalDate?) = dv1.validate(value)
+    override fun validate() = dv1.validate(data.value.output)
+    override fun validateSettingInvalidsAsErrors(value: LocalDate?) = dv1.validateSettingInvalidsAsErrors(value)
+    override fun validateSettingInvalidsAsErrors() = dv1.validateSettingInvalidsAsErrors(data.value.output)
+    override fun validateSettingInvalidsAsWarnings(value: LocalDate?) = dv1.validateSettingInvalidsAsWarnings(value)
+    override fun validateSettingInvalidsAsWarnings() = dv1.validateSettingInvalidsAsWarnings(data.value.output)
 
     companion object {
         val DEFAULT_MAX_DATE: Nothing? = null
         val DEFAULT_MIN_DATE: Nothing? = null
         val DEFAULT_PATTERN = "{MMM} {D}, {YYYY}"
+        val DEFAULT_FORMATTER = Formatter<LocalDate> { it?.toIsoString() }
         val DEFAULT_DATE_TRANSFORMER = { iso: String? -> LocalDateOrNull(iso) }
     }
 }

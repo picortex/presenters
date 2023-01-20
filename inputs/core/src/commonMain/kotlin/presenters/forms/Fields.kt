@@ -9,8 +9,8 @@ import kotlinx.serialization.builtins.nullable
 import presenters.InputField
 import presenters.LiveOutputData
 import presenters.fields.InputFieldState
-import presenters.fields.properties.Clearable
-import presenters.fields.properties.Requireble
+import presenters.properties.Clearable
+import presenters.properties.Requireble
 import presenters.validation.Validateable0
 import kotlin.js.JsExport
 

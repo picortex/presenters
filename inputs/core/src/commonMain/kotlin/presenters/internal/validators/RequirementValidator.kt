@@ -6,7 +6,7 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-internal class RequirementValidator(
+class RequirementValidator(
     override val feedback: MutableLive<InputFieldState>,
     val label: String,
     val isRequired: Boolean,

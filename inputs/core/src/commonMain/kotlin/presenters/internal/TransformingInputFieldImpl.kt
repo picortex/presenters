@@ -12,7 +12,7 @@ import presenters.fields.internal.FormattedData
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
-import presenters.internal.validators.CompoundValidator
+import presenters.internal.validators.CompoundValidator1
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RequirementValidator
 
@@ -33,7 +33,7 @@ internal class TransformingInputFieldImpl<I : Any, O : Any>(
     override val data: MutableLive<FormattedData<I, O>> = mutableLiveOf(default)
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
 
-    private val tiv = CompoundValidator(
+    private val tiv = CompoundValidator1(
         feedback,
         RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
         LambdaValidator(feedback, validator)

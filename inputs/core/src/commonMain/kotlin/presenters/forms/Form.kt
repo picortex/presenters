@@ -17,7 +17,7 @@ import koncurrent.Thenable
 import presenters.LiveOutputData
 import presenters.collections.*
 import presenters.exceptions.FormValidationException
-import presenters.fields.properties.Labeled
+import presenters.properties.Labeled
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.Validateable0

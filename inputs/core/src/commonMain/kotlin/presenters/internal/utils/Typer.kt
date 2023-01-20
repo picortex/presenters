@@ -1,7 +1,7 @@
 package presenters.internal.utils
 
-import presenters.fields.properties.Settable
-import presenters.fields.properties.Typeable
+import presenters.properties.Settable
+import presenters.properties.Typeable
 
 internal class Typer(
     private val old: String?,

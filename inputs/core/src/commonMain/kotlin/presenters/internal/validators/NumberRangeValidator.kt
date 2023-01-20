@@ -6,7 +6,7 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-internal class NumberRangeValidator<N : Number>(
+class NumberRangeValidator<N : Number>(
     override val feedback: MutableLive<InputFieldState>,
     val label: String,
     val max: N?,

@@ -4,7 +4,7 @@ import live.MutableLive
 import presenters.OutputData
 import presenters.fields.InputFieldState
 import presenters.fields.internal.OutputData
-import presenters.fields.properties.Settable
+import presenters.properties.Settable
 import presenters.validation.Validateable1
 
 internal class OutputSetter<V>(

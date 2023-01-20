@@ -1,6 +1,6 @@
 @file:JsExport
 
-package presenters.fields.properties
+package presenters.properties
 
 import presenters.Label
 import kotlin.js.JsExport

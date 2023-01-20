@@ -1,5 +1,5 @@
 @file:JsExport
-package presenters.fields.properties
+package presenters.properties
 
 import kotlin.js.JsExport
 

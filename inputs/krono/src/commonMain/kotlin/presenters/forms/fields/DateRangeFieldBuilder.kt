@@ -1,7 +1,7 @@
 package presenters.forms.fields
 
 import krono.LocalDate
-import presenters.fields.DateRangeInputField
+import presenters.DateRangeInputField
 import presenters.fields.Range
 import presenters.Label
 import presenters.fields.internal.DateRangeInputFieldImpl
