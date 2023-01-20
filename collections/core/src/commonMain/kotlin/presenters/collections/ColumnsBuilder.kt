@@ -1,8 +1,6 @@
 package presenters.collections
 
-class ColumnsBuilder<D> {
-    val columns: MutableList<Column<D>> = mutableListOf()
-
+class ColumnsBuilder<D>(val columns: MutableList<Column<D>> = mutableListOf()) {
     fun selectable(name: String = "Select") {
         columns.add(Column.Select(name) as Column<D>)
     }

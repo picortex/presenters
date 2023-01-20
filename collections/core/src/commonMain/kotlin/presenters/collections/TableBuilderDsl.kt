@@ -1,53 +1,56 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package presenters.collections
 
-import kollections.iEmptyList
-import kollections.toIList
-import presenters.collections.internal.ColumnsManagerImpl
 import presenters.collections.internal.DataCollectionImpl
 import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
-fun <T> tableOf(
+inline fun <T> tableOf(
     paginator: PaginationManager<T>,
     selector: SelectionManager<T>,
-    actionsManager: ActionsManager<T>
-): Table<T> = DataCollectionImpl(
-    paginator, selector, actionsManager,
-    ColumnsManagerImpl(paginator, selector, actionsManager, mutableListOf())
-)
+    actions: ActionsManager<T>,
+    columns: ColumnsManager<T>
+): Table<T> = DataCollectionImpl(paginator, selector, actions, columns)
 
+/*
+ * DEAR DEVELOPER,
+ * Do not mark this class as inline, because it tends to increase bundle size
+ * due to very long columns declarations that can be found in complex tables
+ */
 @JvmSynthetic
 fun <T> tableOf(
     paginator: PaginationManager<T>,
     selector: SelectionManager<T>,
-    actionsManager: ActionsManager<T>,
-    columns: Collection<Column<T>>
-): Table<T> = DataCollectionImpl(
-    paginator, selector, actionsManager,
-    ColumnsManagerImpl(paginator, selector, actionsManager, columns.toMutableList())
-)
+    actions: ActionsManager<T>,
+    columns: ColumnsBuilder<T>.() -> Unit
+): Table<T> = DataCollectionImpl(paginator, selector, actions, columnsOf(columns))
 
 @JvmSynthetic
-fun <T> tableOf(
+inline fun <T> tableOf(
     paginator: PaginationManager<T>,
     selector: SelectionManager<T>,
-    actionsManager: ActionsManager<T>,
-    builder: ColumnsBuilder<T>.() -> Unit
-): Table<T> = DataCollectionImpl(
-    paginator, selector, actionsManager,
-    ColumnsManagerImpl(paginator, selector, actionsManager, columnsOf(builder).toMutableList())
-)
+    actions: ActionsManager<T>
+): Table<T> = DataCollectionImpl(paginator, selector, actions, columnsOf())
 
 @JvmSynthetic
-fun <T> simpleTableOf(
+inline fun <T> tableOf(
+    paginator: PaginationManager<T>,
+    selector: SelectionManager<T>
+): Table<T> = DataCollectionImpl(paginator, selector, actionsOf(selector) {}, columnsOf())
+
+/*
+ * DEAR DEVELOPER,
+ * Do not mark this class as inline, because it tends to increase bundle size
+ * due to very long columns declarations that can be found in complex tables
+ */
+@JvmSynthetic
+inline fun <T> simpleTableOf(
     items: Collection<T>,
-    builder: ColumnsBuilder<T>.() -> Unit
+    noinline columns: ColumnsBuilder<T>.() -> Unit
 ): Table<T> {
     val paginator = SinglePagePaginator(items)
     paginator.loadFirstPage()
     val selector = SelectionManager(paginator)
-    return DataCollectionImpl(
-        paginator, selector, actionsOf(),
-        ColumnsManagerImpl(paginator, selector, actionsOf(), columnsOf(builder).toMutableList())
-    )
+    return DataCollectionImpl(paginator, selector, actionsOf(), columnsOf(columns))
 }
