@@ -3,9 +3,9 @@ package fields.selectors
 import expect.expect
 import kollections.toIList
 import kotlinx.serialization.Serializable
+import presenters.Option
+import presenters.SingleChoiceInputField
 import presenters.validation.Invalid
-import presenters.fields.Option
-import presenters.fields.SingleChoiceValuedField
 import kotlin.test.Test
 
 class SingleChoiceInputFieldTest {
@@ -16,50 +16,46 @@ class SingleChoiceInputFieldTest {
 
     @Test
     fun should_be_able_to_select_a_single_item() {
-        val color = SingleChoiceValuedField(
+        val color = SingleChoiceInputField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
             serializer = Color.serializer()
         )
         color.selectValue("Red")
-        TODO("Migrate tests")
-//        expect(color.data.value.output).toBe(Color.Red)
+        expect(color.data.value.output).toBe(Color.Red)
     }
 
     @Test
     fun should_be_able_to_select_an_item_by_providing_an_item_itself() {
-        val color = SingleChoiceValuedField(
+        val color = SingleChoiceInputField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        TODO("Migrate tests")
-//        expect(color.data.value.output).toBe(Color.Green)
+        expect(color.data.value.output).toBe(Color.Green)
     }
 
     @Test
     fun should_be_able_to_unselect_an_item() {
-        val color = SingleChoiceValuedField(
+        val color = SingleChoiceInputField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        TODO("Migrate tests")
-//        expect(color.data.value.output).toBe(Color.Green)
+        expect(color.data.value.output).toBe(Color.Green)
 
         color.unselect()
-
-//        expect(color.data.value.output).toBe(null)
+        expect(color.data.value.output).toBe(null)
     }
 
     @Test
     fun should_provide_error_feedback_if_the_field_is_unrequired() {
-        val color = SingleChoiceValuedField(
+        val color = SingleChoiceInputField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },
@@ -68,8 +64,7 @@ class SingleChoiceInputFieldTest {
         )
 
         color.selectItem(Color.Green)
-        TODO("Migrate tests")
-//        expect(color.data.value.output).toBe(Color.Green)
+        expect(color.data.value.output).toBe(Color.Green)
 
         color.unselect()
         val res = color.validate() as Invalid
@@ -78,7 +73,7 @@ class SingleChoiceInputFieldTest {
 
     @Test
     fun should_have_no_null_options() {
-        val color = SingleChoiceValuedField(
+        val color = SingleChoiceInputField(
             name = "color",
             items = Color.values().toIList(),
             mapper = { Option(label = it.name) },

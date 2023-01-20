@@ -11,11 +11,16 @@ import kase.Pending
 import kase.Submitting
 import kase.Success
 import kase.Validating
+import kollections.toIList
 import koncurrent.FailedLater
 import koncurrent.Thenable
+import presenters.LiveOutputData
 import presenters.collections.*
+import presenters.exceptions.FormValidationException
+import presenters.fields.properties.Labeled
 import presenters.validation.Invalid
 import presenters.validation.Valid
+import presenters.validation.Validateable0
 import presenters.validation.ValidationResult
 import presenters.validation.throwIfInvalid
 import viewmodel.ViewModel
@@ -50,20 +55,32 @@ open class Form<out F : Fields, P, out R>(
 
     fun exit() = cancel()
 
+    private fun Collection<LiveOutputData<*>>.errorTable() = simpleTableOf(this) {
+        column("Field") {
+            (it.item as? Labeled)?.label?.capitalizedWithAstrix() ?: it.item.name
+        }
+        column("Value") {
+            it.item.data.value.output.toString()
+        }
+        column("Reason") {
+            (it.item as? Validateable0)?.feedback?.value?.asError?.message ?: "Unknown"
+        }
+    }.renderToString()
+
     fun validate(): ValidationResult {
         fields.validate()
         val invalids = fields.allInvalid
         if (invalids.isNotEmpty()) {
-            val message = simpleTableOf(invalids) {
-//                column("Field") { it.item.label.capitalizedWithoutAstrix() }
-//                column("Value") { it.item.data.value.toString() }
-//                column("Reason") { it.item.feedback.value.asError?.message ?: "Unknown" }
-            }.renderToString()
-            logger.error(message)
-            val invalidFields = IllegalArgumentException(message)
             val size = invalids.size
             val terminator = "input" + if (size > 1) "s" else ""
-            return Invalid(IllegalArgumentException("You have $size invalid $terminator", invalidFields))
+            val exception = FormValidationException(
+                message = "You have $size invalid $terminator",
+                errors = invalids.errorTable(),
+                fields = invalids.toIList()
+            )
+            logger.error(exception.message)
+            logger.error(exception.errors)
+            return Invalid(exception)
         }
         return Valid
     }

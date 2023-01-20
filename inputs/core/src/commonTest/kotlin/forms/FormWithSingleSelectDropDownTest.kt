@@ -12,11 +12,11 @@ import kotlinx.serialization.Serializable
 import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
+import presenters.Option
 import presenters.fields.InputFieldState
-import presenters.fields.Option
 import presenters.forms.Fields
-import presenters.forms.fields.name
-import presenters.forms.fields.selectSingle
+import presenters.name
+import presenters.selectSingle
 import kotlin.test.Test
 
 class FormWithSingleSelectDropDownTest {

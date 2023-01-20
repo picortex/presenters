@@ -1,15 +1,14 @@
 package fields.numbers
 
 import expect.expect
-import presenters.fields.DoubleValuedField
-import presenters.fields.Formatter
-import presenters.fields.IntegerValuedField
+import presenters.DoubleInputField
+import presenters.IntegerInputField
 import kotlin.test.Test
 
 class NumberInputFormatterTest {
     @Test
     fun should_be_able_to_leave_numbers_as_they_are_when_the_applied_format_has_nothing_to_do() {
-        val number = DoubleValuedField(name = "price")
+        val number = DoubleInputField(name = "price")
         number.type("100")
         with(number.data.value) {
             expect(input).toBe("100")
@@ -20,7 +19,7 @@ class NumberInputFormatterTest {
 
     @Test
     fun should_be_able_to_format_thousands_as_they_are_typed_in() {
-        val number = IntegerValuedField(
+        val number = IntegerInputField(
             name = "price",
             formatter = { it?.toString()?.toCharArray()?.joinToString(",") }
         )

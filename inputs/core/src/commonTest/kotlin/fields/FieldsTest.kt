@@ -1,17 +1,16 @@
 package fields
 
 import expect.expect
+import presenters.double
 import presenters.forms.Fields
-import presenters.forms.fields.name
-import presenters.forms.fields.number
+import presenters.name
 import kotlin.test.Test
-import kotlin.test.fail
 
 class FieldsTest {
 
     class TestFormFields : Fields() {
         val name = name()
-        val age = number(name = "age")
+        val age = double(name = "age")
     }
 
     @Test

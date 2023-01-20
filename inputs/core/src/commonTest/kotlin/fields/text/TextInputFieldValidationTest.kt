@@ -3,8 +3,8 @@ package fields.text
 import expect.expect
 import expect.toBe
 import kotlinx.coroutines.test.runTest
+import presenters.TextInputField
 import presenters.validation.Invalid
-import presenters.fields.TextInputField
 import presenters.validation.Valid
 import kotlin.test.Test
 

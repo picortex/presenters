@@ -6,19 +6,23 @@ import kase.Failure
 import kase.Submitting
 import kase.Success
 import kase.Validating
+import kollections.List
+import kollections.iListOf
 import kollections.toIList
 import koncurrent.Later
-import kotlinx.collections.interoperable.iListOf
 import kotlinx.serialization.Serializable
 import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
+import presenters.Option
 import presenters.fields.InputFieldState
-import presenters.fields.Option
 import presenters.forms.Fields
-import presenters.forms.fields.name
-import presenters.forms.fields.selectMany
-import kotlin.test.Ignore
+import presenters.forms.Form
+import presenters.forms.FormActionsBuildingBlock
+import presenters.forms.toFormConfig
+import presenters.name
+import presenters.selectMany
+import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
 class FormWithMultiSelectDropDownTest {
@@ -27,18 +31,36 @@ class FormWithMultiSelectDropDownTest {
         Red, Green, Blue
     }
 
+    @Serializable
+    data class Param(
+        val name: String,
+        val color: List<Color>
+    )
+
     class TestFields : Fields() {
         val name = name(
+            name = Param::name,
             isRequired = true
         )
 
         val color = selectMany(
-            name = "color",
+            name = Param::color,
             items = Color.values().toIList(),
             mapper = { Option(it.name) },
             isRequired = true
         )
     }
+
+    class TestForm<F : Fields>(
+        override val fields: F,
+        builder: FormActionsBuildingBlock<Param, Any?>
+    ) : Form<F, Param, Any?>(
+        heading = "Test Form",
+        details = "This is a form for testing",
+        fields = fields,
+        config = ViewModelConfig().toFormConfig(),
+        builder
+    )
 
     @Test
     fun should_fail_to_submit_when_a_required_nothing_has_been_selected() {
@@ -59,8 +81,7 @@ class FormWithMultiSelectDropDownTest {
     }
 
     @Test
-    @Ignore // TODO: Define proper params that would accommodate color here
-    fun should_submit_when_a_required_select_multi_has_been_selected() {
+    fun should_submit_when_a_required_multi_select_has_been_selected() {
         val form = TestForm(TestFields()) {
             onSubmit { Later(0) }
         }
@@ -69,13 +90,11 @@ class FormWithMultiSelectDropDownTest {
             name.type("John")
             color.addSelectedItem(Color.Blue)
         }
-
         form.submit()
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
     }
 
     @Test
-    @Ignore // TODO: Define proper params that would accommodate color here
     fun should_submit_when_a_required_select_multi_has_been_selected_with_multiple_inputs() {
         val form = TestForm(TestFields()) {
             onSubmit { Later(0) }
@@ -89,7 +108,6 @@ class FormWithMultiSelectDropDownTest {
 
         form.submit()
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
-        TODO("Migrate tests")
-//        expect(form.fields.color.data.value.output).toBe(iListOf(Color.Red, Color.Blue))
+        expect(form.fields.color.data.value.output).toBe(iListOf(Color.Blue, Color.Red))
     }
 }

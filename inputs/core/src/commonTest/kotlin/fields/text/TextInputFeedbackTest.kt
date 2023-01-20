@@ -2,12 +2,10 @@ package fields.text
 
 import expect.expect
 import live.expect
-import live.toHaveGoneThrough3
-import live.toHaveGoneThrough5
 import live.toHaveGoneThrough6
+import presenters.TextInputField
 import presenters.fields.InputFieldState.Empty
 import presenters.fields.InputFieldState.Warning
-import presenters.fields.TextInputField
 import kotlin.test.Test
 
 class TextInputFeedbackTest {

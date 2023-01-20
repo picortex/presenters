@@ -11,14 +11,14 @@ import koncurrent.Later
 import kotlinx.serialization.Serializable
 import live.expect
 import live.toHaveGoneThrough3
-import presenters.fields.Option
+import presenters.Option
 import presenters.forms.Fields
 import presenters.forms.Form
-import presenters.forms.fields.name
-import presenters.forms.fields.selectMany
-import presenters.forms.fields.selectSingle
-import presenters.forms.fields.text
 import presenters.forms.toFormConfig
+import presenters.name
+import presenters.selectMany
+import presenters.selectSingle
+import presenters.text
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 

@@ -4,7 +4,6 @@ import kollections.List
 import presenters.fields.FormattedData
 import presenters.OutputData
 import presenters.OutputList
-import presenters.fields.TransformedData
 
 @PublishedApi
 internal data class FormattedDataImpl<out I, out O>(
@@ -19,10 +18,6 @@ internal class OutputListImpl<out D>(
 ) : OutputList<D>, List<D> by output
 
 inline fun <O> OutputList(value: List<O>): OutputList<O> = OutputListImpl(value)
-
-inline fun <O> RawData(value: O?): TransformedData<O, O> = FormattedDataImpl(value, "", value)
-
-inline fun <I, O> RawData(input: I, output: O?): TransformedData<I, O> = FormattedDataImpl(input, "", output)
 
 inline fun <O> OutputData(value: O?): OutputData<O> = FormattedDataImpl(value, "", value)
 

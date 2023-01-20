@@ -11,9 +11,8 @@ import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
 import presenters.forms.*
-import presenters.forms.fields.integer
-import presenters.forms.fields.name
-import presenters.forms.fields.text
+import presenters.name
+import presenters.text
 import kotlin.test.Test
 
 class FormTest {

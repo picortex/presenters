@@ -9,8 +9,8 @@ import kotlinx.serialization.json.JsonObject
 import presenters.forms.Fields
 import presenters.forms.Form
 import presenters.forms.FormActionsBuildingBlock
-import presenters.forms.fields.textTo
 import presenters.forms.toFormConfig
+import presenters.textTo
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
@@ -40,9 +40,8 @@ class TextMappedInputFieldTest {
                 Later(Unit)
             }
         }
-        form.fields.category.type("Test")
-        TODO("Migrate tests")
-//        expect(form.fields.category.data.value.output).toBe(Category(name = "Test"))
+        form.fields.category.set("Test")
+        expect(form.fields.category.data.value.output).toBe(Category(name = "Test"))
         form.submit().await()
     }
 }

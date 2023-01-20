@@ -43,17 +43,9 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
         all.filterIsInstance<Validateable0>().forEach {
             it.validateSettingInvalidsAsErrors()
         }
-//        valuesToBeSubmitted.forEach {
-//            when (it) {
-//                is SingleChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
-//                is RangeValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
-//                is SingleValuedField<*, *> -> it.validateSettingInvalidsAsErrors()
-//                is MultiChoiceValuedField<*> -> it.validateSettingInvalidsAsErrors()
-//            }
-//        }
     }
 
-fun clearAll() {
+    fun clearAll() {
         all.filterIsInstance<Clearable>().forEach { it.clear() }
     }
 }

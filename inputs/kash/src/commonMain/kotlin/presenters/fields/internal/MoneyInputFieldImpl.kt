@@ -47,7 +47,7 @@ internal class MoneyInputFieldImpl(
         items = Currency.values.toIList(),
         mapper = { Option(it.name, it.name) },
         serializer = CurrencySerializer,
-        defaultValue = currency
+        value = currency
     )
 
     override val amount: NumberBasedValuedField<Double> = DoubleValuedField(
