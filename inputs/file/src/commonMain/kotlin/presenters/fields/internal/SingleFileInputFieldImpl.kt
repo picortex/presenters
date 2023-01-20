@@ -3,7 +3,7 @@ package presenters.fields.internal
 import epsilon.FileBlob
 import epsilon.serializers.FileBlobSerializer
 import kotlinx.serialization.KSerializer
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.SingleFileInputField
 import presenters.fields.SingleValuedField
 import presenters.validation.Invalid
@@ -14,7 +14,7 @@ import presenters.validation.ValidationResult
 internal class SingleFileInputFieldImpl(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     override val hint: String = label.text,
     defaultValue: FileBlob? = null,
     validator: ((FileBlob?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR

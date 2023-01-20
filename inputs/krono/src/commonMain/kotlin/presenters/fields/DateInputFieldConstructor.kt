@@ -1,12 +1,13 @@
 package presenters.fields
 
 import krono.LocalDate
+import presenters.Label
 import presenters.fields.internal.DateInputFieldImpl
 
 inline fun DateInputField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,

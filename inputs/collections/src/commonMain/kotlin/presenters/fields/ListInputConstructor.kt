@@ -3,6 +3,7 @@ package presenters.fields
 import kollections.iEmptyList
 import kollections.serializers.ListSerializer
 import kotlinx.serialization.serializer
+import presenters.Label
 import presenters.fields.internal.ListInputFieldImpl
 
 inline fun <reified E> ListInputField(
@@ -15,7 +16,7 @@ inline fun <reified E> ListInputField(
     minItems: Int? = null
 ): ListInputField<E> = ListInputFieldImpl(
     name = name,
-    label = InputLabel(label, isRequired),
+    label = Label(label, isRequired),
     defaultValue = value ?: iEmptyList(),
     isReadonly = isReadonly,
     isRequired = isRequired,

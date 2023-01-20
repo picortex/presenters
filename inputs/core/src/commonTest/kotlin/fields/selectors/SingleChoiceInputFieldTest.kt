@@ -23,7 +23,8 @@ class SingleChoiceInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectValue("Red")
-        expect(color.data.value.output).toBe(Color.Red)
+        TODO("Migrate tests")
+//        expect(color.data.value.output).toBe(Color.Red)
     }
 
     @Test
@@ -35,7 +36,8 @@ class SingleChoiceInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        expect(color.data.value.output).toBe(Color.Green)
+        TODO("Migrate tests")
+//        expect(color.data.value.output).toBe(Color.Green)
     }
 
     @Test
@@ -47,11 +49,12 @@ class SingleChoiceInputFieldTest {
             serializer = Color.serializer()
         )
         color.selectItem(Color.Green)
-        expect(color.data.value.output).toBe(Color.Green)
+        TODO("Migrate tests")
+//        expect(color.data.value.output).toBe(Color.Green)
 
         color.unselect()
 
-        expect(color.data.value.output).toBe(null)
+//        expect(color.data.value.output).toBe(null)
     }
 
     @Test
@@ -65,7 +68,8 @@ class SingleChoiceInputFieldTest {
         )
 
         color.selectItem(Color.Green)
-        expect(color.data.value.output).toBe(Color.Green)
+        TODO("Migrate tests")
+//        expect(color.data.value.output).toBe(Color.Green)
 
         color.unselect()
         val res = color.validate() as Invalid

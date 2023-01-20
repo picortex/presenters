@@ -41,7 +41,8 @@ class TextMappedInputFieldTest {
             }
         }
         form.fields.category.type("Test")
-        expect(form.fields.category.data.value.output).toBe(Category(name = "Test"))
+        TODO("Migrate tests")
+//        expect(form.fields.category.data.value.output).toBe(Category(name = "Test"))
         form.submit().await()
     }
 }

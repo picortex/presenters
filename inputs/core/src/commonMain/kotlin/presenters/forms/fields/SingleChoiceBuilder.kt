@@ -3,13 +3,12 @@ package presenters.forms.fields
 import kollections.toIList
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.Option
 import presenters.fields.SingleChoiceValuedField
 import presenters.fields.internal.SingleChoiceValuedFieldImpl
 import presenters.fields.SingleValuedField
 import presenters.forms.Fields
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun <reified T : Any> Fields.selectSingle(
@@ -26,7 +25,7 @@ inline fun <reified T : Any> Fields.selectSingle(
         name = name,
         items = items.toIList(),
         mapper = mapper,
-        label = InputLabel(label, isReadonly),
+        label = Label(label, isReadonly),
         defaultValue = value,
         serializer = serializer,
         isReadonly = isReadonly,

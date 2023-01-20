@@ -1,7 +1,7 @@
 package presenters.forms.fields
 
 import presenters.fields.Formatter
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.IntegerInputField
@@ -24,7 +24,7 @@ inline fun Fields.integer(
 ): NumberBasedValuedField<Int> = getOrCreate(name) {
     IntegerInputField(
         name = name,
-        label = InputLabel(label, isReadonly),
+        label = Label(label, isReadonly),
         hint = hint ?: name,
         defaultValue = value?.toString(),
         isReadonly = isReadonly,

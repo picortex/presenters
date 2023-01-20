@@ -7,13 +7,13 @@ import kotlinx.serialization.KSerializer
 import live.Live
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.ListInputField
 
 @PublishedApi
 internal class ListInputFieldImpl<E>(
     override val name: String,
-    override val label: InputLabel,
+    override val label: Label,
     defaultValue: Collection<E>,
     override val isReadonly: Boolean,
     override val isRequired: Boolean,

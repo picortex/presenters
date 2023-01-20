@@ -1,6 +1,7 @@
 package presenters.form.fields
 
 import geo.GeoLocation
+import presenters.Label
 import presenters.fields.LocationInputField
 import presenters.fields.*
 import presenters.fields.internal.LocationInputFieldImpl
@@ -19,7 +20,7 @@ fun Fields.location(
 ): LocationInputField = getOrCreate(name) {
     LocationInputFieldImpl(
         name = name,
-        label = InputLabel(label, isRequired),
+        label = Label(label, isRequired),
         hint = hint ?: label,
         defaultValue = value?.address,
         isReadonly = isReadonly,

@@ -1,10 +1,10 @@
 @file:JsExport
 
-package presenters.fields
+package presenters
 
 import kotlin.js.JsExport
 
-data class InputLabel(
+data class Label(
     val text: String,
     internal val isRequired: Boolean = false
 ) {

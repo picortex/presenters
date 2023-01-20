@@ -6,10 +6,9 @@ import kollections.toIList
 import kotlinx.serialization.KSerializer
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.validation.Invalid
 import presenters.fields.Option
-import presenters.fields.OutputData
 import presenters.fields.SingleChoiceValuedField
 import presenters.fields.SingleValuedField
 import presenters.validation.Valid
@@ -20,14 +19,14 @@ internal class SingleChoiceValuedFieldImpl<T : Any>(
     override val name: String,
     override val items: Collection<T>,
     override val mapper: (T) -> Option,
-    override val serializer: KSerializer<T>,
+    val serializer: KSerializer<T>,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
+    val label: Label = Label(name, isRequired),
     val defaultValue: T? = items.find { mapper(it).selected },
     override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY
 ) : SingleChoiceValuedField<T> {
 
-    override val data = mutableLiveOf(OutputData(defaultValue))
+    val data = mutableLiveOf(OutputData(defaultValue))
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
     override val selectedItem: T? get() = data.value.output

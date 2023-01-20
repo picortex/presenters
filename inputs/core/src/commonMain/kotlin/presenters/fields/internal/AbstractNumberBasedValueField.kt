@@ -1,7 +1,7 @@
 package presenters.fields.internal
 
 import presenters.fields.Formatter
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
@@ -15,7 +15,7 @@ import presenters.validation.ValidationResult
 abstract class AbstractNumberBasedValueField<N : Number>(
     name: String,
     isRequired: Boolean = DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     final override val hint: String = label.text,
     defaultValue: String? = DEFAULT_VALUE,
     formatter: Formatter<N>? = null,
@@ -55,7 +55,7 @@ abstract class AbstractNumberBasedValueField<N : Number>(
     }
 
     override fun type(text: String) {
-        val old = data.value.raw ?: ""
+        val old = data.value.input ?: ""
         for (i in 0..text.lastIndex) set(old + text.substring(0..i))
     }
 

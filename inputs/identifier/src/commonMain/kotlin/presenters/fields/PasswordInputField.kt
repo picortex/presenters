@@ -1,6 +1,7 @@
 package presenters.fields
 
 import kotlinx.serialization.builtins.serializer
+import presenters.Label
 import presenters.fields.internal.TextBasedValuedFieldImpl
 
 inline fun PasswordInputField(
@@ -15,7 +16,7 @@ inline fun PasswordInputField(
     noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ): TextBasedValuedField<String> = TextBasedValuedFieldImpl(
     name = name,
-    label = InputLabel(label ?: name, isRequired),
+    label = Label(label ?: name, isRequired),
     hint = hint ?: label ?: name,
     defaultValue = value,
     transformer = { it },

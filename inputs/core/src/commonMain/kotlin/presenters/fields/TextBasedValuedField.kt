@@ -1,13 +1,10 @@
 @file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE", "WRONG_EXPORTED_DECLARATION")
 
 package presenters.fields
 
-import live.Live
+import presenters.fields.properties.Hintable
+import presenters.fields.properties.Requireble
+import presenters.fields.properties.Typeable
 import kotlin.js.JsExport
 
-interface TextBasedValuedField<O> : SingleValuedField<String, O> {
-    override val data: Live<FormattedData<String, O>>
-    val hint: String
-    fun type(text: String)
-}
+interface TextBasedValuedField<O> : ValuedField<O>, Typeable, Hintable, Requireble

@@ -2,13 +2,13 @@ package presenters.fields.internal
 
 import kollections.List
 import presenters.fields.FormattedData
-import presenters.fields.OutputData
-import presenters.fields.OutputList
-import presenters.fields.RawData
+import presenters.OutputData
+import presenters.OutputList
+import presenters.fields.TransformedData
 
 @PublishedApi
 internal data class FormattedDataImpl<out I, out O>(
-    override val raw: I?,
+    override val input: I?,
     override val formatted: String,
     override val output: O?
 ) : FormattedData<I, O>
@@ -20,9 +20,9 @@ internal class OutputListImpl<out D>(
 
 inline fun <O> OutputList(value: List<O>): OutputList<O> = OutputListImpl(value)
 
-inline fun <O> RawData(value: O?): RawData<O, O> = FormattedDataImpl(value, "", value)
+inline fun <O> RawData(value: O?): TransformedData<O, O> = FormattedDataImpl(value, "", value)
 
-inline fun <I, O> RawData(input: I, output: O?): RawData<I, O> = FormattedDataImpl(input, "", output)
+inline fun <I, O> RawData(input: I, output: O?): TransformedData<I, O> = FormattedDataImpl(input, "", output)
 
 inline fun <O> OutputData(value: O?): OutputData<O> = FormattedDataImpl(value, "", value)
 

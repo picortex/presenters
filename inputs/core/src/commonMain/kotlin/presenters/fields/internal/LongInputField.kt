@@ -3,14 +3,14 @@ package presenters.fields.internal
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import presenters.fields.Formatter
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.SingleValuedField
 
 @PublishedApi
 internal class LongInputField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
     formatter: Formatter<Long>? = null,
@@ -21,7 +21,7 @@ internal class LongInputField(
     validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ) : AbstractNumberBasedValueField<Long>(name, isRequired, label, hint, defaultValue, formatter, { it?.toLongOrNull() }, isReadonly, max, min, step, validator) {
 
-    override val serializer: KSerializer<Long> = Long.serializer()
+    val serializer: KSerializer<Long> = Long.serializer()
 
     val valueAsDouble get() = data.value.output?.toDouble()
     val maxAsDouble = this.max?.toDouble()

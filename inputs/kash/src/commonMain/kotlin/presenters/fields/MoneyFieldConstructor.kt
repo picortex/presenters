@@ -2,12 +2,8 @@ package presenters.fields
 
 import kash.Currency
 import kash.Money
-import presenters.fields.InputLabel
-import presenters.fields.MoneyInputField
-import presenters.fields.SingleValuedField
+import presenters.Label
 import presenters.fields.internal.MoneyInputFieldImpl
-import presenters.forms.Fields
-import kotlin.reflect.KProperty
 
 inline fun MoneyInputField(
     name: String,
@@ -23,7 +19,7 @@ inline fun MoneyInputField(
     step: Double? = null
 ): MoneyInputField = MoneyInputFieldImpl(
     name = name,
-    label = InputLabel(label, isRequired),
+    label = Label(label, isRequired),
     hint = hint,
     selectCurrency = selectCurrency,
     currency = currency,

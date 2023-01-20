@@ -7,7 +7,7 @@ import kollections.toIList
 import kotlinx.serialization.KSerializer
 import live.mutableLiveOf
 import live.watch
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.MoneyInputField
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.DoubleValuedField
@@ -25,7 +25,7 @@ import presenters.validation.ValidationResult
 internal class MoneyInputFieldImpl(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     hint: String = label.text,
     defaultValue: Money? = SingleValuedField.DEFAULT_VALUE,
     currency: Currency? = defaultValue?.currency,
@@ -42,7 +42,7 @@ internal class MoneyInputFieldImpl(
     override val currency: SingleChoiceValuedField<Currency> = SingleChoiceValuedField(
         name = "$name-currency",
         isRequired = isRequired,
-        label = InputLabel("$name currency", isRequired),
+        label = Label("$name currency", isRequired),
         isReadonly = !selectCurrency,
         items = Currency.values.toIList(),
         mapper = { Option(it.name, it.name) },
@@ -53,7 +53,7 @@ internal class MoneyInputFieldImpl(
     override val amount: NumberBasedValuedField<Double> = DoubleValuedField(
         name = "$name-amount",
         isRequired = isRequired,
-        label = InputLabel("$name currency", isRequired),
+        label = Label("$name currency", isRequired),
         hint = hint,
         defaultValue = defaultValue?.amountAsDouble?.toString(),
         isReadonly = isReadonly,
@@ -79,7 +79,7 @@ internal class MoneyInputFieldImpl(
         return amount.validate(value)
     }
 
-    override fun validate() = validate(data.value.raw)
+    override fun validate() = validate(data.value.input)
 
     override fun set(value: String?) {
         TODO("Not yet implemented")
@@ -92,9 +92,9 @@ internal class MoneyInputFieldImpl(
         data.value = FormattedData(null, "", null)
     }
 
-    override fun validateSettingInvalidsAsErrors() = validateSettingInvalidsAsErrors(data.value.raw)
+    override fun validateSettingInvalidsAsErrors() = validateSettingInvalidsAsErrors(data.value.input)
 
-    override fun validateSettingInvalidsAsWarnings() = validateSettingInvalidsAsWarnings(data.value.raw)
+    override fun validateSettingInvalidsAsWarnings() = validateSettingInvalidsAsWarnings(data.value.input)
 
     private fun validateSettingFeedback(value: String?, body: (res: Invalid) -> InputFieldState): ValidationResult {
         val res = validate(value)

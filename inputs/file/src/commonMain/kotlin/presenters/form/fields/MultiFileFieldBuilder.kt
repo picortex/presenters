@@ -1,9 +1,8 @@
 package presenters.form.fields
 
 import epsilon.FileBlob
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.MultiFileInputField
-import presenters.fields.SingleFileInputField
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.MultiFileInputFieldImpl
 import presenters.forms.Fields
@@ -20,7 +19,7 @@ fun Fields.files(
 ): MultiFileInputField = getOrCreate(name) {
     MultiFileInputFieldImpl(
         name = name,
-        label = InputLabel(label, isRequired),
+        label = Label(label, isRequired),
         hint = hint ?: label,
         defaultValue = value,
         isRequired = isRequired,

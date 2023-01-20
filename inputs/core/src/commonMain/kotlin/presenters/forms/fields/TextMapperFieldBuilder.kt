@@ -2,12 +2,11 @@ package presenters.forms.fields
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.SingleValuedField
 import presenters.fields.TextBasedValuedField
 import presenters.fields.internal.TextBasedValuedFieldImpl
 import presenters.forms.Fields
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun <reified T : Any> Fields.textTo(
@@ -25,7 +24,7 @@ inline fun <reified T : Any> Fields.textTo(
 ): TextBasedValuedField<T> = getOrCreate(name) {
     TextBasedValuedFieldImpl(
         name = name,
-        label = InputLabel(label, isRequired),
+        label = Label(label, isRequired),
         hint = hint ?: name,
         defaultValue = value,
         transformer = transformer,

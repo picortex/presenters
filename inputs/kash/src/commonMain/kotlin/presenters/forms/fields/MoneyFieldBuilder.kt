@@ -2,7 +2,7 @@ package presenters.forms.fields
 
 import kash.Currency
 import kash.Money
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.MoneyInputField
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.MoneyInputFieldImpl
@@ -24,7 +24,7 @@ fun Fields.money(
 ): MoneyInputField = getOrCreate(name) {
     MoneyInputFieldImpl(
         name = name,
-        label = InputLabel(label, isRequired),
+        label = Label(label, isRequired),
         hint = hint,
         selectCurrency = selectCurrency,
         currency = currency,

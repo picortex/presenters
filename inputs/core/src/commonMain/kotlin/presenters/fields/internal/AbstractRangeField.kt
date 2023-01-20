@@ -2,7 +2,7 @@ package presenters.fields.internal
 
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.Range
 import presenters.fields.RangeValuedField
 import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
@@ -16,7 +16,7 @@ import presenters.validation.ValidationResult
 abstract class AbstractRangeField<I, O : Comparable<O>>(
     override val name: String,
     override val isRequired: Boolean = DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
+    val label: Label = Label(name, isRequired),
     override val transformer: (I?) -> O?,
     override val limit: Range<O>? = null,
     override val isReadonly: Boolean = DEFAULT_IS_READONLY,
@@ -75,7 +75,10 @@ abstract class AbstractRangeField<I, O : Comparable<O>>(
         }
     }
 
-    override fun validate() = data.value.output.let { validate(it?.start, it?.end) }
+    override fun validate(): ValidationResult {
+        TODO()
+//        data.value.output.let { validate(it?.start, it?.end) }
+    }
 
     private fun validateSettingFeedback(start: O?, end: O?, body: (res: Invalid) -> InputFieldState): ValidationResult {
         val res = validate(start, end)
@@ -90,11 +93,17 @@ abstract class AbstractRangeField<I, O : Comparable<O>>(
         InputFieldState.Warning(it.cause.message ?: "", it.cause)
     }
 
-    override fun validateSettingInvalidsAsWarnings() = data.value.output.let { validateSettingInvalidsAsErrors(it?.start, it?.end) }
+    override fun validateSettingInvalidsAsWarnings(): ValidationResult {
+        TODO()
+//        data.value.output.let { validateSettingInvalidsAsErrors(it?.start, it?.end) }
+    }
 
     override fun validateSettingInvalidsAsErrors(start: O?, end: O?) = validateSettingFeedback(start, end) {
         InputFieldState.Error(it.cause.message ?: "", it.cause)
     }
 
-    override fun validateSettingInvalidsAsErrors() = data.value.output.let { validateSettingInvalidsAsErrors(it?.start, it?.end) }
+    override fun validateSettingInvalidsAsErrors(): ValidationResult {
+        TODO()
+//        data.value.output.let { validateSettingInvalidsAsErrors(it?.start, it?.end) }
+    }
 }

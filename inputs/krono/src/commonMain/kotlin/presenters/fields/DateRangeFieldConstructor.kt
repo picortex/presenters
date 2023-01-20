@@ -1,12 +1,8 @@
 package presenters.fields
 
 import krono.LocalDate
-import presenters.fields.DateRangeInputField
-import presenters.fields.Range
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.internal.DateRangeInputFieldImpl
-import presenters.forms.Fields
-import kotlin.reflect.KProperty
 
 inline fun DateRangeInputField(
     name: String,
@@ -18,7 +14,7 @@ inline fun DateRangeInputField(
     noinline validator: ((LocalDate?, LocalDate?) -> Unit)? = null
 ): DateRangeInputField = DateRangeInputFieldImpl(
     name = name,
-    label = InputLabel(label, isRequired),
+    label = Label(label, isRequired),
     limit = limit,
     defaultStart = value?.start,
     defaultEnd = value?.end,

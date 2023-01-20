@@ -1,7 +1,7 @@
 package presenters.form.fields
 
 import epsilon.FileBlob
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.SingleFileInputField
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.SingleFileInputFieldImpl
@@ -19,7 +19,7 @@ fun Fields.file(
 ): SingleFileInputField = getOrCreate(name) {
     SingleFileInputFieldImpl(
         name = name,
-        label = InputLabel(label, isRequired),
+        label = Label(label, isRequired),
         hint = hint ?: label,
         defaultValue = value,
         isRequired = isRequired,

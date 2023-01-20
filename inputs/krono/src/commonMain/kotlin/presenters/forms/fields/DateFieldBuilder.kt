@@ -1,6 +1,7 @@
 package presenters.forms.fields
 
 import krono.LocalDate
+import presenters.Label
 import presenters.fields.*
 import presenters.fields.internal.DateInputFieldImpl
 import presenters.forms.Fields
@@ -20,7 +21,7 @@ inline fun Fields.date(
 ) = getOrCreate(name) {
     DateInputField(
         name = name,
-        label = InputLabel(label, isRequired),
+        label = Label(label, isRequired),
         hint = hint ?: label,
         defaultValue = value?.toIsoString(),
         isReadonly = isReadonly,

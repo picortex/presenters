@@ -2,7 +2,7 @@ package presenters.fields.internal
 
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.SingleValuedField
 import presenters.validation.Invalid
 import presenters.validation.Valid
@@ -11,7 +11,7 @@ import presenters.validation.ValidationResult
 abstract class AbstractSingleValuedField<I, O>(
     final override val name: String,
     final override val isRequired: Boolean,
-    final override val label: InputLabel,
+    val label: Label,
     final override val defaultValue: @UnsafeVariance I?,
     final override val isReadonly: Boolean,
     val validator: ((I?) -> Unit)?,

@@ -1,7 +1,7 @@
 package presenters.forms.fields
 
 import presenters.fields.Formatter
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.NumberBasedValuedField
 import presenters.fields.SingleValuedField
 import presenters.fields.internal.DoubleInputField
@@ -24,7 +24,7 @@ fun Fields.double(
 ): NumberBasedValuedField<Double> = getOrCreate(name) {
     DoubleInputField(
         name = name,
-        label = InputLabel(label, isReadonly),
+        label = Label(label, isReadonly),
         hint = hint ?: name,
         defaultValue = value?.toString(),
         formatter = formatter,

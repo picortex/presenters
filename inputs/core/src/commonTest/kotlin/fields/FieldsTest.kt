@@ -5,6 +5,7 @@ import presenters.forms.Fields
 import presenters.forms.fields.name
 import presenters.forms.fields.number
 import kotlin.test.Test
+import kotlin.test.fail
 
 class FieldsTest {
 
@@ -17,11 +18,12 @@ class FieldsTest {
     fun should_easily_interact_with_text_fields() {
         val fields = TestFormFields()
         val name = fields.name
-        val watcher = name.data.watch {
-            println("Watcher Value: $it")
-        }
-        name.type("Anderson")
-        watcher.stop()
-        expect(name.data.value.output).toBe("Anderson")
+//        val watcher = name.data.watch {
+//            println("Watcher Value: $it")
+//        }
+//        name.type("Anderson")
+//        watcher.stop()
+//        expect(name.data.value.output).toBe("Anderson")
+        TODO("Migrate tests")
     }
 }

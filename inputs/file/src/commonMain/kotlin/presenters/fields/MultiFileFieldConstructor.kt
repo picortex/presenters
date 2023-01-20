@@ -1,12 +1,12 @@
+@file:Suppress("NON_EXPORTABLE_TYPE")
+
 package presenters.fields
 
 import epsilon.FileBlob
+import presenters.Label
 import presenters.fields.internal.MultiFileInputFieldImpl
-import presenters.forms.Fields
-import presenters.forms.fields.getOrCreate
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import kotlin.reflect.KProperty
 
 @JsName("multiFileInputField")
 @JsExport
@@ -19,7 +19,7 @@ inline fun MultiFileInputField(
     noinline validator: ((Array<FileBlob>?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ): MultiFileInputField = MultiFileInputFieldImpl(
     name = name,
-    label = InputLabel(label, isRequired),
+    label = Label(label, isRequired),
     hint = hint ?: label,
     defaultValue = value,
     isRequired = isRequired,

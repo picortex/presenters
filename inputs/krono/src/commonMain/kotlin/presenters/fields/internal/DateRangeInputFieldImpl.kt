@@ -7,7 +7,7 @@ import live.mutableLiveOf
 import presenters.fields.DateInputField
 import presenters.fields.DateRangeInputField
 import presenters.fields.InputFieldState
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.Range
 import presenters.fields.SingleValuedField
 
@@ -15,7 +15,7 @@ import presenters.fields.SingleValuedField
 internal class DateRangeInputFieldImpl(
     override val name: String,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
+    override val label: Label = Label(name, isRequired),
     override val limit: Range<LocalDate>? = null,
     defaultStart: LocalDate? = null,
     defaultEnd: LocalDate? = null,
@@ -27,7 +27,7 @@ internal class DateRangeInputFieldImpl(
 
     override val start = DateInputField(
         name = "$name-start", isRequired,
-        label = InputLabel("$name start", isRequired),
+        label = Label("$name start", isRequired),
         hint = "Start Date",
         defaultValue = defaultStart?.toIsoString(),
         isReadonly = isReadonly,
@@ -36,7 +36,7 @@ internal class DateRangeInputFieldImpl(
 
     override val end = DateInputField(
         name = "$name-end", isRequired,
-        label = InputLabel("$name start", isRequired),
+        label = Label("$name start", isRequired),
         hint = "Start Date",
         defaultValue = defaultEnd?.toIsoString(),
         isReadonly = isReadonly,

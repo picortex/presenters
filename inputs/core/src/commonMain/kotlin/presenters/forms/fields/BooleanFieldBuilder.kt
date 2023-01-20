@@ -1,24 +1,23 @@
 package presenters.forms.fields
 
+import presenters.Label
 import presenters.fields.BooleanInputField
-import presenters.fields.InputLabel
-import presenters.fields.SingleValuedField
-import presenters.fields.internal.BooleanBasedValuedFieldImpl
 import presenters.forms.Fields
+import presenters.internal.BooleanInputFieldImpl
 import kotlin.reflect.KProperty
 
 fun Fields.boolean(
     name: String,
     label: String = name,
-    value: Boolean? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    value: Boolean? = null,
+    isReadonly: Boolean = false,
+    isRequired: Boolean = false,
+    validator: ((Boolean?) -> Unit)? = null
 ): BooleanInputField = getOrCreate(name) {
-    BooleanBasedValuedFieldImpl(
+    BooleanInputFieldImpl(
         name = name,
-        label = InputLabel(label, isReadonly),
-        defaultValue = value,
+        label = Label(label, isReadonly),
+        value = value,
         isReadonly = isReadonly,
         isRequired = isRequired,
         validator = validator,
@@ -28,8 +27,8 @@ fun Fields.boolean(
 inline fun Fields.boolean(
     name: KProperty<*>,
     label: String = name.name,
-    value: Boolean? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    value: Boolean? = null,
+    isReadonly: Boolean = false,
+    isRequired: Boolean = false,
+    noinline validator: ((Boolean?) -> Unit)? = null
 ) = boolean(name.name, label, value, isReadonly, isRequired, validator)

@@ -1,5 +1,6 @@
 package presenters.fields
 
+import presenters.Label
 import presenters.fields.internal.AbstractNumberBasedValueField
 import presenters.fields.internal.DoubleInputField
 import presenters.fields.internal.IntegerInputField
@@ -8,7 +9,7 @@ import presenters.fields.internal.LongInputField
 inline fun DoubleValuedField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
     formatter: Formatter<Double>? = null,
@@ -22,7 +23,7 @@ inline fun DoubleValuedField(
 inline fun IntegerValuedField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
     formatter: Formatter<Int>? = null,
@@ -36,7 +37,7 @@ inline fun IntegerValuedField(
 inline fun LongValuedField(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
     formatter: Formatter<Long>? = null,

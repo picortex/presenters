@@ -1,18 +1,19 @@
 package presenters.fields
 
-import presenters.fields.internal.BooleanBasedValuedFieldImpl
+import presenters.Label
+import presenters.internal.BooleanInputFieldImpl
 
 inline fun BooleanInputField(
     name: String,
     label: String = name,
-    value: Boolean? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    noinline validator: ((Boolean?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): BooleanInputField = BooleanBasedValuedFieldImpl(
+    value: Boolean? = null,
+    isReadonly: Boolean = false,
+    isRequired: Boolean = false,
+    noinline validator: ((Boolean?) -> Unit)? = null
+): BooleanInputField = BooleanInputFieldImpl(
     name = name,
-    label = InputLabel(label, isReadonly),
-    defaultValue = value,
+    label = Label(label, isReadonly),
+    value = value,
     isReadonly = isReadonly,
     isRequired = isRequired,
     validator = validator,

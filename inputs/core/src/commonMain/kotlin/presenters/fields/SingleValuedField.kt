@@ -7,6 +7,7 @@ import presenters.validation.Validateable1
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
+@Deprecated("In favour of TransformingValuedField")
 interface SingleValuedField<I, O> : ValuedField<O>, Validateable1<I> {
     val defaultValue: I?
 

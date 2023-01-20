@@ -1,13 +1,8 @@
 package presenters.fields
 
 import epsilon.FileBlob
-import presenters.fields.InputLabel
-import presenters.fields.SingleFileInputField
-import presenters.fields.SingleValuedField
+import presenters.Label
 import presenters.fields.internal.SingleFileInputFieldImpl
-import presenters.forms.Fields
-import presenters.forms.fields.getOrCreate
-import kotlin.reflect.KProperty
 
 inline fun SingleFileInputField(
     name: String,
@@ -18,7 +13,7 @@ inline fun SingleFileInputField(
     noinline validator: ((FileBlob?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
 ): SingleFileInputField = SingleFileInputFieldImpl(
     name = name,
-    label = InputLabel(label, isRequired),
+    label = Label(label, isRequired),
     hint = hint ?: label,
     defaultValue = value,
     isRequired = isRequired,

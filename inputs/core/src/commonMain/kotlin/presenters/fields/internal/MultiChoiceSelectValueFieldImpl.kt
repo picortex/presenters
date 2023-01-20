@@ -8,11 +8,11 @@ import kollections.toIList
 import kotlinx.serialization.KSerializer
 import live.mutableLiveOf
 import presenters.fields.InputFieldState
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.validation.Invalid
 import presenters.fields.MultiChoiceValuedField
 import presenters.fields.Option
-import presenters.fields.OutputList
+import presenters.OutputList
 import presenters.fields.SingleValuedField
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
@@ -22,15 +22,15 @@ internal class MultiChoiceSelectValueFieldImpl<T : Any>(
     override val name: String,
     override val items: Collection<T>,
     val mapper: (T) -> Option,
-    override val serializer: KSerializer<List<T>>,
+    val serializer: KSerializer<List<T>>,
     override val isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    override val label: InputLabel = InputLabel(name, isRequired),
+    val label: Label = Label(name, isRequired),
     override val isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY
 ) : MultiChoiceValuedField<T> {
     override val optionLabels get() = options.map { it.label }.toIList()
     override val optionValues get() = options.map { it.value }.toIList()
 
-    override val data = mutableLiveOf<OutputList<T>>(OutputList(iEmptyList()))
+    val data = mutableLiveOf<OutputList<T>>(OutputList(iEmptyList()))
 
     override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
 
@@ -112,9 +112,10 @@ internal class MultiChoiceSelectValueFieldImpl<T : Any>(
     }
 
     override fun validate(): ValidationResult {
-        if (isRequired && data.value.isNullOrEmpty()) {
-            return Invalid(IllegalArgumentException("${label.capitalizedWithoutAstrix()} is required"))
-        }
+        TODO()
+//        if (isRequired && data.value.isNullOrEmpty()) {
+//            return Invalid(IllegalArgumentException("${label.capitalizedWithoutAstrix()} is required"))
+//        }
         return Valid
     }
 

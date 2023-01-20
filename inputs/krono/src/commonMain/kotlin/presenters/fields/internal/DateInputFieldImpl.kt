@@ -4,7 +4,7 @@ import krono.LocalDate
 import krono.LocalDateOrNull
 import krono.serializers.LocalDateIsoSerializer
 import presenters.fields.InputFieldState
-import presenters.fields.InputLabel
+import presenters.Label
 import presenters.fields.SingleValuedField
 import presenters.validation.Invalid
 import presenters.validation.Valid
@@ -14,7 +14,7 @@ import presenters.validation.ValidationResult
 internal class DateInputFieldImpl(
     name: String,
     isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    label: InputLabel = InputLabel(name, isRequired),
+    label: Label = Label(name, isRequired),
     hint: String = label.text,
     defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
     isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
