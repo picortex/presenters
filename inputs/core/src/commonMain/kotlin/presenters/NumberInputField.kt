@@ -1,9 +1,7 @@
 @file:JsExport
 
-package presenters.fields
+package presenters
 
-import presenters.InputField
-import presenters.LiveOutputData
 import presenters.fields.properties.Clearable
 import presenters.fields.properties.Hintable
 import presenters.fields.properties.Labeled
@@ -15,6 +13,12 @@ import presenters.validation.Validateable0
 import presenters.validation.Validateable1
 import kotlin.js.JsExport
 
-interface BooleanInputField : InputField, Labeled, Hintable, Mutability, Requireble, Settable<Boolean>, LiveOutputData<Boolean>, Validateable1<Boolean>, Validateable0, Clearable {
-    fun toggle()
+interface NumberInputField<N : Number> : InputField, Labeled, Hintable, Mutability, Requireble, Settable<String>, LiveFormattedData<String, N>, Validateable1<N>, Validateable0, Typeable, Clearable {
+    val max: N?
+    val min: N?
+    val step: N?
+
+    fun increment(step: N?)
+
+    fun decrement(step: N?)
 }

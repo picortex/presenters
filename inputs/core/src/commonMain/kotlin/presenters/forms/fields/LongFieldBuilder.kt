@@ -1,35 +1,33 @@
 package presenters.forms.fields
 
-import presenters.fields.Formatter
 import presenters.Label
-import presenters.fields.NumberBasedValuedField
-import presenters.fields.SingleValuedField
-import presenters.fields.internal.LongInputField
-import presenters.fields.internal.AbstractNumberBasedValueField
+import presenters.NumberInputField
+import presenters.fields.Formatter
 import presenters.forms.Fields
+import presenters.internal.LongInputFieldImpl
 import kotlin.reflect.KProperty
 
 fun Fields.long(
     name: String,
     label: String = name,
     hint: String? = label,
-    value: Long? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    value: Long? = null,
+    isReadonly: Boolean = false,
+    isRequired: Boolean = false,
     formatter: Formatter<Long>? = null,
-    max: Long? = AbstractNumberBasedValueField.DEFAULT_MAX,
-    min: Long? = AbstractNumberBasedValueField.DEFAULT_MIN,
-    step: Long = LongInputField.DEFAULT_STEP,
-    validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): NumberBasedValuedField<Long> = getOrCreate(name) {
-    LongInputField(
+    max: Long? = null,
+    min: Long? = null,
+    step: Long = 1,
+    validator: ((Long?) -> Unit)? = null
+): NumberInputField<Long> = getOrCreate(name) {
+    LongInputFieldImpl(
         name = name,
         label = Label(label, isReadonly),
         hint = hint ?: name,
-        defaultValue = value?.toString(),
+        value = value,
+        formatter = formatter,
         isReadonly = isReadonly,
         isRequired = isRequired,
-        formatter = formatter,
         max = max,
         min = min,
         step = step,
@@ -41,12 +39,12 @@ inline fun Fields.long(
     property: KProperty<*>,
     label: String = property.name,
     hint: String? = label,
-    value: Long? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    value: Long? = null,
+    isReadonly: Boolean = false,
+    isRequired: Boolean = false,
     formatter: Formatter<Long>? = null,
-    max: Long? = AbstractNumberBasedValueField.DEFAULT_MAX,
-    min: Long? = AbstractNumberBasedValueField.DEFAULT_MIN,
-    step: Long = LongInputField.DEFAULT_STEP,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    max: Long? = null,
+    min: Long? = null,
+    step: Long = 1,
+    noinline validator: ((Long?) -> Unit)? = null
 ) = long(property.name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)

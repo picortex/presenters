@@ -1,49 +1,49 @@
 package presenters.fields
 
 import presenters.Label
-import presenters.fields.internal.AbstractNumberBasedValueField
-import presenters.fields.internal.DoubleInputField
-import presenters.fields.internal.IntegerInputField
-import presenters.fields.internal.LongInputField
+import presenters.NumberInputField
+import presenters.internal.DoubleInputFieldImpl
+import presenters.internal.IntegerInputFieldImpl
+import presenters.internal.LongInputFieldImpl
 
 inline fun DoubleValuedField(
     name: String,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    isRequired: Boolean = false,
     label: Label = Label(name, isRequired),
     hint: String = label.text,
-    defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
+    value: Double? = null,
     formatter: Formatter<Double>? = null,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    max: Double? = AbstractNumberBasedValueField.DEFAULT_MAX,
-    min: Double? = AbstractNumberBasedValueField.DEFAULT_MIN,
-    step: Double? = DoubleInputField.DEFAULT_STEP,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): NumberBasedValuedField<Double> = DoubleInputField(name, isRequired, label, hint, defaultValue, formatter, isReadonly, max, min, step, validator)
+    isReadonly: Boolean = false,
+    max: Double? = null,
+    min: Double? = null,
+    step: Double? = null,
+    noinline validator: ((Double?) -> Unit)? = null
+): NumberInputField<Double> = DoubleInputFieldImpl(name, isRequired, label, hint, isReadonly, max, min, step, formatter, value, validator)
 
 inline fun IntegerValuedField(
     name: String,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    isRequired: Boolean = false,
     label: Label = Label(name, isRequired),
     hint: String = label.text,
-    defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
+    value: Int? = null,
     formatter: Formatter<Int>? = null,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    max: Int? = AbstractNumberBasedValueField.DEFAULT_MAX,
-    min: Int? = AbstractNumberBasedValueField.DEFAULT_MIN,
-    step: Int = IntegerInputField.DEFAULT_STEP,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): NumberBasedValuedField<Int> = IntegerInputField(name, isRequired, label, hint, defaultValue, formatter, isReadonly, max, min, step, validator)
+    isReadonly: Boolean = false,
+    max: Int? = null,
+    min: Int? = null,
+    step: Int? = null,
+    noinline validator: ((Int?) -> Unit)? = null
+): NumberInputField<Int> = IntegerInputFieldImpl(name, isRequired, label, hint, isReadonly, max, min, step, formatter, value, validator)
 
 inline fun LongValuedField(
     name: String,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
+    isRequired: Boolean = false,
     label: Label = Label(name, isRequired),
     hint: String = label.text,
-    defaultValue: String? = SingleValuedField.DEFAULT_VALUE,
+    value: Long? = null,
     formatter: Formatter<Long>? = null,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    max: Long? = AbstractNumberBasedValueField.DEFAULT_MAX,
-    min: Long? = AbstractNumberBasedValueField.DEFAULT_MIN,
-    step: Long = LongInputField.DEFAULT_STEP,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-): NumberBasedValuedField<Long> = LongInputField(name, isRequired, label, hint, defaultValue, formatter, isReadonly, max, min, step, validator)
+    isReadonly: Boolean = false,
+    max: Long? = null,
+    min: Long? = null,
+    step: Long? = null,
+    noinline validator: ((Long?) -> Unit)? = null
+): NumberInputField<Long> = LongInputFieldImpl(name, isRequired, label, hint, isReadonly, max, min, step, formatter, value, validator)

@@ -2,20 +2,12 @@ package presenters.internal
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
-import live.Live
 import live.MutableLive
 import live.mutableLiveOf
-import presenters.fields.BooleanInputField
+import presenters.BooleanInputField
 import presenters.Label
-import presenters.OutputData
 import presenters.fields.InputFieldState
-import presenters.fields.SingleValuedField
-import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_READONLY
-import presenters.fields.SingleValuedField.Companion.DEFAULT_IS_REQUIRED
 import presenters.fields.internal.OutputData
-import presenters.validation.Invalid
-import presenters.validation.Valid
-import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class BooleanInputFieldImpl(
@@ -40,7 +32,7 @@ internal class BooleanInputFieldImpl(
     private val setter = OutputSetter(data, feedback, bv)
     override fun set(value: Boolean) = setter.set(value)
 
-    private val clearer = OutputClearer(value, data, feedback)
+    private val clearer = Clearer(OutputData(value), data, feedback)
     override fun clear() = clearer.clear()
 
     override fun validate(value: Boolean?) = bv.validate(value)

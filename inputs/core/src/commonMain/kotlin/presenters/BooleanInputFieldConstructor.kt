@@ -1,7 +1,5 @@
-package presenters.fields
+package presenters
 
-import presenters.BooleanInputField
-import presenters.Label
 import presenters.internal.BooleanInputFieldImpl
 
 inline fun BooleanInputField(

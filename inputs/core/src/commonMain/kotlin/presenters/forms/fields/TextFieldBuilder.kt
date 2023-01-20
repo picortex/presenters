@@ -1,31 +1,43 @@
 package presenters.forms.fields
 
-import kotlinx.serialization.builtins.serializer
-import presenters.fields.SingleValuedField
-import presenters.fields.internal.TextBasedValuedFieldImpl
+import presenters.Label
+import presenters.TextInputField
 import presenters.forms.Fields
+import presenters.internal.TextInputFieldImpl
 import kotlin.reflect.KProperty
 
-inline fun Fields.text(
+fun Fields.text(
     name: String,
     label: String = name,
-    hint: String? = label,
-    value: String? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = TextBasedValuedFieldImpl.DEFAULT_MAX_LENGTH,
-    minLength: Int? = TextBasedValuedFieldImpl.DEFAULT_MIN_LENGTH,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
-) = textTo(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, String.serializer(), validator) { it }
+    hint: String = label,
+    value: String? = null,
+    isReadonly: Boolean = false,
+    isRequired: Boolean = false,
+    maxLength: Int? = null,
+    minLength: Int? = null,
+    validator: ((String?) -> Unit)? = null
+): TextInputField = getOrCreate(name) {
+    TextInputFieldImpl(
+        name = name,
+        isRequired = isRequired,
+        label = Label(label, isRequired),
+        hint = hint,
+        isReadonly = isReadonly,
+        maxLength = maxLength,
+        minLength = minLength,
+        value = value,
+        validator = validator
+    )
+}
 
 inline fun Fields.text(
     name: KProperty<*>,
     label: String = name.name,
-    hint: String? = label,
-    value: String? = SingleValuedField.DEFAULT_VALUE,
-    isReadonly: Boolean = SingleValuedField.DEFAULT_IS_READONLY,
-    isRequired: Boolean = SingleValuedField.DEFAULT_IS_REQUIRED,
-    maxLength: Int? = TextBasedValuedFieldImpl.DEFAULT_MAX_LENGTH,
-    minLength: Int? = TextBasedValuedFieldImpl.DEFAULT_MIN_LENGTH,
-    noinline validator: ((String?) -> Unit)? = SingleValuedField.DEFAULT_VALIDATOR
+    hint: String = label,
+    value: String? = null,
+    isReadonly: Boolean = false,
+    isRequired: Boolean = false,
+    maxLength: Int? = null,
+    minLength: Int? = null,
+    noinline validator: ((String?) -> Unit)? = null
 ) = text(name.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)

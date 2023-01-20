@@ -71,6 +71,7 @@ open class Form<out F : Fields, P, out R>(
     fun clear() {
         fields.clearAll()
         ui.value = Pending
+        ui.history.clear()
     }
 
     fun submit(): Thenable<R> = try {

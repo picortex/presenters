@@ -1,15 +1,12 @@
 package presenters.internal
 
 import kotlinx.serialization.builtins.serializer
-import live.Live
 import live.MutableLive
 import live.mutableLiveOf
 import presenters.Label
 import presenters.TextInputField
 import presenters.fields.InputFieldState
 import presenters.fields.internal.OutputData
-import presenters.validation.Invalid
-import presenters.validation.Valid
 
 @PublishedApi
 internal class TextInputFieldImpl(
@@ -23,7 +20,8 @@ internal class TextInputFieldImpl(
     private val value: String? = null,
     validator: ((String?) -> Unit)? = null,
 ) : TextInputField {
-    override val data = mutableLiveOf(OutputData(value))
+    private val default = OutputData(value)
+    override val data = mutableLiveOf(default)
     override val serializer = String.serializer()
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
 
@@ -45,12 +43,9 @@ internal class TextInputFieldImpl(
 
     override fun set(value: String) = setter.set(value)
 
-    private val clearer = OutputClearer(value,data,feedback)
+    private val clearer = Clearer(default, data, feedback)
 
     override fun clear() = clearer.clear()
 
-    override fun type(text: String) {
-        val old = data.value.output ?: ""
-        for (i in 0..text.lastIndex) set(old + text.substring(0..i))
-    }
+    override fun type(text: String) = Typer(data.value.output ?: "", setter).type(text)
 }

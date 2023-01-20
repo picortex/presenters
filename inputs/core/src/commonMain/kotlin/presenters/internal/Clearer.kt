@@ -6,13 +6,13 @@ import presenters.fields.InputFieldState
 import presenters.fields.internal.OutputData
 import presenters.fields.properties.Clearable
 
-class OutputClearer<V>(
-    private val value: V?,
-    private val data: MutableLive<OutputData<V>>,
+class Clearer<O>(
+    private val value: O,
+    private val data: MutableLive<O>,
     private val feedback: MutableLive<InputFieldState>,
 ) : Clearable {
     override fun clear() {
-        data.value = OutputData(value)
+        data.value = value
         feedback.value = InputFieldState.Empty
     }
 }

@@ -7,34 +7,36 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
 import presenters.InputField
+import presenters.LiveOutputData
 import presenters.fields.InputFieldState
+import presenters.fields.properties.Clearable
+import presenters.fields.properties.Requireble
 import presenters.validation.Validateable0
-import presenters.fields.ValuedField
 import kotlin.js.JsExport
 
 open class Fields(@PublishedApi internal val cache: MutableMap<String, InputField> = mutableMapOf()) {
 
     internal val all get() = cache.values
 
-    internal fun encodedValuesToJson(codec: StringFormat) : String  = valuesToBeSubmitted.associate {
-        it.name to it
+    internal fun encodedValuesToJson(codec: StringFormat): String = valuesToBeSubmitted.associateBy {
+        it.name
     }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, field) ->
-        TODO()
-//        val serializer = field.serializer as KSerializer<Any>
-//        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.data.value.output)}"""
+        val serializer = field.serializer as KSerializer<Any>
+        """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.data.value.output)}"""
     }
 
-    internal val allInvalid get() = valuesToBeSubmitted.filter {
-        TODO()
-//        it.feedback.value is InputFieldState.Error
-    }
-
-    private val valueFields get() = cache.values.filterIsInstance<ValuedField<*>>()
+    internal val allInvalid
+        get() = valuesToBeSubmitted.filter {
+            it is Validateable0 && it.feedback.value is InputFieldState.Error
+        }
 
     internal val valuesToBeSubmitted
-        get() = valueFields.filterNot {
-            TODO()
-//            !it.isRequired && (it.data.value.output == null || it.data.value.output.toString().isBlank())
+        get() = all.filterIsInstance<LiveOutputData<*>>().filterNot {
+            if (it is Requireble) {
+                !it.isRequired && (it.data.value.output == null || it.data.value.output.toString().isBlank())
+            } else {
+                false
+            }
         }
 
     fun validate() {
@@ -51,7 +53,7 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
 //        }
     }
 
-    fun clearAll() {
-        valueFields.forEach { it.clear() }
+fun clearAll() {
+        all.filterIsInstance<Clearable>().forEach { it.clear() }
     }
 }

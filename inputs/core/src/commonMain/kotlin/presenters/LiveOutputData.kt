@@ -7,7 +7,7 @@ import kotlinx.serialization.KSerializer
 import live.Live
 import kotlin.js.JsExport
 
-interface LiveOutputData<out D> {
+interface LiveOutputData<out D> : InputField {
     val data: Live<OutputData<D>>
     val serializer: KSerializer<@UnsafeVariance D>
 }

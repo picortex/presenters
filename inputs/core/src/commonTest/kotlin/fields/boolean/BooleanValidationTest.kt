@@ -3,7 +3,7 @@ package fields.boolean
 import expect.expect
 import expect.toBe
 import kotlinx.coroutines.test.runTest
-import presenters.fields.BooleanInputField
+import presenters.BooleanInputField
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import kotlin.test.Test

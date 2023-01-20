@@ -11,9 +11,9 @@ import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
 import presenters.forms.*
+import presenters.forms.fields.integer
 import presenters.forms.fields.name
 import presenters.forms.fields.text
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class FormTest {
@@ -21,6 +21,7 @@ class FormTest {
     class PersonFields : Fields() {
         val name = name(isRequired = true)
         val details = text(name = "details")
+        val address = text("address", isRequired = true)
     }
 
     @Test
@@ -28,12 +29,27 @@ class FormTest {
         val fields = PersonFields()
         val name = fields.name
         name.type("Anderson")
-        TODO("Migrate tests")
-//        expect(name.data.value.output).toBe("Anderson")
+        expect(name.data.value.output).toBe("Anderson")
     }
 
     @Test
-    @Ignore // TODO: Fix this if you are finished with migration
+    fun forms_should_be_able_to_clear_clearable_inputs() {
+        val form = TestForm(PersonFields()) {
+            onSubmit {
+                println(it.entries.joinToString { entry -> "${entry.key}=${entry.value}" })
+                Later(Unit)
+            }
+        }
+        form.fields.apply {
+            name.type("Anderson")
+        }
+
+        expect(form.fields.name.data.value.output).toBe("Anderson")
+        form.clear()
+        expect(form.fields.name.data.value.output).toBe(null)
+    }
+
+    @Test
     fun person_form_should_be_able_to_recover_after_failure() = runTest {
         val form = TestForm(PersonFields()) {
             onSubmit {
@@ -50,7 +66,7 @@ class FormTest {
         val (_, s1) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<*>>()
         expect(s1.message).toBe("You have 1 invalid input")
 
-        form.ui.history.clear()
+        form.clear()
 
         form.fields.apply {
             name.clear()
@@ -60,14 +76,15 @@ class FormTest {
         val (_, s2) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<*>>()
         expect(s2.message).toBe("You have 2 invalid inputs")
 
-        form.ui.history.clear()
+        form.clear()
+
         form.fields.apply {
             name.type("Anderson")
             details.type("andy@lamax.me")
+            address.type("13")
         }
         form.submit()
-        TODO("Migrate tests")
-//        expect(form.fields.details.data.value.output).toBe("andy@lamax.me")
+        expect(form.fields.details.data.value.output).toBe("andy@lamax.me")
         expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
     }
 }

@@ -1,7 +1,7 @@
 package presenters.forms.fields
 
 import presenters.Label
-import presenters.fields.BooleanInputField
+import presenters.BooleanInputField
 import presenters.forms.Fields
 import presenters.internal.BooleanInputFieldImpl
 import kotlin.reflect.KProperty
