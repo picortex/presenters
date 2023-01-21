@@ -11,7 +11,7 @@ import presenters.LiveOutputData
 import presenters.fields.InputFieldState
 import presenters.properties.Clearable
 import presenters.properties.Requireble
-import presenters.validation.Validateable0
+import presenters.validation.Validateable
 import kotlin.js.JsExport
 
 open class Fields(@PublishedApi internal val cache: MutableMap<String, InputField> = mutableMapOf()) {
@@ -27,7 +27,7 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
 
     internal val allInvalid
         get() = valuesToBeSubmitted.filter {
-            it is Validateable0 && it.feedback.value is InputFieldState.Error
+            it is Validateable<*> && it.feedback.value is InputFieldState.Error
         }
 
     internal val valuesToBeSubmitted
@@ -40,7 +40,7 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
         }
 
     fun validate() {
-        all.filterIsInstance<Validateable0>().forEach {
+        all.filterIsInstance<Validateable<*>>().forEach {
             it.validateSettingInvalidsAsErrors()
         }
     }

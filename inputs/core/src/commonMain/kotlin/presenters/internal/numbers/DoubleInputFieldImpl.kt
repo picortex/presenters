@@ -5,6 +5,10 @@ import kotlinx.serialization.builtins.serializer
 import presenters.Label
 import presenters.fields.Formatter
 import presenters.internal.utils.DataTransformer
+import presenters.internal.validators.ClippingValidator
+import presenters.internal.validators.CompoundValidator
+import presenters.internal.validators.LambdaValidator
+import presenters.internal.validators.RequirementValidator
 
 @PublishedApi
 internal class DoubleInputFieldImpl(

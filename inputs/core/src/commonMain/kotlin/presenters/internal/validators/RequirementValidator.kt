@@ -1,16 +1,19 @@
 package presenters.internal.validators
 
+import live.Live
 import live.MutableLive
+import presenters.OutputData
 import presenters.fields.InputFieldState
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class RequirementValidator(
-    override val feedback: MutableLive<InputFieldState>,
-    val label: String,
-    val isRequired: Boolean,
-) : AbstractValidate1<Any?>(feedback) {
+    data: Live<OutputData<Any?>>,
+    feedback: MutableLive<InputFieldState>,
+    private val label: String,
+    private val isRequired: Boolean,
+) : AbstractValidator<Any?>(data, feedback) {
 
     override fun validate(value: Any?): ValidationResult {
         val message = IllegalArgumentException("$label is required")

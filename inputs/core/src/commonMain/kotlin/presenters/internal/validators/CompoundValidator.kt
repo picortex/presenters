@@ -1,24 +1,25 @@
 package presenters.internal.validators
 
+import live.Live
 import live.MutableLive
+import presenters.OutputData
 import presenters.fields.InputFieldState
-import presenters.internal.utils.FeedbackSetter
 import presenters.validation.Invalid
 import presenters.validation.Valid
-import presenters.validation.Validateable1
-import presenters.validation.Validateable2
+import presenters.validation.Validateable
 import presenters.validation.ValidationResult
 
-class CompoundValidator2<in I>(
-    override val feedback: MutableLive<InputFieldState>,
-    vararg valigators: Validateable2<I>
-) : AbstractValidate2<I>(feedback) {
+class CompoundValidator<in T>(
+    data: Live<OutputData<T>>,
+    feedback: MutableLive<InputFieldState>,
+    vararg valigators: AbstractValidator<T>
+) : AbstractValidator<T>(data, feedback) {
     private val validators = valigators
 
-    override fun validate(start: I?, end: I?): ValidationResult {
+    override fun validate(value: T?): ValidationResult {
         var res: ValidationResult = Valid
         for (validator in validators) {
-            res = validator.validate(start, end)
+            res = validator.validate(value)
             if (res is Invalid) break
         }
         return res

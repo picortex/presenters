@@ -96,7 +96,7 @@ internal class MultiChoiceInputFieldImpl<T : Any>(
     override fun isSelectedValue(v: String) = output.findItemWithValue(v) != null
 
     override fun unselectOption(o: Option) {
-        val item = items.findItemWithOption(o) ?: return
+        val item = output.findItemWithOption(o) ?: return
         unselectItem(item)
     }
 
@@ -146,8 +146,8 @@ internal class MultiChoiceInputFieldImpl<T : Any>(
         }
     }
 
-    private val validator = RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired)
-    override fun validate() = validator.validate(data.value.output)
-    override fun validateSettingInvalidsAsWarnings() = validator.validateSettingInvalidsAsWarnings(data.value.output)
-    override fun validateSettingInvalidsAsErrors() = validator.validateSettingInvalidsAsErrors(data.value.output)
+    private val validator = RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired)
+    override fun validate(value: List<T>?) = validator.validate(data.value.output)
+    override fun validateSettingInvalidsAsWarnings(value: List<T>?) = validator.validateSettingInvalidsAsWarnings(data.value.output)
+    override fun validateSettingInvalidsAsErrors(value: List<T>?) = validator.validateSettingInvalidsAsErrors(data.value.output)
 }

@@ -9,10 +9,10 @@ import presenters.properties.Hintable
 import presenters.properties.Labeled
 import presenters.properties.Mutability
 import presenters.properties.Requireble
-import presenters.validation.Validateable0
+import presenters.validation.Validateable
 import kotlin.js.JsExport
 
-interface SingleChoiceInputField<O> : ChoiceField<O>, Labeled, Hintable, Mutability, Requireble, LiveOutputData<O>, Validateable0, Clearable {
+interface SingleChoiceInputField<O> : ChoiceField<O>, Labeled, Hintable, Mutability, Requireble, LiveOutputData<O>, Validateable<O>, Clearable {
     val selectedItem: O?
 
     val selectedOption: Option?

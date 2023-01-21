@@ -12,7 +12,7 @@ import presenters.fields.internal.FormattedData
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
-import presenters.internal.validators.CompoundValidator1
+import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RequirementValidator
 
@@ -33,10 +33,8 @@ internal class TransformingInputFieldImpl<I : Any, O : Any>(
     override val data: MutableLive<FormattedData<I, O>> = mutableLiveOf(default)
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
 
-    private val tiv = CompoundValidator1(
-        feedback,
-        RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
-        LambdaValidator(feedback, validator)
+    private val tiv = CompoundValidator(
+        data, feedback, RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired), LambdaValidator(data, feedback, validator)
     )
     private val trnsfrmr = DataTransformer(formatter, transformer)
     private val setter = FormattedOutputSetter(data, feedback, trnsfrmr, tiv)
@@ -47,9 +45,6 @@ internal class TransformingInputFieldImpl<I : Any, O : Any>(
     override fun clear() = clearer.clear()
 
     override fun validate(value: O?) = tiv.validate(value)
-    override fun validate() = tiv.validate(data.value.output)
     override fun validateSettingInvalidsAsErrors(value: O?) = tiv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsErrors() = tiv.validateSettingInvalidsAsErrors(data.value.output)
     override fun validateSettingInvalidsAsWarnings(value: O?) = tiv.validateSettingInvalidsAsWarnings(value)
-    override fun validateSettingInvalidsAsWarnings() = tiv.validateSettingInvalidsAsWarnings(data.value.output)
 }

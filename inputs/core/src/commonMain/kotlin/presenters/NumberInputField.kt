@@ -10,12 +10,11 @@ import presenters.properties.Mutability
 import presenters.properties.Requireble
 import presenters.properties.Settable
 import presenters.properties.Typeable
-import presenters.validation.Validateable0
-import presenters.validation.Validateable1
+import presenters.validation.Validateable
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface NumberInputField<N : Number> : InputField, Labeled, Hintable, Mutability, Requireble, Settable<String>, LiveFormattedData<String, N>, Validateable1<N>, Validateable0, Typeable, Clearable {
+interface NumberInputField<N : Number> : InputField, Labeled, Hintable, Mutability, Requireble, Settable<String>, LiveFormattedData<String, N>, Validateable<N>, Typeable, Clearable {
     val max: N?
     val min: N?
     val step: N?

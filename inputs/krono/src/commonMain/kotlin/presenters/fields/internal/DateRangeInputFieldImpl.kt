@@ -10,9 +10,9 @@ import presenters.Label
 import presenters.Range
 import presenters.fields.InputFieldState
 import presenters.internal.utils.Clearer
-import presenters.internal.validators.CompoundValidator1
+import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
-import presenters.internal.validators.RangeValidator2
+import presenters.internal.validators.RangeValidator
 import presenters.internal.validators.RequirementValidator
 
 @PublishedApi
@@ -52,10 +52,10 @@ internal class DateRangeInputFieldImpl(
         min = limit?.start
     )
 
-    private val drv = CompoundValidator1(
+    private val drv = CompoundValidator(
         feedback,
         RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
-        RangeValidator2(feedback, isRequired, label.capitalizedWithoutAstrix(), limit),
+        RangeValidator(feedback, isRequired, label.capitalizedWithoutAstrix(), limit),
         LambdaValidator(feedback, validator)
     )
 

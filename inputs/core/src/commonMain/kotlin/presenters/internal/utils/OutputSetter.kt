@@ -5,15 +5,15 @@ import presenters.OutputData
 import presenters.fields.InputFieldState
 import presenters.fields.internal.OutputData
 import presenters.properties.Settable
-import presenters.validation.Validateable1
+import presenters.validation.Validateable
 
 internal class OutputSetter<V>(
     private val data: MutableLive<OutputData<V>>,
     private val feedback: MutableLive<InputFieldState>,
-    private val validator: Validateable1<V>
+    private val validator: Validateable<V>
 ) : FeedbackSetter(feedback), Settable<V> {
     override fun set(value: V) {
         data.value = OutputData(value)
-        setFeedbacks(validator.validate(value))
+        setFeedbacksAsWarnings(validator.validate(value))
     }
 }

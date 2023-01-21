@@ -10,10 +10,10 @@ import presenters.properties.Hintable
 import presenters.properties.Labeled
 import presenters.properties.Mutability
 import presenters.properties.Requireble
-import presenters.validation.Validateable0
+import presenters.validation.Validateable
 import kotlin.js.JsExport
 
-interface MultiChoiceInputField<O> : ChoiceField<O>, Labeled, Hintable, Mutability, Requireble, LiveOutputList<O>, Validateable0, Clearable {
+interface MultiChoiceInputField<O> : ChoiceField<O>, Labeled, Hintable, Mutability, Requireble, LiveOutputList<O>, Validateable<List<O>>, Clearable {
     val optionLabels: List<String>
     val optionValues: List<String>
 
@@ -27,13 +27,13 @@ interface MultiChoiceInputField<O> : ChoiceField<O>, Labeled, Hintable, Mutabili
 
     val optionsWithSelectLabel: List<Option>
 
-    fun isSelected(item: O) : Boolean
+    fun isSelected(item: O): Boolean
 
-    fun isSelectedValue(v: String) : Boolean
+    fun isSelectedValue(v: String): Boolean
 
-    fun isSelectedOption(o:Option) : Boolean
+    fun isSelectedOption(o: Option): Boolean
 
-    fun isSelectedLabel(l: String) : Boolean
+    fun isSelectedLabel(l: String): Boolean
 
     fun addSelectedItem(item: O)
 

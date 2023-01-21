@@ -1,17 +1,20 @@
 package presenters.internal.validators
 
+import live.Live
 import live.MutableLive
+import presenters.OutputData
 import presenters.fields.InputFieldState
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-class RangeValidator1<C : Comparable<C>>(
-    override val feedback: MutableLive<InputFieldState>,
+class ClippingValidator<C : Comparable<C>>(
+    data: Live<OutputData<C>>,
+    feedback: MutableLive<InputFieldState>,
     private val label: String,
     private val max: C?,
     private val min: C?
-) : AbstractValidate1<C>(feedback) {
+) : AbstractValidator<C>(data, feedback) {
     override fun validate(value: C?): ValidationResult {
         val tag = label
 

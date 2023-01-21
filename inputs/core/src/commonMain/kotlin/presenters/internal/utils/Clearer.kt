@@ -4,7 +4,7 @@ import live.MutableLive
 import presenters.fields.InputFieldState
 import presenters.properties.Clearable
 
-class Clearer<O>(
+class Clearer<out O>(
     private val value: O,
     private val data: MutableLive<O>,
     private val feedback: MutableLive<InputFieldState>,

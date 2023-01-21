@@ -1,24 +1,25 @@
 package presenters.internal.validators
 
+import live.Live
 import live.MutableLive
+import presenters.OutputData
 import presenters.Range
 import presenters.fields.InputFieldState
-import presenters.internal.utils.FeedbackSetter
 import presenters.validation.Invalid
 import presenters.validation.Valid
-import presenters.validation.Validateable2
 import presenters.validation.ValidationResult
 
-class RangeValidator2<C : Comparable<C>>(
-    override val feedback: MutableLive<InputFieldState>,
+class RangeValidator<C : Comparable<C>>(
+    data: Live<OutputData<Range<C>>>,
+    feedback: MutableLive<InputFieldState>,
     private val isRequired: Boolean,
     private val label: String,
     private val limit: Range<C>?,
-) : AbstractValidate1<Range<C>>(feedback), Validateable2<C> {
+) : AbstractValidator<Range<C>>(data, feedback) {
 
     override fun validate(value: Range<C>?) = validate(value?.start, value?.end)
 
-    override fun validate(start: C?, end: C?): ValidationResult {
+    private fun validate(start: C?, end: C?): ValidationResult {
         if (isRequired && start == null) {
             return Invalid(IllegalArgumentException("$label start value is required"))
         }
@@ -55,13 +56,5 @@ class RangeValidator2<C : Comparable<C>>(
         }
 
         return Valid
-    }
-
-    override fun validateSettingInvalidsAsWarnings(start: C?, end: C?) = setFeedbacks(validate(start, end)) {
-        InputFieldState.Warning(it.cause.message ?: "", it.cause)
-    }
-
-    override fun validateSettingInvalidsAsErrors(start: C?, end: C?) = setFeedbacks(validate(start, end)) {
-        InputFieldState.Error(it.cause.message ?: "", it.cause)
     }
 }

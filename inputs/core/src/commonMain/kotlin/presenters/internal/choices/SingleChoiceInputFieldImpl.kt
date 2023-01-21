@@ -11,6 +11,7 @@ import presenters.SingleChoiceInputField
 import presenters.fields.InputFieldState
 import presenters.fields.internal.OutputData
 import presenters.internal.validators.RequirementValidator
+import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class SingleChoiceInputFieldImpl<T>(
@@ -63,11 +64,9 @@ internal class SingleChoiceInputFieldImpl<T>(
         unselect()
     }
 
-    private val validator = RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired)
+    private val validator = RequirementValidator(data,feedback, label.capitalizedWithoutAstrix(), isRequired)
 
-    override fun validate() = validator.validate(data.value.output)
-
-    override fun validateSettingInvalidsAsWarnings() = validator.validateSettingInvalidsAsWarnings(data.value.output)
-
-    override fun validateSettingInvalidsAsErrors() = validator.validateSettingInvalidsAsErrors(data.value.output)
+    override fun validate(value: T?) = validator.validate(data.value.output)
+    override fun validateSettingInvalidsAsWarnings(value: T?) = validator.validateSettingInvalidsAsWarnings(data.value.output)
+    override fun validateSettingInvalidsAsErrors(value: T?) = validator.validateSettingInvalidsAsErrors(data.value.output)
 }

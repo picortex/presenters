@@ -1,18 +1,21 @@
 package presenters.internal.validators
 
+import live.Live
 import live.MutableLive
+import presenters.OutputData
 import presenters.fields.InputFieldState
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class TextValidator(
-    override val feedback: MutableLive<InputFieldState>,
-    val label: String,
-    val isRequired: Boolean,
-    val maxLength: Int?,
-    val minLength: Int?
-) : AbstractValidate1<String>(feedback) {
+    data: Live<OutputData<String>>,
+    feedback: MutableLive<InputFieldState>,
+    private val label: String,
+    private val isRequired: Boolean,
+    private val maxLength: Int?,
+    private val minLength: Int?
+) : AbstractValidator<String>(data, feedback) {
     override fun validate(value: String?): ValidationResult {
         if (isRequired && value.isNullOrBlank()) {
             return Invalid(IllegalArgumentException("$label is required"))

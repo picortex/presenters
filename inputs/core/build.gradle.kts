@@ -35,5 +35,5 @@ kotlin {
 
 aSoftOSSLibrary(
     version = asoft.versions.root.get(),
-    description = "A kotlin multiplatform library"
+    description = "A kotlin multiplatform library for headless input fields"
 )

@@ -3,12 +3,12 @@
 
 package presenters.fields
 
-import presenters.validation.Validateable1
+import presenters.validation.Validateable
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
 @Deprecated("In favour of TransformingValuedField")
-interface SingleValuedField<I, O> : ValuedField<O>, Validateable1<I> {
+interface SingleValuedField<I, O> : ValuedField<O>, Validateable<I> {
     val defaultValue: I?
 
     @JsName("setValue")

@@ -11,13 +11,13 @@ import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
 import presenters.internal.utils.Typer
-import presenters.internal.validators.CompoundValidator1
+import presenters.internal.validators.ClippingValidator
+import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
-import presenters.internal.validators.NumberRangeValidator
 import presenters.internal.validators.RequirementValidator
 
 @PublishedApi
-internal abstract class AbstractNumberInputField<N : Number>(
+internal abstract class AbstractNumberInputField<N>(
     final override val name: String,
     final override val isRequired: Boolean = false,
     final override val label: Label = Label(name, isRequired),
@@ -29,16 +29,16 @@ internal abstract class AbstractNumberInputField<N : Number>(
     private val formatter: Formatter<N>? = null,
     private val value: N? = null,
     validator: ((N?) -> Unit)? = null
-) : NumberInputField<N> {
+) : NumberInputField<N> where N : Comparable<N>, N : Number {
     private val default = FormattedData<String, N>(null, "", value)
     final override val data = mutableLiveOf(default)
     final override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
 
-    private val dv = CompoundValidator1(
-        feedback,
-        RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
-        NumberRangeValidator(feedback, label.capitalizedWithoutAstrix(), max, min),
-        LambdaValidator(feedback, validator)
+    private val dv = CompoundValidator(
+        data, feedback,
+        RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
+        ClippingValidator(data, feedback, label.capitalizedWithoutAstrix(), max, min),
+        LambdaValidator(data, feedback, validator)
     )
 
     abstract val transformer: DataTransformer<String, N>
@@ -57,9 +57,6 @@ internal abstract class AbstractNumberInputField<N : Number>(
     override fun set(integer: Int) = setter.set(integer.toString())
 
     override fun validate(value: N?) = dv.validate(value)
-    override fun validate() = dv.validate(data.value.output)
     override fun validateSettingInvalidsAsErrors(value: N?) = dv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsErrors() = dv.validateSettingInvalidsAsErrors(data.value.output)
     override fun validateSettingInvalidsAsWarnings(value: N?) = dv.validateSettingInvalidsAsWarnings(value)
-    override fun validateSettingInvalidsAsWarnings() = dv.validateSettingInvalidsAsWarnings(data.value.output)
 }

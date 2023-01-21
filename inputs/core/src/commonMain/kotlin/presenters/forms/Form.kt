@@ -20,7 +20,7 @@ import presenters.exceptions.FormValidationException
 import presenters.properties.Labeled
 import presenters.validation.Invalid
 import presenters.validation.Valid
-import presenters.validation.Validateable0
+import presenters.validation.Validateable
 import presenters.validation.ValidationResult
 import presenters.validation.throwIfInvalid
 import viewmodel.ViewModel
@@ -63,7 +63,7 @@ open class Form<out F : Fields, P, out R>(
             it.item.data.value.output.toString()
         }
         column("Reason") {
-            (it.item as? Validateable0)?.feedback?.value?.asError?.message ?: "Unknown"
+            (it.item as? Validateable<*>)?.feedback?.value?.asError?.message ?: "Unknown"
         }
     }.renderToString()
 

@@ -9,20 +9,14 @@ import live.mutableLiveOf
 import presenters.DateInputField
 import presenters.fields.InputFieldState
 import presenters.Label
-import presenters.Range
 import presenters.fields.Formatter
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
-import presenters.internal.validators.CompoundValidator1
-import presenters.internal.validators.CompoundValidator2
+import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
-import presenters.internal.validators.RangeValidator1
-import presenters.internal.validators.RangeValidator2
+import presenters.internal.validators.ClippingValidator
 import presenters.internal.validators.RequirementValidator
-import presenters.validation.Invalid
-import presenters.validation.Valid
-import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class DateInputFieldImpl(
@@ -44,10 +38,10 @@ internal class DateInputFieldImpl(
     override val formatter: Formatter<LocalDate> = DEFAULT_FORMATTER
     override val transformer: (String?) -> LocalDate? = DEFAULT_DATE_TRANSFORMER
 
-    private val dv1 = CompoundValidator1(
+    private val dv1 = CompoundValidator(
         feedback,
         RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
-        RangeValidator1(feedback, label.capitalizedWithoutAstrix(), max, min),
+        ClippingValidator(feedback, label.capitalizedWithoutAstrix(), max, min),
         LambdaValidator(feedback, validator)
     )
 

@@ -10,7 +10,7 @@ import presenters.fields.InputFieldState
 import presenters.fields.internal.OutputData
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.OutputSetter
-import presenters.internal.validators.CompoundValidator1
+import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RequirementValidator
 
@@ -28,10 +28,10 @@ internal class BooleanInputFieldImpl(
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
     override val serializer: KSerializer<Boolean> = Boolean.serializer()
 
-    private val bv = CompoundValidator1(
-        feedback,
-        RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
-        LambdaValidator(feedback, validator)
+    private val bv = CompoundValidator(
+        data, feedback,
+        RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
+        LambdaValidator(data, feedback, validator)
     )
 
     private val setter = OutputSetter(data, feedback, bv)
@@ -41,11 +41,8 @@ internal class BooleanInputFieldImpl(
     override fun clear() = clearer.clear()
 
     override fun validate(value: Boolean?) = bv.validate(value)
-    override fun validate() = bv.validate(data.value.output)
     override fun validateSettingInvalidsAsErrors(value: Boolean?) = bv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsErrors() = bv.validateSettingInvalidsAsErrors(data.value.output)
     override fun validateSettingInvalidsAsWarnings(value: Boolean?) = bv.validateSettingInvalidsAsWarnings(value)
-    override fun validateSettingInvalidsAsWarnings() = bv.validateSettingInvalidsAsWarnings(data.value.output)
 
     override fun toggle() = set(
         when (val value = data.value.output) {

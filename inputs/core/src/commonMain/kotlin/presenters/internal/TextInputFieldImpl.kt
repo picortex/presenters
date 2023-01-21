@@ -10,7 +10,7 @@ import presenters.fields.internal.OutputData
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.OutputSetter
 import presenters.internal.utils.Typer
-import presenters.internal.validators.CompoundValidator1
+import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RequirementValidator
 import presenters.internal.validators.TextValidator
@@ -32,19 +32,16 @@ internal class TextInputFieldImpl(
     override val serializer = String.serializer()
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
 
-    private val tv = CompoundValidator1(
-        feedback,
-        RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
-        TextValidator(feedback, label.capitalizedWithoutAstrix(), isRequired, maxLength, minLength),
-        LambdaValidator(feedback, validator)
+    private val tv = CompoundValidator(
+        data,feedback,
+        RequirementValidator(data,feedback, label.capitalizedWithoutAstrix(), isRequired),
+        TextValidator(data,feedback, label.capitalizedWithoutAstrix(), isRequired, maxLength, minLength),
+        LambdaValidator(data,feedback, validator)
     )
 
     override fun validate(value: String?) = tv.validate(value)
-    override fun validate() = tv.validate(data.value.output)
     override fun validateSettingInvalidsAsErrors(value: String?) = tv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsErrors() = tv.validateSettingInvalidsAsErrors(data.value.output)
     override fun validateSettingInvalidsAsWarnings(value: String?) = tv.validateSettingInvalidsAsWarnings(value)
-    override fun validateSettingInvalidsAsWarnings() = tv.validateSettingInvalidsAsWarnings(data.value.output)
 
     private val setter = OutputSetter(data, feedback, tv)
 
