@@ -2,7 +2,7 @@ import expect.expect
 import expect.toBe
 import kash.Currency
 import kash.TZS
-import presenters.fields.MoneyInputField
+import presenters.MoneyInputField
 import presenters.validation.Valid
 import kotlin.test.Test
 

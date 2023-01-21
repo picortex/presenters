@@ -8,7 +8,7 @@ import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
 import presenters.InputField
 import presenters.LiveOutputData
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 import presenters.properties.Clearable
 import presenters.properties.Requireble
 import presenters.validation.Validateable

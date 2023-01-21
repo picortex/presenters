@@ -13,7 +13,7 @@ import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
 import presenters.Option
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 import presenters.forms.Fields
 import presenters.name
 import presenters.selectSingle

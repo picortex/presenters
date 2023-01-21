@@ -3,7 +3,6 @@
 
 package presenters
 
-import presenters.fields.Formatter
 import presenters.properties.Clearable
 import presenters.properties.Hintable
 import presenters.properties.Labeled
@@ -13,7 +12,4 @@ import presenters.properties.Settable
 import presenters.validation.Validateable
 import kotlin.js.JsExport
 
-interface TransformingInputField<I, O> : InputField, Labeled, Hintable, Mutability, Requireble, Settable<I>, LiveFormattedData<I, O>, Validateable<O>, Clearable {
-    val formatter: Formatter<O>?
-    val transformer: (I?) -> O?
-}
+interface TransformingInputField<I, O> : InputField, Labeled, Hintable, Mutability, Requireble, Settable<I>, LiveFormattedData<I, O>, Validateable<O>, Clearable

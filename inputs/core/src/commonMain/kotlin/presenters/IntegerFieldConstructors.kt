@@ -2,7 +2,6 @@
 
 package presenters
 
-import presenters.fields.Formatter
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
 import presenters.internal.numbers.IntegerInputFieldImpl

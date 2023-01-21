@@ -2,7 +2,7 @@ import expect.expect
 import expect.toBe
 import krono.LocalDate
 import presenters.DateInputField
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 import kotlin.test.Test
 
 class DateInputValidationTest {

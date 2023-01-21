@@ -1,7 +1,7 @@
-package presenters.fields.internal
+package presenters.internal
 
 import kollections.List
-import presenters.fields.FormattedData
+import presenters.FormattedData
 import presenters.OutputData
 import presenters.OutputList
 

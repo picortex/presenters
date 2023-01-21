@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 import presenters.forms.Fields
 import presenters.forms.Form
 import presenters.forms.FormActionsBuildingBlock
-import presenters.forms.fields.money
-import presenters.forms.fields.name
+import presenters.money
+import presenters.name
 import presenters.forms.toFormConfig
 import viewmodel.ViewModelConfig
 import kotlin.test.Test

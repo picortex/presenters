@@ -1,8 +1,5 @@
 package presenters
 
-import presenters.Label
-import presenters.NumberInputField
-import presenters.fields.Formatter
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
 import presenters.internal.numbers.LongInputFieldImpl
@@ -18,7 +15,7 @@ inline fun LongInputField(
     formatter: Formatter<Long>? = null,
     max: Long? = null,
     min: Long? = null,
-    step: Long = 1,
+    step: Long? = 1,
     noinline validator: ((Long?) -> Unit)? = null
 ): NumberInputField<Long> = LongInputFieldImpl(
     name = name,
@@ -44,7 +41,7 @@ inline fun Fields.long(
     formatter: Formatter<Long>? = null,
     max: Long? = null,
     min: Long? = null,
-    step: Long = 1,
+    step: Long? = 1,
     noinline validator: ((Long?) -> Unit)? = null
 ): NumberInputField<Long> = getOrCreate(name) {
     LongInputField(name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)
@@ -60,6 +57,6 @@ inline fun Fields.long(
     formatter: Formatter<Long>? = null,
     max: Long? = null,
     min: Long? = null,
-    step: Long = 1,
+    step: Long? = 1,
     noinline validator: ((Long?) -> Unit)? = null
 ) = long(property.name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)

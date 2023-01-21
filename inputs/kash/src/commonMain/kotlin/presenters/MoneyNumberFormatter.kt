@@ -1,9 +1,9 @@
-package presenters.fields
+package presenters
 
 import kash.Currency
 import kash.Money
 
-object MoneyInputFormatter : Formatter<Double> {
+object MoneyNumberFormatter : Formatter<Double> {
     override fun invoke(value: Double?): String? {
         val v = value ?: return null
         val money = Money.of(v, Currency.USD)

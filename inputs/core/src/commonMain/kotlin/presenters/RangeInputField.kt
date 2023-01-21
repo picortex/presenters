@@ -3,7 +3,6 @@
 
 package presenters
 
-import presenters.fields.Range
 import presenters.properties.Clearable
 import presenters.properties.Hintable
 import presenters.properties.Labeled

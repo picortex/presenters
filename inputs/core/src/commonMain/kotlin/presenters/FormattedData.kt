@@ -1,8 +1,7 @@
 @file:JsExport
 
-package presenters.fields
+package presenters
 
-import presenters.OutputData
 import kotlin.js.JsExport
 
 interface FormattedData<out I, out O> : OutputData<O> {

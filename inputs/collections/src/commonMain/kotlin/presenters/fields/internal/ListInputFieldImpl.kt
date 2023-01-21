@@ -6,9 +6,10 @@ import kollections.toIList
 import kotlinx.serialization.KSerializer
 import live.Live
 import live.mutableLiveOf
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 import presenters.Label
 import presenters.fields.ListInputField
+import presenters.internal.OutputList
 
 @PublishedApi
 internal class ListInputFieldImpl<E>(

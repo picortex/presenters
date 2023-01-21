@@ -4,9 +4,9 @@ import live.MutableLive
 import live.mutableLiveOf
 import presenters.Label
 import presenters.NumberInputField
-import presenters.fields.Formatter
-import presenters.fields.InputFieldState
-import presenters.fields.internal.FormattedData
+import presenters.Formatter
+import presenters.InputFieldState
+import presenters.internal.FormattedData
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
@@ -47,7 +47,7 @@ internal abstract class AbstractNumberInputField<N>(
 
     override fun set(value: String) = setter.set(value)
 
-    override fun type(text: String) = Typer(data.value.output?.toString(), setter).type(text)
+    override fun type(text: String) = Typer(data.value.input, setter).type(text)
 
     private val clearer = Clearer(default, data, feedback)
     override fun clear() = clearer.clear()

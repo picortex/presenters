@@ -4,8 +4,8 @@ import expect.expect
 import live.expect
 import live.toHaveGoneThrough6
 import presenters.TextInputField
-import presenters.fields.InputFieldState.Empty
-import presenters.fields.InputFieldState.Warning
+import presenters.InputFieldState.Empty
+import presenters.InputFieldState.Warning
 import kotlin.test.Test
 
 class TextInputFeedbackTest {

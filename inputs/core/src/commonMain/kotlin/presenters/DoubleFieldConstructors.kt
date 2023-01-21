@@ -2,7 +2,6 @@
 
 package presenters
 
-import presenters.fields.Formatter
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
 import presenters.internal.numbers.DoubleInputFieldImpl
@@ -18,7 +17,7 @@ inline fun DoubleInputField(
     formatter: Formatter<Double>? = null,
     max: Double? = null,
     min: Double? = null,
-    step: Double = 0.1,
+    step: Double? = 0.1,
     noinline validator: ((Double?) -> Unit)? = null
 ): NumberInputField<Double> = DoubleInputFieldImpl(
     name = name,
@@ -44,7 +43,7 @@ inline fun Fields.double(
     formatter: Formatter<Double>? = null,
     max: Double? = null,
     min: Double? = null,
-    step: Double = 0.1,
+    step: Double? = 0.1,
     noinline validator: ((Double?) -> Unit)? = null
 ) = getOrCreate(name) {
     DoubleInputField(name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)
@@ -60,6 +59,6 @@ inline fun Fields.double(
     formatter: Formatter<Double>? = null,
     max: Double? = null,
     min: Double? = null,
-    step: Double = 0.1,
+    step: Double? = 0.1,
     noinline validator: ((Double?) -> Unit)? = null
 ) = double(property.name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)

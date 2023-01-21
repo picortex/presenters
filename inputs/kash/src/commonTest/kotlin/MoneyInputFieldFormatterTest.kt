@@ -2,7 +2,7 @@ import expect.expect
 import expect.toBe
 import kash.Currency
 import kash.TZS
-import presenters.fields.MoneyInputField
+import presenters.MoneyInputField
 import presenters.validation.Valid
 import kotlin.test.Test
 
@@ -29,21 +29,21 @@ class MoneyInputFieldFormatterTest {
         val watcher2 = money.amount.data.watch { println("Amount ${it.formatted}") }
         money.amount.type("500")
         with(money.amount.data.value) {
-            expect(raw).toBe("500")
+            expect(input).toBe("500")
             expect(formatted).toBe("500")
             expect(output).toBe(500.0)
         }
 
         money.amount.type("0")
         with(money.amount.data.value) {
-            expect(raw).toBe("5000")
+            expect(input).toBe("5000")
             expect(formatted).toBe("5,000")
             expect(output).toBe(5000.0)
         }
 
         money.amount.type("0")
         with(money.amount.data.value) {
-            expect(raw).toBe("50000")
+            expect(input).toBe("50000")
             expect(formatted).toBe("50,000")
             expect(output).toBe(50000.0)
         }
@@ -60,28 +60,28 @@ class MoneyInputFieldFormatterTest {
         money.currency.selectItem(Currency.ZAR)
         money.amount.type("500")
         with(money.amount.data.value) {
-            expect(raw).toBe("500")
+            expect(input).toBe("500")
             expect(formatted).toBe("500")
             expect(output).toBe(500.0)
         }
 
         money.amount.type(",")
         with(money.amount.data.value) {
-            expect(raw).toBe("500,")
+            expect(input).toBe("500,")
             expect(formatted).toBe("500")
             expect(output).toBe(500.0)
         }
 
         money.amount.type("0")
         with(money.amount.data.value) {
-            expect(raw).toBe("500,0")
+            expect(input).toBe("500,0")
             expect(formatted).toBe("5,000")
             expect(output).toBe(5_000.0)
         }
 
         money.amount.set("12500")
         with(money.amount.data.value) {
-            expect(raw).toBe("12500")
+            expect(input).toBe("12500")
             expect(formatted).toBe("12,500")
             expect(output).toBe(12_500.0)
         }

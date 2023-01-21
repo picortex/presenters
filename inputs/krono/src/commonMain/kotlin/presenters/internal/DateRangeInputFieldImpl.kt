@@ -9,8 +9,7 @@ import presenters.DateInputField
 import presenters.DateRangeInputField
 import presenters.Label
 import presenters.Range
-import presenters.fields.InputFieldState
-import presenters.fields.internal.FormattedData
+import presenters.InputFieldState
 import presenters.internal.utils.Clearer
 import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator

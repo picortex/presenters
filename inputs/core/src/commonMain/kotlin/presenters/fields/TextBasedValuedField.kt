@@ -7,4 +7,5 @@ import presenters.properties.Requireble
 import presenters.properties.Typeable
 import kotlin.js.JsExport
 
+@Deprecated("Compose these values")
 interface TextBasedValuedField<O> : ValuedField<O>, Typeable, Hintable, Requireble

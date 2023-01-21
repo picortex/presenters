@@ -1,4 +1,4 @@
-package presenters.money
+package presenters.internal
 
 import kash.Money
 import kash.MoneyFormatterOptions

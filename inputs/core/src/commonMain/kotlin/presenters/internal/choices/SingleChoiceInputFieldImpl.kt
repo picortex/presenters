@@ -8,10 +8,9 @@ import live.mutableLiveOf
 import presenters.Label
 import presenters.Option
 import presenters.SingleChoiceInputField
-import presenters.fields.InputFieldState
-import presenters.fields.internal.OutputData
+import presenters.InputFieldState
+import presenters.internal.OutputData
 import presenters.internal.validators.RequirementValidator
-import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class SingleChoiceInputFieldImpl<T>(

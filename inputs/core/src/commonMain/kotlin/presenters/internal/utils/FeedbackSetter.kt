@@ -1,7 +1,7 @@
 package presenters.internal.utils
 
 import live.MutableLive
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult

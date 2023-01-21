@@ -3,7 +3,7 @@ package presenters.internal.validators
 import live.Live
 import live.MutableLive
 import presenters.OutputData
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult

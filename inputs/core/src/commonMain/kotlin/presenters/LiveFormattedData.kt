@@ -4,7 +4,6 @@
 package presenters
 
 import live.Live
-import presenters.fields.FormattedData
 import kotlin.js.JsExport
 
 interface LiveFormattedData<I, out O> : LiveOutputData<O> {

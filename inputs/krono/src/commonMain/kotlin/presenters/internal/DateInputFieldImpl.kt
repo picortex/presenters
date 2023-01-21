@@ -2,15 +2,13 @@ package presenters.internal
 
 import kotlinx.serialization.KSerializer
 import krono.LocalDate
-import krono.LocalDateOrNull
 import krono.serializers.LocalDateIsoSerializer
 import live.MutableLive
 import live.mutableLiveOf
 import presenters.DateInputField
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 import presenters.Label
-import presenters.fields.Formatter
-import presenters.fields.internal.FormattedData
+import presenters.Formatter
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
@@ -37,8 +35,8 @@ internal class DateInputFieldImpl(
     override val data = mutableLiveOf(default)
     override val serializer: KSerializer<LocalDate> = LocalDateIsoSerializer
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
-    override val formatter: Formatter<LocalDate> = DEFAULT_FORMATTER
-    override val transformer: (String?) -> LocalDate? = DEFAULT_DATE_TRANSFORMER
+    private val formatter: Formatter<LocalDate> = DEFAULT_FORMATTER
+    private val transformer: (String?) -> LocalDate? = DEFAULT_DATE_TRANSFORMER
 
     private val dv1 = CompoundValidator(
         data, feedback,

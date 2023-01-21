@@ -1,9 +1,8 @@
 package presenters.validation
 
 import live.Live
-import presenters.LiveOutputData
 import presenters.OutputData
-import presenters.fields.InputFieldState
+import presenters.InputFieldState
 
 interface Validateable<T> {
     val data: Live<OutputData<T>>

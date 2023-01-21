@@ -1,8 +1,8 @@
 package presenters.internal.utils
 
-import presenters.fields.FormattedData
-import presenters.fields.Formatter
-import presenters.fields.internal.FormattedData
+import presenters.FormattedData
+import presenters.Formatter
+import presenters.internal.FormattedData
 
 class DataTransformer<I : Any, O : Any>(
     val formatter: Formatter<O>?,

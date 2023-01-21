@@ -3,12 +3,8 @@ package presenters.internal.numbers
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import presenters.Label
-import presenters.fields.Formatter
+import presenters.Formatter
 import presenters.internal.utils.DataTransformer
-import presenters.internal.validators.ClippingValidator
-import presenters.internal.validators.CompoundValidator
-import presenters.internal.validators.LambdaValidator
-import presenters.internal.validators.RequirementValidator
 
 @PublishedApi
 internal class DoubleInputFieldImpl(
@@ -25,7 +21,7 @@ internal class DoubleInputFieldImpl(
     validator: ((Double?) -> Unit)? = null
 ) : AbstractNumberInputField<Double>(name, isRequired, label, hint, isReadonly, max, min, step, formatter, value, validator) {
     override val serializer: KSerializer<Double> = Double.serializer()
-    override val transformer = DataTransformer(formatter) { it: String? -> it?.toDoubleOrNull() }
+    override val transformer = DataTransformer(formatter) { it: String? -> it?.replace(",","")?.toDoubleOrNull() }
 
     override fun increment(step: Double?) {
         val value = data.value.output ?: DEFAULT_NUMBER

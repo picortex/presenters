@@ -10,8 +10,8 @@ import live.mutableLiveOf
 import presenters.Label
 import presenters.MultiChoiceInputField
 import presenters.Option
-import presenters.fields.InputFieldState
-import presenters.fields.internal.OutputList
+import presenters.InputFieldState
+import presenters.internal.OutputList
 import presenters.internal.validators.RequirementValidator
 
 @PublishedApi

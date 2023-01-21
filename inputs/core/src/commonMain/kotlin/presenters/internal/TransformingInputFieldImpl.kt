@@ -3,12 +3,11 @@ package presenters.internal
 import kotlinx.serialization.KSerializer
 import live.MutableLive
 import live.mutableLiveOf
-import presenters.fields.FormattedData
-import presenters.fields.Formatter
+import presenters.FormattedData
+import presenters.Formatter
 import presenters.Label
 import presenters.TransformingInputField
-import presenters.fields.InputFieldState
-import presenters.fields.internal.FormattedData
+import presenters.InputFieldState
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.FormattedOutputSetter
@@ -23,9 +22,9 @@ internal class TransformingInputFieldImpl<I : Any, O : Any>(
     override val label: Label,
     private val value: O?,
     override val hint: String,
-    override val transformer: (I?) -> O?,
+    private val transformer: (I?) -> O?,
     override val serializer: KSerializer<O>,
-    override val formatter: Formatter<O>?,
+    private val formatter: Formatter<O>?,
     override val isReadonly: Boolean,
     private val validator: ((O?) -> Unit)?,
 ) : TransformingInputField<I, O> {

@@ -2,7 +2,7 @@ package presenters.internal.numbers
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
-import presenters.fields.Formatter
+import presenters.Formatter
 import presenters.Label
 import presenters.internal.utils.DataTransformer
 
@@ -21,7 +21,7 @@ internal class IntegerInputFieldImpl(
     validator: ((Int?) -> Unit)? = null
 ) : AbstractNumberInputField<Int>(name, isRequired, label, hint, isReadonly, max, min, step, formatter, value, validator) {
     override val serializer: KSerializer<Int> = Int.serializer()
-    override val transformer = DataTransformer(formatter) { it: String? -> it?.toIntOrNull() }
+    override val transformer = DataTransformer(formatter) { it: String? -> it?.replace(",","")?.toIntOrNull() }
 
     override fun increment(step: Int?) {
         val value = data.value.output ?: DEFAULT_NUMBER

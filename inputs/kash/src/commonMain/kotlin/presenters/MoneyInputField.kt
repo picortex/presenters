@@ -1,19 +1,17 @@
 @file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE")
 
-package presenters.fields
+package presenters
 
 import kash.Currency
 import kash.Money
-import live.Live
-import presenters.validation.Validateable0
+import presenters.properties.Typeable
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface MoneyInputField : ValuedField<Money>, Validateable0 {
-    override val data: Live<FormattedData<String, Money>>
-    val currency: SingleChoiceValuedField<Currency>
-    val amount: TextBasedValuedField<Double>
+interface MoneyInputField : TransformingInputField<String, Money>, Typeable {
+    val currency: SingleChoiceInputField<Currency>
+    val amount: NumberInputField<Double>
 
     @JsName("setCurrencyValue")
     fun setCurrency(currency: Currency)
@@ -26,5 +24,5 @@ interface MoneyInputField : ValuedField<Money>, Validateable0 {
     fun setAmount(number: Double)
 
     @JsName("setAmountInt")
-    fun setAmount(number: Number)
+    fun setAmount(number: Int)
 }

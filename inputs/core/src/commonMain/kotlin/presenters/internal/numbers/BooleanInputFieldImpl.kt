@@ -6,8 +6,8 @@ import live.MutableLive
 import live.mutableLiveOf
 import presenters.BooleanInputField
 import presenters.Label
-import presenters.fields.InputFieldState
-import presenters.fields.internal.OutputData
+import presenters.InputFieldState
+import presenters.internal.OutputData
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.OutputSetter
 import presenters.internal.validators.CompoundValidator

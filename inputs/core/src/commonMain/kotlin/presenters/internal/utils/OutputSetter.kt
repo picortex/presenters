@@ -2,8 +2,8 @@ package presenters.internal.utils
 
 import live.MutableLive
 import presenters.OutputData
-import presenters.fields.InputFieldState
-import presenters.fields.internal.OutputData
+import presenters.InputFieldState
+import presenters.internal.OutputData
 import presenters.properties.Settable
 import presenters.validation.Validateable
 
