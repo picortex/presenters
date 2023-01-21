@@ -4,9 +4,10 @@
 package presenters
 
 import krono.LocalDate
+import presenters.properties.Typeable
 import kotlin.js.JsExport
 
-interface DateInputField : TransformingInputField<String, LocalDate> {
+interface DateInputField : TransformingInputField<String, LocalDate>, Typeable {
     val pattern: String
     val max: LocalDate?
     val min: LocalDate?

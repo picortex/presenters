@@ -14,7 +14,8 @@ class RangeValidator<C : Comparable<C>>(
     feedback: MutableLive<InputFieldState>,
     private val isRequired: Boolean,
     private val label: String,
-    private val limit: Range<C>?,
+    private val max: C?,
+    private val min: C?
 ) : AbstractValidator<Range<C>>(data, feedback) {
 
     override fun validate(value: Range<C>?) = validate(value?.start, value?.end)
@@ -39,14 +40,14 @@ class RangeValidator<C : Comparable<C>>(
         }
 
         val b = start!!
-        val max = limit?.end
+        val mx = max
 
-        if (max != null && b > max) {
-            return Invalid(IllegalArgumentException("$label must be before/less than $max"))
+        if (mx != null && b > mx) {
+            return Invalid(IllegalArgumentException("$label must be before/less than $mx"))
         }
 
         val e = end!!
-        val min = limit?.start
+        val min = min
         if (min != null && e < min) {
             return Invalid(IllegalArgumentException("$label must be after/greater than $min"))
         }

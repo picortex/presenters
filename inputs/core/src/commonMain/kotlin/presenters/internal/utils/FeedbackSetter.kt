@@ -16,6 +16,10 @@ abstract class FeedbackSetter(private val feedback: MutableLive<InputFieldState>
         return res
     }
 
+    fun setWarning(message: String, cause: Throwable) {
+        feedback.value = InputFieldState.Warning(message, cause)
+    }
+
     fun setFeedbacksAsWarnings(res: ValidationResult): ValidationResult {
         setFeedbacks(res) { InputFieldState.Warning(it.cause.message ?: "Unknown", it.cause) }
         return res

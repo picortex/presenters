@@ -12,8 +12,8 @@ import presenters.forms.Fields
 import presenters.forms.Form
 import presenters.forms.FormActionsBuildingBlock
 import presenters.forms.FormConfig
-import presenters.forms.fields.dateRange
-import presenters.forms.fields.text
+import presenters.dateRange
+import presenters.text
 import presenters.forms.toFormConfig
 import viewmodel.ScopeConfig
 import kotlin.test.Ignore

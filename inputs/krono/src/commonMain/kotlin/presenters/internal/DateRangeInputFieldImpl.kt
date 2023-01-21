@@ -1,14 +1,16 @@
-package presenters.fields.internal
+package presenters.internal
 
 import kotlinx.serialization.KSerializer
 import krono.LocalDate
 import krono.serializers.LocalDateIsoSerializer
 import live.MutableLive
 import live.mutableLiveOf
+import presenters.DateInputField
 import presenters.DateRangeInputField
 import presenters.Label
 import presenters.Range
 import presenters.fields.InputFieldState
+import presenters.fields.internal.FormattedData
 import presenters.internal.utils.Clearer
 import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
@@ -21,10 +23,12 @@ internal class DateRangeInputFieldImpl(
     override val isRequired: Boolean,
     override val label: Label,
     override val hint: String,
-    override val limit: Range<LocalDate>?,
     private val defaultStart: LocalDate?,
     private val defaultEnd: LocalDate?,
     override val isReadonly: Boolean,
+    override val pattern: String,
+    override val max: LocalDate?,
+    override val min: LocalDate?,
     validator: ((Range<LocalDate>?) -> Unit)?
 ) : DateRangeInputField {
     private val default = FormattedData<String, Range<LocalDate>>(null, "", Range.of(defaultStart, defaultEnd))
@@ -32,31 +36,33 @@ internal class DateRangeInputFieldImpl(
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
     override val transformer: (String?) -> LocalDate? = DateInputFieldImpl.DEFAULT_DATE_TRANSFORMER
 
-    override val start = DateInputFieldImpl(
+    override val start = DateInputField(
         name = "$name-start", isRequired,
-        label = Label("$name start", isRequired),
+        label = "$name start",
         hint = "Start Date",
         value = defaultStart,
         isReadonly = isReadonly,
-        max = limit?.end,
-        min = limit?.start
+        pattern = pattern,
+        maxDate = max,
+        minDate = min
     )
 
-    override val end = DateInputFieldImpl(
+    override val end = DateInputField(
         name = "$name-end", isRequired,
-        label = Label("$name start", isRequired),
-        hint = "Start Date",
+        label = "$name end",
+        hint = "End Date",
         value = defaultEnd,
         isReadonly = isReadonly,
-        max = limit?.end,
-        min = limit?.start
+        pattern = pattern,
+        maxDate = max,
+        minDate = min
     )
 
     private val drv = CompoundValidator(
-        feedback,
-        RequirementValidator(feedback, label.capitalizedWithoutAstrix(), isRequired),
-        RangeValidator(feedback, isRequired, label.capitalizedWithoutAstrix(), limit),
-        LambdaValidator(feedback, validator)
+        data, feedback,
+        RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
+        RangeValidator(data, feedback, isRequired, label.capitalizedWithoutAstrix(), max, min),
+        LambdaValidator(data, feedback, validator)
     )
 
     private fun update(s: LocalDate?, e: LocalDate?) {
@@ -100,11 +106,8 @@ internal class DateRangeInputFieldImpl(
     }
 
     override fun validate(value: Range<LocalDate>?) = drv.validate(value)
-    override fun validate() = drv.validate(data.value.output)
     override fun validateSettingInvalidsAsErrors(value: Range<LocalDate>?) = drv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsErrors() = drv.validateSettingInvalidsAsErrors(data.value.output)
     override fun validateSettingInvalidsAsWarnings(value: Range<LocalDate>?) = drv.validateSettingInvalidsAsWarnings(value)
-    override fun validateSettingInvalidsAsWarnings() = drv.validateSettingInvalidsAsWarnings(data.value.output)
 
     override val serializer: KSerializer<Range<LocalDate>> = inputSerializer
 

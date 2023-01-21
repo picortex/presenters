@@ -3,7 +3,7 @@ import expect.toBe
 import krono.LocalDate
 import presenters.DateRangeInputField
 import presenters.fields.InputFieldState
-import presenters.fields.Range
+import presenters.Range
 import kotlin.test.Test
 
 class DateRangeInputValidationTest {

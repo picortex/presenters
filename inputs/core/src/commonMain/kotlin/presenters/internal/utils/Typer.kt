@@ -3,7 +3,7 @@ package presenters.internal.utils
 import presenters.properties.Settable
 import presenters.properties.Typeable
 
-internal class Typer(
+class Typer(
     private val old: String?,
     private val setter: Settable<String>
 ) : Typeable {

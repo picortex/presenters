@@ -16,5 +16,4 @@ interface TransformingRangeInputField<I, O> : InputField, Labeled, Hintable, Mut
     val start: LiveFormattedData<I, O>
     val end: LiveFormattedData<I, O>
     val transformer: (I?) -> O?
-    val limit: Range<O>?
 }
