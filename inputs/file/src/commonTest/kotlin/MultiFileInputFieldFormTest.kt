@@ -3,10 +3,10 @@ import expect.expect
 import kollections.List
 import koncurrent.Later
 import kotlinx.serialization.Serializable
-import presenters.form.fields.files
+import presenters.files
 import presenters.forms.Fields
 import presenters.forms.Form
-import presenters.forms.fields.name
+import presenters.name
 import presenters.forms.toFormConfig
 import viewmodel.ViewModelConfig
 import kotlin.test.Test

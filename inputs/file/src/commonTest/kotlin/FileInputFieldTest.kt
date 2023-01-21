@@ -1,6 +1,6 @@
 import expect.expect
-import presenters.fields.MultiFileInputField
-import presenters.fields.SingleFileInputField
+import presenters.MultiFileInputField
+import presenters.SingleFileInputField
 import kotlin.test.Test
 
 class FileInputFieldTest {
@@ -21,7 +21,7 @@ class FileInputFieldTest {
 
         expect(input.data.value.output).toBeNonNull()
 
-        val (file1) = input.data.value.output ?: arrayOf()
+        val (file1) = input.data.value.output
 
         expect(file1).toBe(FakeFileBlob())
     }
@@ -34,7 +34,7 @@ class FileInputFieldTest {
 
         expect(input.data.value.output).toBeNonNull()
 
-        val (file1, file2) = input.data.value.output ?: arrayOf()
+        val (file1, file2) = input.data.value.output
 
         expect(file1).toBe(FakeFileBlob(name = "file1.tmp"))
         expect(file2).toBe(FakeFileBlob(name = "file2.tmp"))

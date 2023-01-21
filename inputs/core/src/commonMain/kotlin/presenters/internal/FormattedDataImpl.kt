@@ -1,6 +1,7 @@
 package presenters.internal
 
 import kollections.List
+import kollections.iEmptyList
 import presenters.FormattedData
 import presenters.OutputData
 import presenters.OutputList
@@ -17,7 +18,7 @@ internal class OutputListImpl<out D>(
     override val output: List<D>
 ) : OutputList<D>, List<D> by output
 
-inline fun <O> OutputList(value: List<O>): OutputList<O> = OutputListImpl(value)
+inline fun <O> OutputList(value: List<O>?): OutputList<O> = OutputListImpl(value ?: iEmptyList())
 
 inline fun <O> OutputData(value: O?): OutputData<O> = FormattedDataImpl(value, "", value)
 

@@ -2,11 +2,11 @@ import epsilon.FileBlob
 import expect.expect
 import koncurrent.Later
 import kotlinx.serialization.Serializable
-import presenters.form.fields.file
+import presenters.file
 import presenters.forms.Fields
 import presenters.forms.Form
-import presenters.forms.fields.name
 import presenters.forms.toFormConfig
+import presenters.name
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
