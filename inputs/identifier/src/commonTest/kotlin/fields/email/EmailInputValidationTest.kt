@@ -3,7 +3,7 @@ package fields.email
 import expect.expect
 import expect.toBe
 import kotlinx.coroutines.test.runTest
-import presenters.fields.EmailInputField
+import presenters.EmailInputField
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import kotlin.test.Test

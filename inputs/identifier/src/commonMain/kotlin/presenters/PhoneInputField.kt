@@ -4,10 +4,10 @@ package presenters
 
 import presenters.forms.Fields
 import presenters.forms.fields.getOrCreate
-import presenters.internal.text.TextInputFieldImpl
+import presenters.internal.text.PhoneInputFieldImpl
 import kotlin.reflect.KProperty
 
-inline fun TextInputField(
+inline fun PhoneInputField(
     name: String,
     label: String = name,
     hint: String = label,
@@ -17,7 +17,7 @@ inline fun TextInputField(
     maxLength: Int? = null,
     minLength: Int? = null,
     noinline validator: ((String?) -> Unit)? = null
-): TextInputField = TextInputFieldImpl(
+): BasicTextInputField = PhoneInputFieldImpl(
     name = name,
     label = Label(label, isRequired),
     hint = hint,
@@ -29,7 +29,7 @@ inline fun TextInputField(
     validator = validator,
 )
 
-inline fun Fields.text(
+inline fun Fields.phone(
     name: String,
     label: String = name,
     hint: String = label,
@@ -39,11 +39,11 @@ inline fun Fields.text(
     maxLength: Int? = null,
     minLength: Int? = null,
     noinline validator: ((String?) -> Unit)? = null
-): TextInputField = getOrCreate(name) {
-    TextInputField(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)
+) = getOrCreate(name) {
+    PhoneInputField(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)
 }
 
-inline fun Fields.text(
+inline fun Fields.phone(
     name: KProperty<*>,
     label: String = name.name,
     hint: String = label,
@@ -53,4 +53,4 @@ inline fun Fields.text(
     maxLength: Int? = null,
     minLength: Int? = null,
     noinline validator: ((String?) -> Unit)? = null
-) = text(name.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)
+) = phone(name.name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)

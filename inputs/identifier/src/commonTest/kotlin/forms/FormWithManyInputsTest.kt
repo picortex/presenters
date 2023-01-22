@@ -4,18 +4,21 @@ import expect.expect
 import kase.Submitting
 import kase.Success
 import kase.Validating
+import kollections.iListOf
 import kollections.toIList
 import koncurrent.Later
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.iListOf
 import kotlinx.serialization.Serializable
 import live.expect
 import live.toHaveGoneThrough3
-import presenters.fields.Option
 import presenters.forms.Fields
 import presenters.forms.Form
-import presenters.forms.fields.*
+import presenters.Option
+import presenters.email
+import presenters.name
+import presenters.phone
+import presenters.selectSingle
 import presenters.forms.toFormConfig
+import presenters.selectMany
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
@@ -71,6 +74,6 @@ class FormWithManyInputsTest {
         expect(params?.email).toBe("andy@lamax.com")
         expect(params?.phone).toBe("0752748674")
         expect(params?.color).toBe(Color.Red)
-        expect(params?.colors).toBe(iListOf(Color.Green, Color.Blue))
+        expect(params?.colors?.toIList()).toBe(iListOf(Color.Green, Color.Blue))
     }
 }

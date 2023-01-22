@@ -4,7 +4,7 @@ import expect.expect
 import expect.toBe
 import kotlinx.coroutines.test.runTest
 import presenters.validation.Invalid
-import presenters.fields.PhoneInputField
+import presenters.PhoneInputField
 import presenters.validation.Valid
 import kotlin.test.Test
 
