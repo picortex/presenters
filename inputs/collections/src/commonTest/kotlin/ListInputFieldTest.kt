@@ -1,5 +1,5 @@
 import expect.expect
-import presenters.fields.ListInputField
+import presenters.ListInputField
 import kotlin.test.Test
 
 class ListInputFieldTest {
