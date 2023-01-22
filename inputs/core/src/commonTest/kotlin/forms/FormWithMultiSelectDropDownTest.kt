@@ -16,10 +16,10 @@ import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
 import presenters.Option
 import presenters.InputFieldState
-import presenters.forms.Fields
-import presenters.forms.Form
-import presenters.forms.FormActionsBuildingBlock
-import presenters.forms.toFormConfig
+import presenters.Fields
+import presenters.Form
+import presenters.FormActionsBuildingBlock
+import presenters.toFormConfig
 import presenters.name
 import presenters.selectMany
 import viewmodel.ViewModelConfig

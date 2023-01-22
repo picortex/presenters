@@ -5,26 +5,35 @@ import kase.Submitting
 import kase.Failure
 import koncurrent.Later
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.Serializable
+import krono.LocalDate
 import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
-import presenters.forms.Fields
-import presenters.forms.Form
-import presenters.forms.FormActionsBuildingBlock
-import presenters.forms.FormConfig
+import presenters.Fields
+import presenters.Form
+import presenters.FormActionsBuildingBlock
+import presenters.FormConfig
+import presenters.Range
 import presenters.dateRange
 import presenters.text
-import presenters.forms.toFormConfig
+import presenters.toFormConfig
 import viewmodel.ScopeConfig
 import kotlin.test.Ignore
 import kotlin.test.Test
 
 class FormWithDateRangeTest {
 
+    @Serializable
+    data class Params(
+        val name: String,
+        val range: Range<LocalDate>
+    )
+
     class PersonForm(
-        config: FormConfig<Map<String, String>>,
-        builder: FormActionsBuildingBlock<Map<String, String>, Any?>
-    ) : Form<TestFormFields, Map<String, String>, Any?>(
+        config: FormConfig<Params>,
+        builder: FormActionsBuildingBlock<Params, Any?>
+    ) : Form<TestFormFields, Params, Any?>(
         heading = "Person Form",
         details = "Add this form to fill a person",
         fields = TestFormFields(),
@@ -32,16 +41,15 @@ class FormWithDateRangeTest {
     )
 
     class TestFormFields : Fields() {
-        val name = text(name = "name", isRequired = true)
-        val range = dateRange(name = "range", isRequired = true)
+        val name = text(name = Params::name, isRequired = true)
+        val range = dateRange(name = Params::range, isRequired = true)
     }
 
     @Test
-    @Ignore // TODO: Define proper params that would accommodate date-range here
     fun person_form_should_be_able_to_recover_after_failure() = runTest {
         val form = PersonForm(ScopeConfig(Unit).toFormConfig()) {
             onSubmit {
-                println(it.entries.joinToString { entry -> "${entry.key}=${entry.value}" })
+                println(it)
                 Later(Unit)
             }
         }

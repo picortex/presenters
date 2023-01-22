@@ -3,12 +3,12 @@ import kash.Currency
 import kash.Money
 import koncurrent.Later
 import kotlinx.serialization.Serializable
-import presenters.forms.Fields
-import presenters.forms.Form
-import presenters.forms.FormActionsBuildingBlock
+import presenters.Fields
+import presenters.Form
+import presenters.FormActionsBuildingBlock
 import presenters.money
 import presenters.name
-import presenters.forms.toFormConfig
+import presenters.toFormConfig
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 

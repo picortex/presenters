@@ -3,9 +3,9 @@ import expect.expect
 import koncurrent.Later
 import kotlinx.serialization.Serializable
 import presenters.file
-import presenters.forms.Fields
-import presenters.forms.Form
-import presenters.forms.toFormConfig
+import presenters.Fields
+import presenters.Form
+import presenters.toFormConfig
 import presenters.name
 import viewmodel.ViewModelConfig
 import kotlin.test.Test

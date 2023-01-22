@@ -3,7 +3,7 @@ package presenters.internal
 import kotlinx.serialization.KSerializer
 import live.MutableLive
 import live.mutableLiveOf
-import presenters.FormattedData
+import presenters.DataFormatted
 import presenters.Formatter
 import presenters.Label
 import presenters.TransformingInputField
@@ -29,7 +29,7 @@ internal class TransformingInputFieldImpl<I : Any, O : Any>(
     private val validator: ((O?) -> Unit)?,
 ) : TransformingInputField<I, O> {
     private val default = FormattedData(null, "", value)
-    override val data: MutableLive<FormattedData<I, O>> = mutableLiveOf(default)
+    override val data: MutableLive<DataFormatted<I, O>> = mutableLiveOf(default)
     override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
 
     private val tiv = CompoundValidator(
@@ -38,7 +38,7 @@ internal class TransformingInputFieldImpl<I : Any, O : Any>(
     private val trnsfrmr = DataTransformer(formatter, transformer)
     private val setter = FormattedOutputSetter(data, feedback, trnsfrmr, tiv)
 
-    override fun set(value: I) = setter.set(value)
+    override fun set(value: I?) = setter.set(value)
 
     private val clearer = Clearer(default, data, feedback)
     override fun clear() = clearer.clear()

@@ -1,7 +1,7 @@
 @file:JsExport
 @file:Suppress("NON_EXPORTABLE_TYPE")
 
-package presenters.forms
+package presenters
 
 import actions.Action1
 import actions.action0I1R
@@ -14,7 +14,6 @@ import kase.Validating
 import kollections.toIList
 import koncurrent.FailedLater
 import koncurrent.Thenable
-import presenters.LiveOutputData
 import presenters.collections.*
 import presenters.exceptions.FormValidationException
 import presenters.properties.Labeled
@@ -55,7 +54,7 @@ open class Form<out F : Fields, P, out R>(
 
     fun exit() = cancel()
 
-    private fun Collection<LiveOutputData<*>>.errorTable() = simpleTableOf(this) {
+    private fun Collection<SerializableLiveData<*>>.errorTable() = simpleTableOf(this) {
         column("Field") {
             (it.item as? Labeled)?.label?.capitalizedWithAstrix() ?: it.item.name
         }

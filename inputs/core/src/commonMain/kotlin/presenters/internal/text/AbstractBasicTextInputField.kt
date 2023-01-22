@@ -35,7 +35,7 @@ abstract class AbstractBasicTextInputField(
 
     private val setter by lazy { OutputSetter(data, feedback, tv) }
 
-    final override fun set(value: String) = setter.set(value)
+    final override fun set(value: String?) = setter.set(value)
 
     private val clearer = Clearer(default, data, feedback)
 

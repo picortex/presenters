@@ -3,9 +3,10 @@
 
 package presenters
 
+import live.Live
 import kollections.List
 import kotlin.js.JsExport
 
-interface OutputList<out D> : OutputData<List<D>> {
-    override val output: List<D>
+interface LiveDataList<out D> : LiveData<List<D>> {
+    override val data: Live<DataList<D>>
 }

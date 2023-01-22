@@ -35,7 +35,7 @@ internal class BooleanInputFieldImpl(
     )
 
     private val setter = OutputSetter(data, feedback, bv)
-    override fun set(value: Boolean) = setter.set(value)
+    override fun set(value: Boolean?) = setter.set(value)
 
     private val clearer = Clearer(OutputData(value), data, feedback)
     override fun clear() = clearer.clear()

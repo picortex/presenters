@@ -4,15 +4,10 @@
 package presenters
 
 import kollections.List
-import presenters.properties.Clearable
-import presenters.properties.Hintable
-import presenters.properties.Labeled
-import presenters.properties.Mutability
-import presenters.properties.Requireble
 import presenters.validation.Validateable
 import kotlin.js.JsExport
 
-interface SingleChoiceInputField<O> : ChoiceField<O>, Labeled, Hintable, Mutability, Requireble, LiveOutputData<O>, Validateable<O>, Clearable {
+interface SingleChoiceInputField<O> : ChoiceField<O>, SerializableLiveData<O>, Validateable<O> {
     val selectedItem: O?
 
     val selectedOption: Option?

@@ -1,11 +1,11 @@
 @file:Suppress("WRONG_EXPORTED_DECLARATION")
 
-package presenters.forms
+package presenters
 
 import viewmodel.ViewModelConfig
 import kotlinx.serialization.serializer
-import presenters.forms.internal.FormConfigImpl
-import presenters.forms.internal.FormConfigImpl.DEFAULT
+import presenters.internal.forms.FormConfigImpl
+import presenters.internal.forms.FormConfigImpl.DEFAULT
 
 inline fun <reified P> ViewModelConfig.toFormConfig(
     exitOnSubmitted: Boolean = DEFAULT.exitOnSubmitted

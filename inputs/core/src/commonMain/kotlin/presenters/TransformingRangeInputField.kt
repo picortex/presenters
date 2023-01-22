@@ -3,17 +3,12 @@
 
 package presenters
 
-import presenters.properties.Clearable
-import presenters.properties.Hintable
-import presenters.properties.Labeled
-import presenters.properties.Mutability
-import presenters.properties.Requireble
 import presenters.properties.SettableRange
 import presenters.validation.Validateable
 import kotlin.js.JsExport
 
-interface TransformingRangeInputField<I, O> : InputField, Labeled, Hintable, Mutability, Requireble, SettableRange<I>, LiveFormattedData<I, Range<O>>, Validateable<Range<O>>, Clearable {
-    val start: LiveFormattedData<I, O>
-    val end: LiveFormattedData<I, O>
+interface TransformingRangeInputField<I, O> : InputField, CommonInputProperties, SettableRange<I>, SerializableLiveFormattedData<I, Range<O>>, Validateable<Range<O>> {
+    val start: SerializableLiveFormattedData<I, O>
+    val end: SerializableLiveFormattedData<I, O>
     val transformer: (I?) -> O?
 }

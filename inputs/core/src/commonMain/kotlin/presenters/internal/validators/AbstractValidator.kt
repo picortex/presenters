@@ -2,14 +2,14 @@ package presenters.internal.validators
 
 import live.Live
 import live.MutableLive
-import presenters.OutputData
+import presenters.Data
 import presenters.InputFieldState
 import presenters.internal.utils.FeedbackSetter
 import presenters.validation.Validateable
 import presenters.validation.ValidationResult
 
 abstract class AbstractValidator<in I>(
-    final override val data: Live<OutputData<@UnsafeVariance I>>,
+    final override val data: Live<Data<@UnsafeVariance I>>,
     final override val feedback: MutableLive<InputFieldState>
 ) : FeedbackSetter(feedback), Validateable<@UnsafeVariance I> {
 

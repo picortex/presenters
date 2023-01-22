@@ -13,4 +13,4 @@ import presenters.properties.Settable
 import presenters.validation.Validateable
 import kotlin.js.JsExport
 
-interface SingleFileInputField : Labeled, Hintable, Mutability, Requireble, LiveOutputData<FileBlob>, Settable<FileBlob>, Validateable<FileBlob>, Clearable
+interface SingleFileInputField : Labeled, Hintable, Mutability, Requireble, SerializableLiveData<FileBlob>, Settable<FileBlob>, Validateable<FileBlob>, Clearable

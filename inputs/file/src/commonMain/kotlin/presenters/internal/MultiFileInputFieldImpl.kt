@@ -3,7 +3,6 @@ package presenters.internal
 import epsilon.FileBlob
 import epsilon.serializers.FileBlobSerializer
 import kollections.List
-import kollections.iEmptyList
 import kollections.serializers.ListSerializer
 import kollections.toIList
 import kotlinx.serialization.KSerializer
@@ -12,7 +11,7 @@ import live.mutableLiveOf
 import presenters.InputFieldState
 import presenters.Label
 import presenters.MultiFileInputField
-import presenters.OutputData
+import presenters.Data
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.OutputSetter
 import presenters.internal.validators.CompoundValidator
@@ -40,8 +39,8 @@ internal class MultiFileInputFieldImpl(
         LambdaValidator(data, feedback, validator)
     )
 
-    private val setter = OutputSetter(data as MutableLive<OutputData<List<FileBlob>>>, feedback, sfv)
-    override fun set(value: List<FileBlob>) = setter.set(value)
+    private val setter = OutputSetter(data as MutableLive<Data<List<FileBlob>>>, feedback, sfv)
+    override fun set(value: List<FileBlob>?) = setter.set(value)
 
     private val output get() = data.value.output
     override fun add(file: FileBlob) = set((output + file).toIList())
@@ -53,7 +52,7 @@ internal class MultiFileInputFieldImpl(
 
     override fun remove(file: FileBlob) = set((output - file).toIList())
 
-    override fun removeAll() = set(iEmptyList())
+    override fun removeAll(files: List<FileBlob>) = set((output - files).toIList())
 
     override fun validate(value: List<FileBlob>?) = sfv.validate(value)
     override fun validateSettingInvalidsAsErrors(value: List<FileBlob>?) = sfv.validateSettingInvalidsAsErrors()

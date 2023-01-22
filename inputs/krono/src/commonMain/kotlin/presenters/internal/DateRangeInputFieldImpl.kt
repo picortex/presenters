@@ -90,14 +90,14 @@ internal class DateRangeInputFieldImpl(
         clearer.clear()
     }
 
-    override fun setStart(value: String) {
+    override fun setStart(value: String?) {
         start.set(value)
         val s = start.data.value.output
         val e = end.data.value.output
         update(s, e)
     }
 
-    override fun setEnd(value: String) {
+    override fun setEnd(value: String?) {
         end.set(value)
         val s = start.data.value.output
         val e = end.data.value.output

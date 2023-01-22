@@ -4,10 +4,10 @@ import kollections.List
 import koncurrent.Later
 import kotlinx.serialization.Serializable
 import presenters.files
-import presenters.forms.Fields
-import presenters.forms.Form
+import presenters.Fields
+import presenters.Form
 import presenters.name
-import presenters.forms.toFormConfig
+import presenters.toFormConfig
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 

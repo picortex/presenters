@@ -4,8 +4,6 @@ package presenters
 
 import geo.GeoLocation
 import presenters.internal.LocationInputFieldImpl
-import presenters.forms.Fields
-import presenters.forms.fields.getOrCreate
 import kotlin.reflect.KProperty
 
 inline fun LocationInputField(

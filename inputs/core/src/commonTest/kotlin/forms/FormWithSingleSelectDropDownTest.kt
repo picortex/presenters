@@ -14,7 +14,7 @@ import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
 import presenters.Option
 import presenters.InputFieldState
-import presenters.forms.Fields
+import presenters.Fields
 import presenters.name
 import presenters.selectSingle
 import kotlin.test.Test

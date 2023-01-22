@@ -6,6 +6,6 @@ package presenters
 import live.Live
 import kotlin.js.JsExport
 
-interface LiveFormattedData<I, out O> : LiveOutputData<O> {
-    override val data: Live<FormattedData<I, O>>
+interface LiveData<out D> {
+    val data: Live<Data<D>>
 }

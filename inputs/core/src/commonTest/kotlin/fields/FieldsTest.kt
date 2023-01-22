@@ -2,7 +2,7 @@ package fields
 
 import expect.expect
 import presenters.double
-import presenters.forms.Fields
+import presenters.Fields
 import presenters.name
 import kotlin.test.Test
 

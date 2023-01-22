@@ -1,4 +1,4 @@
-package presenters.forms.internal
+package presenters.internal.forms
 
 import cache.Cache
 import koncurrent.Executor
@@ -7,7 +7,7 @@ import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.serializer
 import krest.WorkManager
 import logging.Logger
-import presenters.forms.FormConfig
+import presenters.FormConfig
 import viewmodel.VIEW_MODEL_CONFIG_DEFAULT
 import viewmodel.ViewModelConfig
 

@@ -18,8 +18,7 @@ internal class DataCollectionImpl<T>(
     override val columns: ColumnsManager<T>
 ) : Table<T>, ScrollableList<T>, DataCollection<T>,
     PaginationManager<T> by paginator,
-    SelectionManager<T> by selector,
-    ActionsManager<T> by actions {
+    SelectionManager<T> by selector {
 
     override val rows: List<Row<T>> get() = paginator.continuous
 

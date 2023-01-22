@@ -3,10 +3,10 @@ package presenters.validators
 import identifier.Phone
 import live.MutableLive
 import presenters.InputFieldState
-import presenters.OutputData
+import presenters.Data
 
 class PhoneValidator(
-    data: MutableLive<OutputData<String>>,
+    data: MutableLive<Data<String>>,
     feedback: MutableLive<InputFieldState>,
     label: String,
     isRequired: Boolean,

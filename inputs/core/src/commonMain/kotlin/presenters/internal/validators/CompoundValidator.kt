@@ -2,14 +2,14 @@ package presenters.internal.validators
 
 import live.Live
 import live.MutableLive
-import presenters.OutputData
+import presenters.Data
 import presenters.InputFieldState
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class CompoundValidator<in T>(
-    data: Live<OutputData<T>>,
+    data: Live<Data<T>>,
     feedback: MutableLive<InputFieldState>,
     vararg valigators: AbstractValidator<T>
 ) : AbstractValidator<T>(data, feedback) {

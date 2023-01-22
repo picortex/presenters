@@ -3,18 +3,13 @@
 
 package presenters
 
-import presenters.properties.Clearable
-import presenters.properties.Hintable
-import presenters.properties.Labeled
-import presenters.properties.Mutability
-import presenters.properties.Requireble
 import presenters.properties.Settable
 import presenters.properties.Typeable
 import presenters.validation.Validateable
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface NumberInputField<N : Number> : InputField, Labeled, Hintable, Mutability, Requireble, Settable<String>, LiveFormattedData<String, N>, Validateable<N>, Typeable, Clearable {
+interface NumberInputField<N : Number> : InputField, CommonInputProperties, Settable<String>, SerializableLiveFormattedData<String, N>, Validateable<N>, Typeable {
     val max: N?
     val min: N?
     val step: N?

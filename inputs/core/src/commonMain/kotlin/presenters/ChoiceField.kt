@@ -6,6 +6,6 @@ package presenters
 import kollections.Collection
 import kotlin.js.JsExport
 
-sealed interface ChoiceField<O> : InputField {
+sealed interface ChoiceField<O> : InputField, CommonInputProperties {
     val items: Collection<O>
 }

@@ -106,7 +106,7 @@ internal class MoneyInputFieldImpl(
 
     override fun type(text: String) = Typer(default.input, amount).type(text)
 
-    override fun set(value: String) = amount.set(value)
+    override fun set(value: String?) = amount.set(value)
 
     override fun setAmount(number: Int) = amount.set(number)
 

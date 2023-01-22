@@ -2,8 +2,6 @@ package presenters
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import presenters.forms.Fields
-import presenters.forms.fields.getOrCreate
 import kotlin.reflect.KProperty
 
 inline fun <reified O : Any> Fields.textTo(

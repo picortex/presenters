@@ -48,7 +48,7 @@ internal class DateInputFieldImpl(
     private val trnsfrm = DataTransformer(formatter, transformer)
     private val setter = FormattedOutputSetter(data, feedback, trnsfrm, dv1)
 
-    override fun set(value: String) = setter.set(value)
+    override fun set(value: String?) = setter.set(value)
 
     override fun type(text: String) = Typer(data.value.input, setter).type(text)
 

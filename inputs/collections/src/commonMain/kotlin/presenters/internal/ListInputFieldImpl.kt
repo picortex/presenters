@@ -8,7 +8,7 @@ import live.mutableLiveOf
 import presenters.InputFieldState
 import presenters.Label
 import presenters.ListInputField
-import presenters.OutputData
+import presenters.Data
 import presenters.internal.utils.Clearer
 import presenters.internal.utils.OutputSetter
 import presenters.internal.validators.CompoundValidator
@@ -35,8 +35,8 @@ internal class ListInputFieldImpl<E>(
         RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired)
     )
 
-    private val setter = OutputSetter(data as MutableLive<OutputData<List<E>>>, feedback, lv)
-    override fun set(value: List<E>) = setter.set(value)
+    private val setter = OutputSetter(data as MutableLive<Data<List<E>>>, feedback, lv)
+    override fun set(value: List<E>?) = setter.set(value)
 
     private val output get() = data.value.output
     override fun add(item: E) = set((output + item).toIList())

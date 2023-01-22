@@ -6,10 +6,10 @@ import koncurrent.later.await
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
-import presenters.forms.Fields
-import presenters.forms.Form
-import presenters.forms.FormActionsBuildingBlock
-import presenters.forms.toFormConfig
+import presenters.Fields
+import presenters.Form
+import presenters.FormActionsBuildingBlock
+import presenters.toFormConfig
 import presenters.textTo
 import viewmodel.ViewModelConfig
 import kotlin.test.Test

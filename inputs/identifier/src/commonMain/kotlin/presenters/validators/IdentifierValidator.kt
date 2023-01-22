@@ -1,16 +1,15 @@
 package presenters.validators
 
-import identifier.Phone
 import live.MutableLive
 import presenters.InputFieldState
-import presenters.OutputData
+import presenters.Data
 import presenters.internal.validators.AbstractValidator
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 abstract class IdentifierValidator(
-    data: MutableLive<OutputData<String>>,
+    data: MutableLive<Data<String>>,
     feedback: MutableLive<InputFieldState>,
     private val label: String,
     private val isRequired: Boolean,

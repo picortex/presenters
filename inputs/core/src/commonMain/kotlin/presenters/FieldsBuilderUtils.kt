@@ -1,7 +1,5 @@
-package presenters.forms.fields
+package presenters
 
-import presenters.InputField
-import presenters.forms.Fields
 import kotlin.reflect.KProperty
 
 inline fun <F : InputField> Fields.getOrCreate(

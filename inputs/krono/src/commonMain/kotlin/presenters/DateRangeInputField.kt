@@ -4,12 +4,11 @@
 package presenters
 
 import krono.LocalDate
+import presenters.properties.Bounded
+import presenters.properties.Patterned
 import kotlin.js.JsExport
 
-interface DateRangeInputField : TransformingRangeInputField<String, LocalDate> {
-    override val start: DateInputField
+interface DateRangeInputField : TransformingRangeInputField<String, LocalDate>, Bounded<LocalDate>, Patterned {
+    override val start: DateOutputField
     override val end: DateInputField
-    val pattern: String
-    val max: LocalDate?
-    val min: LocalDate?
 }

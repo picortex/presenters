@@ -1,6 +1,9 @@
 package forms
 
-import presenters.forms.*
+import presenters.Fields
+import presenters.Form
+import presenters.FormActionsBuildingBlock
+import presenters.toFormConfig
 import viewmodel.ViewModelConfig
 
 class TestForm<F : Fields>(

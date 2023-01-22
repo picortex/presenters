@@ -45,7 +45,7 @@ internal abstract class AbstractNumberInputField<N>(
 
     internal val setter by lazy { FormattedOutputSetter(data, feedback, transformer, dv) }
 
-    override fun set(value: String) = setter.set(value)
+    override fun set(value: String?) = setter.set(value)
 
     override fun type(text: String) = Typer(data.value.input, setter).type(text)
 

@@ -5,10 +5,9 @@ package presenters.collections
 
 import kotlin.js.JsExport
 
-interface DataCollection<T> :
-    Pageable<T>, PaginationManager<T>,
-    Selectable<T>, SelectionManager<T>,
-    Actionable<T>, ActionsManager<T> {
+interface DataCollection<T> : Pageable<T>, PaginationManager<T>, Selectable<T>, SelectionManager<T> {
+
+    val actions: ActionsManager<T>
 
     fun manageActions(block: (manager: ActionsManager<T>) -> Unit): DataCollection<T>
 }

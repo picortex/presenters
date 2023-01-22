@@ -3,24 +3,16 @@ package presenters.internal
 import epsilon.FileBlob
 import epsilon.serializers.FileBlobSerializer
 import kotlinx.serialization.KSerializer
-import live.Live
 import live.MutableLive
 import live.mutableLiveOf
 import presenters.InputFieldState
 import presenters.Label
-import presenters.OutputData
 import presenters.SingleFileInputField
-import presenters.fields.SingleValuedField
 import presenters.internal.utils.Clearer
-import presenters.internal.utils.FormattedOutputSetter
 import presenters.internal.utils.OutputSetter
 import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RequirementValidator
-import presenters.validation.Invalid
-import presenters.validation.Valid
-import presenters.validation.Validateable
-import presenters.validation.ValidationResult
 
 @PublishedApi
 internal class SingleFileInputFieldImpl(
@@ -43,7 +35,7 @@ internal class SingleFileInputFieldImpl(
         LambdaValidator(data, feedback, validator)
     )
     private val setter = OutputSetter(data, feedback, sfv)
-    override fun set(value: FileBlob) = setter.set(value)
+    override fun set(value: FileBlob?) = setter.set(value)
 
     private val clearer = Clearer(default, data, feedback)
     override fun clear() = clearer.clear()

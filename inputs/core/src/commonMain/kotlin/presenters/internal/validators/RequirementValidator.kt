@@ -2,14 +2,14 @@ package presenters.internal.validators
 
 import live.Live
 import live.MutableLive
-import presenters.OutputData
+import presenters.Data
 import presenters.InputFieldState
 import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class RequirementValidator(
-    data: Live<OutputData<Any?>>,
+    data: Live<Data<Any?>>,
     feedback: MutableLive<InputFieldState>,
     private val label: String,
     private val isRequired: Boolean,

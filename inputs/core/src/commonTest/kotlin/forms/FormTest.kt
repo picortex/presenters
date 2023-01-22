@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 import live.expect
 import live.toHaveGoneThrough2
 import live.toHaveGoneThrough3
-import presenters.forms.*
+import presenters.Fields
 import presenters.name
 import presenters.text
 import kotlin.test.Test

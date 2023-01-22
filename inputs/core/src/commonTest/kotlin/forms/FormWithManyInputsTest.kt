@@ -12,9 +12,9 @@ import kotlinx.serialization.Serializable
 import live.expect
 import live.toHaveGoneThrough3
 import presenters.Option
-import presenters.forms.Fields
-import presenters.forms.Form
-import presenters.forms.toFormConfig
+import presenters.Fields
+import presenters.Form
+import presenters.toFormConfig
 import presenters.name
 import presenters.selectMany
 import presenters.selectSingle

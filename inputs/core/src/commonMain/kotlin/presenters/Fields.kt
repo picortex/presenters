@@ -1,14 +1,11 @@
 @file:JsExport
 @file:Suppress("WRONG_EXPORTED_DECLARATION", "NON_EXPORTABLE_TYPE")
 
-package presenters.forms
+package presenters
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.nullable
-import presenters.InputField
-import presenters.LiveOutputData
-import presenters.InputFieldState
 import presenters.properties.Clearable
 import presenters.properties.Requireble
 import presenters.validation.Validateable
@@ -31,7 +28,7 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
         }
 
     internal val valuesToBeSubmitted
-        get() = all.filterIsInstance<LiveOutputData<*>>().filterNot {
+        get() = all.filterIsInstance<SerializableLiveData<*>>().filterNot {
             if (it is Requireble) {
                 !it.isRequired && (it.data.value.output == null || it.data.value.output.toString().isBlank())
             } else {

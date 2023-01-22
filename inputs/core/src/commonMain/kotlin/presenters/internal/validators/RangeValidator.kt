@@ -2,7 +2,7 @@ package presenters.internal.validators
 
 import live.Live
 import live.MutableLive
-import presenters.OutputData
+import presenters.Data
 import presenters.Range
 import presenters.InputFieldState
 import presenters.validation.Invalid
@@ -10,7 +10,7 @@ import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class RangeValidator<C : Comparable<C>>(
-    data: Live<OutputData<Range<C>>>,
+    data: Live<Data<Range<C>>>,
     feedback: MutableLive<InputFieldState>,
     private val isRequired: Boolean,
     private val label: String,
