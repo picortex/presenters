@@ -14,7 +14,7 @@ sealed class Column<in D> {
 
     class Data<in D>(
         override val name: String,
-        val accessor: (Row<D>) -> String = { "" }
+        val accessor: (Row<D>) -> String
     ) : Column<D>()
 
     class Action(
@@ -25,5 +25,6 @@ sealed class Column<in D> {
     val asData get() = this as? Data
     val asAction get() = this as? Action
 
+    override fun toString() = name
     override fun equals(other: Any?): Boolean = other is Column<*> && other.name == name
 }

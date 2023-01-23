@@ -15,10 +15,9 @@ interface PaginationManager<T> {
     val current: Live<LazyState<Page<T>>>
     val continuous: List<Row<T>>
     val currentPageOrNull get() = current.value.data
-    var capacity: Int
+    val capacity: Int
     fun wipeMemory()
     fun clearPages()
-    fun updateLoader(loader: (no: Int, capacity: Int) -> Later<Page<@UnsafeVariance T>>)
     fun setPageCapacity(cap: Int)
     fun refresh(): Later<Any?>
     fun loadNextPage(): Later<Any?>
@@ -38,7 +37,5 @@ interface PaginationManager<T> {
     @JsName("findPage")
     fun find(page: Int): Page<T>?
 
-    companion object {
-        val DEFAULT_CAPACITY = 10
-    }
+    fun <R> map(transform: (T) -> R): PaginationManager<R>
 }

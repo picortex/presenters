@@ -9,6 +9,8 @@ import presenters.collections.Row
 import presenters.collections.ScrollableList
 import presenters.collections.SelectionManager
 import presenters.collections.Table
+import presenters.collections.actionsOf
+import presenters.collections.columnsOf
 
 @PublishedApi
 internal class DataCollectionImpl<T>(
@@ -30,5 +32,11 @@ internal class DataCollectionImpl<T>(
     override fun manageActions(block: (ActionsManager<T>) -> Unit): DataCollectionImpl<T> {
         actions.apply(block)
         return this
+    }
+
+    override fun <R> map(transform: (T) -> R): DataCollectionImpl<R> {
+        val p = paginator.map(transform)
+        val s = SelectionManagerImpl(p)
+        return DataCollectionImpl(p, s, actionsOf(), columnsOf())
     }
 }

@@ -3,6 +3,7 @@ package collections
 import expect.expect
 import live.WatchMode
 import live.watch
+import presenters.collections.Column
 import presenters.collections.columnsOf
 import kotlin.test.Test
 
@@ -48,5 +49,11 @@ class ColumnsManagerTest {
         columns.hide("count")
         expect(columns.current.value).toBeOfSize(2)
         expect(counts).toBe(0)
+    }
+
+    @Test
+    fun columns_should_print_their_names_in_a_to_string_operation() {
+        val col = Column.Data<Int>("test") { it.toString() }
+        expect(col.toString()).toBe("test")
     }
 }

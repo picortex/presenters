@@ -1,18 +1,16 @@
 @file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE", "WRONG_EXPORTED_DECLARATION")
+@file:Suppress("NON_EXPORTABLE_TYPE")
 
 package presenters.collections
 
 import live.Live
-import live.MutableLive
-import presenters.collections.internal.SelectionManagerImpl
-import viewmodel.ViewModelConfig
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import kotlin.jvm.JvmName
-import kotlin.jvm.JvmStatic
 
 interface SelectionManager<T> {
+    // ---------------------------------SelectionGetters--------------------------
+    val selected: Live<Selected<T>>
+
     // ---------------------------------Selections--------------------------
     fun selectAllItemsInTheCurrentPage()
 
@@ -96,6 +94,5 @@ interface SelectionManager<T> {
      */
     fun unSelectRowInPage(row: Int, page: Int)
 
-    // ---------------------------------SelectionGetters--------------------------
-    val selected: Live<Selected<T>>
+    fun <R> map(transform: (T) -> R): SelectionManager<R>
 }

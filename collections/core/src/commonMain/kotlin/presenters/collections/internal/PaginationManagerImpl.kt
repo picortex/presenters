@@ -17,7 +17,7 @@ import kase.Success
 @PublishedApi
 internal class PaginationManagerImpl<T>(
     override var capacity: Int,
-    private var loader: (no: Int, capacity: Int) -> Later<Page<T>>
+    internal val loader: (no: Int, capacity: Int) -> Later<Page<T>>
 ) : PaginationManager<T> {
 
     private val cache: PageCacheManager<T> = PageCacheManager()
@@ -42,10 +42,6 @@ internal class PaginationManagerImpl<T>(
     override fun clearPages() {
         wipeMemory()
         current.value = Pending
-    }
-
-    override fun updateLoader(loader: (no: Int, capacity: Int) -> Later<Page<@UnsafeVariance T>>) {
-        this.loader = loader
     }
 
     override fun setPageCapacity(cap: Int) {
@@ -106,6 +102,10 @@ internal class PaginationManagerImpl<T>(
     override fun find(row: Int, page: Int) = cache.load(row, page, capacity)
 
     override fun find(page: Int) = cache.load(page, capacity)
+
+    override fun <R> map(transform: (T) -> R): PaginationManager<R> = PaginationManagerImpl(capacity) { no, capacity ->
+        loader(no, capacity).then { it.map(transform) }
+    }
 
     companion object {
         val DEFAULT_CAPACITY = 10

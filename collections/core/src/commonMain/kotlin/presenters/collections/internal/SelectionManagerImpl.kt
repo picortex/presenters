@@ -16,6 +16,7 @@ import presenters.collections.SelectedGlobal
 import presenters.collections.SelectedItem
 import presenters.collections.SelectedItems
 import presenters.collections.SelectedNone
+import presenters.collections.SelectionManager
 
 class SelectionManagerImpl<T>(
     private val paginator: PaginationManager<T>
@@ -141,4 +142,6 @@ class SelectionManagerImpl<T>(
         is SelectedItems -> s.page.toIList().any { (p, rows) -> p.number == page && rows.map { it.number }.contains(row) }
         is SelectedGlobal -> !s.exceptions.any { it.page.number == page && it.row.number == row }
     }
+
+    override fun <R> map(transform: (T) -> R): SelectionManager<R> = SelectionManagerImpl(paginator.map(transform))
 }
