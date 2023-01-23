@@ -34,7 +34,7 @@ private fun StringBuilder.appendRow(text: String, size: Int?) {
 
 fun <D> Table<D>.renderToString(gap: Int = 4) = buildString {
     val colSizes = calculateColSizes(gap)
-    columns.all().forEach { appendRow(text(it), colSizes[it]) }
+    columns.current.value.forEach { appendRow(text(it), colSizes[it]) }
     appendLine()
     appendLine()
     (paginator.page.value.data ?: Page()).items.forEach { row ->

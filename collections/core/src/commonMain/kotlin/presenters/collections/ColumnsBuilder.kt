@@ -12,15 +12,25 @@ class ColumnsBuilder<D> @PublishedApi internal constructor(internal val columns:
     internal val hidden = mutableSetOf<String>()
     internal val removed = mutableSetOf<String>()
 
-    fun hide(name: String) = update { hidden.add(name) }
+    fun hide(name: String) {
+        val n = name.lowercase()
+        if (!columns.contains(n)) return
+        if (hidden.contains(n)) return
+        update { hidden.add(n) }
+    }
 
-    fun show(name: String) = update { hidden.remove(name) }
+    fun show(name: String) {
+        val n = name.lowercase()
+        if (!columns.contains(n)) return
+        if (!hidden.contains(n)) return
+        update { hidden.remove(n) }
+    }
 
-    fun find(name: String): Column<D>? = columns.find { it.name.contentEquals(name, ignoreCase = true) }
-
-    fun remove(name: String) = update {
-        val col = find(name) ?: return@update
-        columns.remove(col)
+    fun remove(name: String) {
+        val n = name.lowercase()
+        if (!columns.contains(n)) return
+        if (removed.contains(n)) return
+        update { removed.add(n) }
     }
 
     fun selectable(name: String = "Select") = update {
@@ -38,11 +48,15 @@ class ColumnsBuilder<D> @PublishedApi internal constructor(internal val columns:
     fun all(includingRemoved: Boolean): Set<Column<D>> = if (includingRemoved) {
         columns.toISet()
     } else {
-        columns.filter { !removed.contains(it.name) }.toISet()
+        columns.filter { !removed.contains(it.name.lowercase()) }.toISet()
     }
 
     private fun update(block: () -> Unit) {
         block()
-        current.value = all(includingRemoved = false).filter { !hidden.contains(it.name) }.toISet()
+        current.value = all(includingRemoved = false).filter { !hidden.contains(it.name.lowercase()) }.toISet()
+    }
+
+    private fun Collection<Column<D>>.contains(name: String) = any {
+        it.name.contentEquals(name, ignoreCase = true)
     }
 }

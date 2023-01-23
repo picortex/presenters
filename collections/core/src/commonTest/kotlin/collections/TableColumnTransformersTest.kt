@@ -20,7 +20,7 @@ class TableColumnTransformersTest {
         expect(table.columns.all()).toBeOfSize(4)
         table.columns.remove("name")
         table.renderToConsole()
-        expect(table.columns.all()).toBeOfSize(3)
+        expect(table.columns.current.value).toBeOfSize(3)
     }
 
     @Test
