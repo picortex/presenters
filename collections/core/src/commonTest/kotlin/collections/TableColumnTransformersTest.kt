@@ -7,7 +7,6 @@ import presenters.collections.actionsOf
 import presenters.collections.renderToConsole
 import presenters.collections.tableOf
 import kotlin.test.Test
-import kotlin.test.fail
 
 class TableColumnTransformersTest {
     @Test
@@ -18,10 +17,10 @@ class TableColumnTransformersTest {
         val table = tableOf(paginator, selector, action, Person.columns())
         table.loadFirstPage()
         table.renderToConsole()
-        expect(table.columns.get()).toBeOfSize(4)
+        expect(table.columns.all()).toBeOfSize(4)
         table.columns.remove("name")
         table.renderToConsole()
-        expect(table.columns.get()).toBeOfSize(3)
+        expect(table.columns.all()).toBeOfSize(3)
     }
 
     @Test
@@ -36,6 +35,6 @@ class TableColumnTransformersTest {
         }
         table.loadFirstPage()
         table.renderToConsole()
-        expect(table.columns.get()).toBeOfSize(5)
+        expect(table.columns.all()).toBeOfSize(5)
     }
 }

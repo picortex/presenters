@@ -7,7 +7,7 @@ import actions.builders.Action0I1RBuilder
 import kollections.List
 import kollections.toIList
 
-class ActionsManagerBuilder<T> @PublishedApi internal constructor(
+class CollectionActionsBuilder<T> @PublishedApi internal constructor(
     primary: MutableList<Action0<Unit>> = mutableListOf(),
     single: MutableList<Action0<Unit>> = mutableListOf(),
     multi: MutableList<Action0<Unit>> = mutableListOf(),

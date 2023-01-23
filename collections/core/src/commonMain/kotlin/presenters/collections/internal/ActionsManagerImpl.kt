@@ -2,13 +2,13 @@ package presenters.collections.internal
 
 import kollections.List
 import presenters.collections.ActionsManager
-import presenters.collections.ActionsManagerBuilder
+import presenters.collections.CollectionActionsBuilder
 import presenters.collections.SelectionManager
 
 @PublishedApi
 internal class ActionsManagerImpl<T>(
     private val selector: SelectionManager<T>,
-    private val builder: ActionsManagerBuilder<T>
+    private val builder: CollectionActionsBuilder<T>
 ) : ActionsManager<T> {
     override val current = selector.selected.map {
         builder.buildActions(it)

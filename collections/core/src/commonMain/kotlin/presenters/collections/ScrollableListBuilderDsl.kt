@@ -11,7 +11,7 @@ inline fun <T> scrollableListOf(
     actionsManager: ActionsManager<T>
 ): ScrollableList<T> = DataCollectionImpl(
     paginator, selector, actionsManager,
-    ColumnsManagerImpl(mutableListOf())
+    ColumnsManagerImpl(mutableSetOf())
 )
 
 inline fun <T> scrollableListOf(
@@ -19,5 +19,5 @@ inline fun <T> scrollableListOf(
     selector: SelectionManager<T>
 ): ScrollableList<T> = DataCollectionImpl(
     paginator, selector, actionsOf(selector) {},
-    ColumnsManagerImpl(mutableListOf())
+    ColumnsManagerImpl(mutableSetOf())
 )

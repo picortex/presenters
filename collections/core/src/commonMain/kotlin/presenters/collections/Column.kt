@@ -8,25 +8,22 @@ import kotlin.js.JsExport
 sealed class Column<in D> {
     abstract val name: String
 
-    data class Select(
+    class Select(
         override val name: String,
-    ) : Column<Nothing>()
+    ) : Column<Any?>()
 
-    data class Data<in D>(
+    class Data<in D>(
         override val name: String,
         val accessor: (Row<D>) -> String = { "" }
     ) : Column<D>()
 
-    data class Action(
+    class Action(
         override val name: String
-    ) : Column<Nothing>()
+    ) : Column<Any?>()
 
-    val isSelect get() = this is Select
-    val asSelect get() = this as Select
+    val asSelect get() = this as? Select
+    val asData get() = this as? Data
+    val asAction get() = this as? Action
 
-    val isData get() = this is Data
-    val asData get() = this as Data
-
-    val isAction get() = this is Action
-    val asAction get() = this as Action
+    override fun equals(other: Any?): Boolean = other is Column<*> && other.name == name
 }

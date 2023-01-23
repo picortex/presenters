@@ -3,12 +3,15 @@
 
 package presenters.collections
 
-import kollections.List
+import kollections.Set
+import live.Live
 import kotlin.js.JsExport
 
 interface ColumnsManager<D> {
-    val size: Int
-    fun get(): List<Column<D>>
+    val current: Live<Set<Column<D>>>
+    fun all(includingRemoved: Boolean = false): Set<Column<D>>
     fun add(name: String, accessor: (Row<D>) -> String): ColumnsManager<D>
     fun remove(name: String): ColumnsManager<D>
+    fun hide(name: String): ColumnsManager<D>
+    fun show(name: String): ColumnsManager<D>
 }

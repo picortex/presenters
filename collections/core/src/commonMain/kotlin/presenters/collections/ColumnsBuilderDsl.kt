@@ -2,6 +2,8 @@
 
 package presenters.collections
 
+import kollections.iMutableSetOf
+import kollections.toIMutableSet
 import presenters.collections.internal.ColumnsManagerImpl
 import kotlin.jvm.JvmSynthetic
 
@@ -12,8 +14,9 @@ import kotlin.jvm.JvmSynthetic
  */
 @JvmSynthetic
 fun <D> columnsOf(
+    columns: Collection<Column<D>> = setOf(),
     block: ColumnsBuilder<D>.() -> Unit
-): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder<D>().apply(block))
+): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder(columns.toIMutableSet()).apply(block))
 
 @JvmSynthetic
-inline fun <D> columnsOf(): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder(mutableListOf()))
+inline fun <D> columnsOf(): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder(iMutableSetOf()))

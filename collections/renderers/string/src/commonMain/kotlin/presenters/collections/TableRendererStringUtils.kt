@@ -21,7 +21,7 @@ private fun <D> Table<D>.text(col: Column<D>) = when (col) {
 private fun <D> Table<D>.calculateColSizes(gap: Int): MutableMap<Column<D>, Int> {
     val colSizes = mutableMapOf<Column<D>, Int>()
     (paginator.page.value.data ?: Page()).items.forEach { row ->
-        columns.get().forEach { col ->
+        columns.all().forEach { col ->
             colSizes[col] = maxOf(colSizes[col] ?: 0, text(row, col).length + gap)
         }
     }
@@ -34,11 +34,11 @@ private fun StringBuilder.appendRow(text: String, size: Int?) {
 
 fun <D> Table<D>.renderToString(gap: Int = 4) = buildString {
     val colSizes = calculateColSizes(gap)
-    columns.get().forEach { appendRow(text(it), colSizes[it]) }
+    columns.all().forEach { appendRow(text(it), colSizes[it]) }
     appendLine()
     appendLine()
     (paginator.page.value.data ?: Page()).items.forEach { row ->
-        columns.get().forEach { col -> appendRow(text(row, col), colSizes[col]) }
+        columns.all().forEach { col -> appendRow(text(row, col), colSizes[col]) }
         appendLine()
     }
 }

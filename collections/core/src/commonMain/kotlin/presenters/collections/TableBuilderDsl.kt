@@ -24,7 +24,7 @@ fun <T> tableOf(
     selector: SelectionManager<T>,
     actions: ActionsManager<T>,
     columns: ColumnsBuilder<T>.() -> Unit
-): Table<T> = DataCollectionImpl(paginator, selector, actions, columnsOf(columns))
+): Table<T> = DataCollectionImpl(paginator, selector, actions, columnsOf(emptyList(), columns))
 
 @JvmSynthetic
 inline fun <T> tableOf(
@@ -52,5 +52,5 @@ inline fun <T> simpleTableOf(
     val paginator = SinglePagePaginator(items)
     paginator.loadFirstPage()
     val selector = SelectionManager(paginator)
-    return DataCollectionImpl(paginator, selector, actionsOf(), columnsOf(columns))
+    return DataCollectionImpl(paginator, selector, actionsOf(), columnsOf(emptyList(), columns))
 }
