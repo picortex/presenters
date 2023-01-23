@@ -12,9 +12,9 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 
 interface PaginationManager<T> {
-    val page: Live<LazyState<Page<T>>>
+    val current: Live<LazyState<Page<T>>>
     val continuous: List<Row<T>>
-    val currentPageOrNull get() = page.value.data
+    val currentPageOrNull get() = current.value.data
     var capacity: Int
     fun wipeMemory()
     fun clearPages()
@@ -28,6 +28,7 @@ interface PaginationManager<T> {
     fun loadLastPage(): Later<Page<T>>
     fun forEachPage(block: (Page<T>) -> Unit)
 
+    // ---------------------- finders -----------------------
     @JsName("findRow")
     fun find(row: Int, page: Int): SelectedItem<T>?
 
@@ -39,10 +40,5 @@ interface PaginationManager<T> {
 
     companion object {
         val DEFAULT_CAPACITY = 10
-
-        operator fun <T> invoke(
-            capacity: Int = DEFAULT_CAPACITY,
-            loader: (no: Int, capacity: Int) -> Later<Page<T>>
-        ): PaginationManager<T> = PaginationManagerImpl(capacity = capacity, loader = loader)
     }
 }

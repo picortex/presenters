@@ -8,10 +8,10 @@ import kollections.Set
 import kotlin.js.JsExport
 
 sealed interface Selected<out T> {
-    val asNone get() = this as? SelectedNone
-    val asSelectedItem get() = this as? SelectedItem
-    val asSelectedItems get() = this as? SelectedItems
-    val asSelectedGlobal get() = this as? SelectedGlobal
+    val none get() = this as? SelectedNone
+    val item get() = this as? SelectedItem
+    val items get() = this as? SelectedItems
+    val global get() = this as? SelectedGlobal
 }
 
 object SelectedNone : Selected<Nothing>

@@ -24,7 +24,7 @@ abstract class AbstractSelectionManager<T>(
 
     override fun select(obj: T) {
         val pos = paginator.find(obj) ?: return
-        select(pos.row.number, pos.page.number)
+        selectRow(pos.row.number, pos.page.number)
     }
 
     override fun addSelection(row: Int) = addRowSelection(row, currentLoadedPage?.number)

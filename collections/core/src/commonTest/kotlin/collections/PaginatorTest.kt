@@ -2,8 +2,6 @@ package collections
 
 import expect.expect
 import expect.toBe
-import koncurrent.later.await
-import kotlinx.coroutines.test.runTest
 import presenters.collections.PaginationManager
 import presenters.collections.CollectionPaginator
 import presenters.collections.SinglePagePaginator
@@ -23,13 +21,13 @@ class PaginatorTest {
     @Test
     fun paginator_should_be_able_to_paginate_through_different_pages() {
         val p: PaginationManager<Person> = CollectionPaginator(Person.List)
-        val watcher = p.page.watch {
+        val watcher = p.current.watch {
             println("Page at: ${it.data?.number}")
         }
         expect(p.currentPageOrNull).toBe(null)
-        expect(p.page.value).toBe(Pending)
+        expect(p.current.value).toBe(Pending)
         p.refresh()
-        expect(p.page.value).toBe<Success<*>>()
+        expect(p.current.value).toBe<Success<*>>()
         expect(p.currentPageOrNull?.number).toBe(1)
         expect(p.currentPageOrNull?.items?.size).toBe(10)
         expect(p.currentPageOrNull?.capacity).toBe(10)

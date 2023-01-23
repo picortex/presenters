@@ -13,7 +13,6 @@ import kase.LazyState
 import kase.Loading
 import kase.Pending
 import kase.Success
-import presenters.collections.SelectedItem
 
 @PublishedApi
 internal class PaginationManagerImpl<T>(
@@ -23,7 +22,7 @@ internal class PaginationManagerImpl<T>(
 
     private val cache: PageCacheManager<T> = PageCacheManager()
 
-    override val page: MutableLive<LazyState<Page<T>>> = mutableLiveOf(Pending)
+    override val current: MutableLive<LazyState<Page<T>>> = mutableLiveOf(Pending)
 
     override val continuous
         get() = buildList {
@@ -42,7 +41,7 @@ internal class PaginationManagerImpl<T>(
 
     override fun clearPages() {
         wipeMemory()
-        page.value = Pending
+        current.value = Pending
     }
 
     override fun updateLoader(loader: (no: Int, capacity: Int) -> Later<Page<@UnsafeVariance T>>) {
@@ -53,7 +52,7 @@ internal class PaginationManagerImpl<T>(
         capacity = cap
     }
 
-    override fun loadNextPage() = when (val state = page.value) {
+    override fun loadNextPage() = when (val state = current.value) {
         is Pending -> loadPage(1)
         is Loading -> loadNothing()
         is Failure -> loadPage(1)
@@ -64,7 +63,7 @@ internal class PaginationManagerImpl<T>(
         }
     }
 
-    override fun loadPreviousPage() = when (val state = page.value) {
+    override fun loadPreviousPage() = when (val state = current.value) {
         is Pending -> loadPage(1)
         is Loading -> loadNothing()
         is Failure -> loadPage(1) // FailedLater(RESOLVE_ERROR)
@@ -75,23 +74,23 @@ internal class PaginationManagerImpl<T>(
     }
 
     override fun loadPage(no: Int): Later<Page<T>> {
-        if (page.value is Loading) return FailedLater(LOADING_ERROR)
+        if (current.value is Loading) return FailedLater(LOADING_ERROR)
         val memorizedPage = cache.load(page = no, capacity)
-        page.value = Loading("Loading", memorizedPage)
+        current.value = Loading("Loading", memorizedPage)
         return try {
             loader(no, capacity)
         } catch (err: Throwable) {
             FailedLater(err)
         }.then {
-            page.value = Success(cache.save(it))
+            current.value = Success(cache.save(it))
             it
         }.catch {
-            page.value = Failure(it, data = memorizedPage)
+            current.value = Failure(it, data = memorizedPage)
             throw it
         }
     }
 
-    override fun refresh() = when (val state = page.value) {
+    override fun refresh() = when (val state = current.value) {
         is Pending -> loadPage(1)
         is Loading -> loadNothing()
         is Failure -> loadPage(1)
@@ -109,6 +108,8 @@ internal class PaginationManagerImpl<T>(
     override fun find(page: Int) = cache.load(page, capacity)
 
     companion object {
+        val DEFAULT_CAPACITY = 10
+
         val RESOLVE_ERROR = Throwable("Can't resolve page number while paginator is in a failure state")
         val LOADING_ERROR = Throwable("Can't load page while paginator is still loading")
     }

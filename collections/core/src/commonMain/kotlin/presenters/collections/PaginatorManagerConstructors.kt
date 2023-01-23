@@ -7,6 +7,11 @@ import kollections.toIList
 import koncurrent.SynchronousExecutor
 import presenters.collections.internal.PaginationManagerImpl
 
+inline fun <T> PaginationManager(
+    capacity: Int = PaginationManager.DEFAULT_CAPACITY,
+    noinline loader: (no: Int, capacity: Int) -> Later<Page<T>>
+): PaginationManager<T> = PaginationManagerImpl(capacity = capacity, loader = loader)
+
 inline fun <T> SinglePagePaginator(
     currentPage: Page<T> = Page()
 ): PaginationManager<T> = PaginationManagerImpl(capacity = currentPage.capacity) { _, _ ->

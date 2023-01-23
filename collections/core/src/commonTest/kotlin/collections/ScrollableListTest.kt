@@ -25,7 +25,7 @@ class ScrollableListTest {
         expect(list.currentPageOrNull?.number).toBe(null)
 
         list.refresh()
-        val (loading) = expect(paginator.page).toHaveGoneThrough2<Loading<*>, Success<*>>()
+        val (loading) = expect(paginator.current).toHaveGoneThrough2<Loading<*>, Success<*>>()
         expect(loading.message).toBe("Loading")
 
         list.loadNextPage()
