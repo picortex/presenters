@@ -4,6 +4,7 @@ package presenters
 
 import presenters.internal.numbers.BooleanInputFieldImpl
 import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty1
 
 inline fun BooleanInputField(
     name: String,
@@ -33,7 +34,7 @@ fun Fields.boolean(
 }
 
 inline fun Fields.boolean(
-    name: KProperty<*>,
+    name: KProperty<Boolean?>,
     label: String = name.name,
     value: Boolean? = null,
     isReadonly: Boolean = false,

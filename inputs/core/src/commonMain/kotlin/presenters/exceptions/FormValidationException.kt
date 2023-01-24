@@ -10,5 +10,5 @@ import kotlin.js.JsExport
 class FormValidationException(
     override val message: String,
     val errors: String,
-    val fields: List<SerializableLiveData<*>>
+    val fields: List<SerializableLiveData<out Any?>>
 ) : Throwable()

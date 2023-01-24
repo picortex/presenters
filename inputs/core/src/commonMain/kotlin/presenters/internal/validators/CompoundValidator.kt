@@ -8,11 +8,11 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-class CompoundValidator<in T>(
-    data: Live<Data<T>>,
-    feedback: MutableLive<InputFieldState>,
+class CompoundValidator<T>(
+    override val data: Live<Data<T>>,
+    override val feedback: MutableLive<InputFieldState>,
     vararg valigators: AbstractValidator<T>
-) : AbstractValidator<T>(data, feedback) {
+) : AbstractValidator<T>(feedback) {
     private val validators = valigators
 
     override fun validate(value: T?): ValidationResult {

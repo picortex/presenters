@@ -17,7 +17,8 @@ inline fun <reified T : Any> MultiChoiceInputField(
     hint: String = label,
     serializer: KSerializer<List<T>> = ListSerializer(serializer()),
     value: Collection<T>? = null,
-    isReadonly: Boolean = false
+    isReadonly: Boolean = false,
+    noinline validator: ((List<T>?) -> Unit)? = null
 ): MultiChoiceInputField<T> = MultiChoiceInputFieldImpl(
     name = name,
     items = items.toIList(),
@@ -28,6 +29,7 @@ inline fun <reified T : Any> MultiChoiceInputField(
     label = Label(label, isReadonly),
     isReadonly = isReadonly,
     isRequired = isRequired,
+    validator = validator
 )
 
 inline fun <reified T : Any> Fields.selectMany(
@@ -39,13 +41,14 @@ inline fun <reified T : Any> Fields.selectMany(
     hint: String = label,
     serializer: KSerializer<List<T>> = ListSerializer(serializer()),
     value: Collection<T>? = null,
-    isReadonly: Boolean = false
+    isReadonly: Boolean = false,
+    noinline validator: ((List<T>?) -> Unit)? = null
 ): MultiChoiceInputField<T> = getOrCreate(name) {
-    MultiChoiceInputField(name, items, mapper, isRequired, label, hint, serializer, value, isReadonly)
+    MultiChoiceInputField(name, items, mapper, isRequired, label, hint, serializer, value, isReadonly, validator)
 }
 
 inline fun <reified T : Any> Fields.selectMany(
-    name: KProperty<*>,
+    name: KProperty<Collection<T>?>,
     items: Collection<T>,
     noinline mapper: (T) -> Option,
     isRequired: Boolean = false,
@@ -53,5 +56,6 @@ inline fun <reified T : Any> Fields.selectMany(
     hint: String = label,
     serializer: KSerializer<List<T>> = ListSerializer(serializer()),
     value: Collection<T>? = null,
-    isReadonly: Boolean = false
-) = selectMany(name.name, items, mapper, isRequired, label, hint, serializer, value, isReadonly)
+    isReadonly: Boolean = false,
+    noinline validator: ((List<T>?) -> Unit)? = null
+) = selectMany(name.name, items, mapper, isRequired, label, hint, serializer, value, isReadonly, validator)

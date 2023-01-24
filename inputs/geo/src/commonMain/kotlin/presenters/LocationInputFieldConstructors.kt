@@ -29,7 +29,7 @@ inline fun Fields.location(
 }
 
 inline fun Fields.location(
-    name: KProperty<*>,
+    name: KProperty<GeoLocation?>,
     isRequired: Boolean = false,
     label: String = name.name,
     hint: String = label,

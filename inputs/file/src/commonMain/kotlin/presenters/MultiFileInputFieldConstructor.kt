@@ -38,7 +38,7 @@ inline fun Fields.files(
 }
 
 inline fun Fields.files(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     label: String = name.name,
     hint: String = label,
     value: List<FileBlob>? = null,

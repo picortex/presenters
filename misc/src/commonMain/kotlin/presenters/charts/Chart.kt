@@ -3,8 +3,8 @@
 
 package presenters.charts
 
-import kotlinx.collections.interoperable.List
-import kotlinx.collections.interoperable.toInteroperableList
+import kollections.List
+import kollections.toIList
 import kotlinx.serialization.Serializable
 import kotlin.js.JsExport
 
@@ -26,7 +26,7 @@ data class Chart<out D>(
         description = description,
         labels = labels,
         datasets = datasets.map {
-            DataSet(it.name, it.values.map(transform).toInteroperableList())
-        }.toInteroperableList()
+            DataSet(it.name, it.values.map(transform).toIList())
+        }.toIList()
     )
 }

@@ -7,11 +7,13 @@ import kollections.toIList
 import kollections.toISet
 import kotlinx.serialization.KSerializer
 import live.mutableLiveOf
+import presenters.InputFieldState
 import presenters.Label
 import presenters.MultiChoiceInputField
 import presenters.Option
-import presenters.InputFieldState
 import presenters.internal.OutputList
+import presenters.internal.PlainDataListField
+import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.RequirementValidator
 
 @PublishedApi
@@ -24,11 +26,16 @@ internal class MultiChoiceInputFieldImpl<T : Any>(
     private val mapper: (T) -> Option,
     private val value: Collection<T>?,
     override val serializer: KSerializer<List<T>>,
-    override val isReadonly: Boolean
-) : MultiChoiceInputField<T> {
-    private val default = OutputList(value?.toIList() ?: iEmptyList())
+    override val isReadonly: Boolean,
+    validator: ((List<T>) -> Unit)?
+) : PlainDataListField<T>(value), MultiChoiceInputField<T> {
 
-    override val data = mutableLiveOf(default)
+    override val cv by lazy {
+        CompoundValidator(
+            data, feedback,
+            RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired)
+        )
+    }
 
     override val optionLabels get() = options.map { it.label }.toIList()
 
@@ -145,9 +152,4 @@ internal class MultiChoiceInputFieldImpl<T : Any>(
             addSelectLabel(l)
         }
     }
-
-    private val validator = RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired)
-    override fun validate(value: List<T>?) = validator.validate(data.value.output)
-    override fun validateSettingInvalidsAsWarnings(value: List<T>?) = validator.validateSettingInvalidsAsWarnings(data.value.output)
-    override fun validateSettingInvalidsAsErrors(value: List<T>?) = validator.validateSettingInvalidsAsErrors(data.value.output)
 }

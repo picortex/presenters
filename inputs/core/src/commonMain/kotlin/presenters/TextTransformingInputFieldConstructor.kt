@@ -20,7 +20,7 @@ inline fun <reified O : Any> Fields.textTo(
 }
 
 inline fun <reified O : Any> Fields.textTo(
-    name: KProperty<*>,
+    name: KProperty<O?>,
     label: String = name.name,
     hint: String = label,
     value: O? = null,

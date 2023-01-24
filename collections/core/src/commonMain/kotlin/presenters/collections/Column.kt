@@ -26,5 +26,5 @@ sealed class Column<in D> {
     val asAction get() = this as? Action
 
     override fun toString() = name
-    override fun equals(other: Any?): Boolean = other is Column<*> && other.name == name
+    override fun equals(other: Any?): Boolean = other is Column<Nothing> && other.name == name
 }

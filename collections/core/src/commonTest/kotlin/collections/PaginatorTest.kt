@@ -27,7 +27,7 @@ class PaginatorTest {
         expect(p.currentPageOrNull).toBe(null)
         expect(p.current.value).toBe(Pending)
         p.refresh()
-        expect(p.current.value).toBe<Success<*>>()
+        expect(p.current.value).toBe<Success<Any?>>()
         expect(p.currentPageOrNull?.number).toBe(1)
         expect(p.currentPageOrNull?.items?.size).toBe(10)
         expect(p.currentPageOrNull?.capacity).toBe(10)

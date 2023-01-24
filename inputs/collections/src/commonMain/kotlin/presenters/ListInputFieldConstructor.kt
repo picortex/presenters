@@ -41,7 +41,7 @@ inline fun <reified E> Fields.list(
 }
 
 inline fun <reified E> Fields.list(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     label: String = name.name,
     hint: String = label,
     value: Collection<E>? = null,

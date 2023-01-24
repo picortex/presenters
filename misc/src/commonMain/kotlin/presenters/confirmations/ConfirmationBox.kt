@@ -21,15 +21,4 @@ interface ConfirmationBox {
 
     fun cancel(): Thenable<Any?>
     fun confirm(): Thenable<Any?>
-
-    companion object {
-        const val DEFAULT_EXECUTION_MESSAGE: String = "Executing, please wait . . ."
-        operator fun invoke(
-            heading: String,
-            details: String,
-            message: String = DEFAULT_EXECUTION_MESSAGE,
-            config: ScopeConfig<*>,
-            actionsBuilder: ConfirmActionsBuilder.() -> Unit
-        ): ConfirmationBox = ConfirmationBoxImpl(heading, details, message, config, actionsBuilder)
-    }
 }

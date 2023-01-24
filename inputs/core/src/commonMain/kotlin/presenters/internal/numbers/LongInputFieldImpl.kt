@@ -8,14 +8,14 @@ import presenters.internal.utils.DataTransformer
 
 @PublishedApi
 internal class LongInputFieldImpl(
-    name: String,
-    isRequired: Boolean = false,
-    label: Label = Label(name, isRequired),
-    hint: String = label.text,
-    isReadonly: Boolean = false,
-    max: Long? = null,
-    min: Long? = null,
-    step: Long? = null,
+    override val name: String,
+    override val isRequired: Boolean = false,
+    override val label: Label = Label(name, isRequired),
+    override val hint: String = label.text,
+    override val isReadonly: Boolean = false,
+    override val max: Long? = null,
+    override val min: Long? = null,
+    override val step: Long? = null,
     formatter: Formatter<Long>? = null,
     value: Long? = null,
     validator: ((Long?) -> Unit)? = null

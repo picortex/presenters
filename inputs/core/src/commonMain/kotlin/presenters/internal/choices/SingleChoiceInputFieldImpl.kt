@@ -10,24 +10,30 @@ import presenters.Option
 import presenters.SingleChoiceInputField
 import presenters.InputFieldState
 import presenters.internal.OutputData
+import presenters.internal.PlainDataField
+import presenters.internal.validators.CompoundValidator
+import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RequirementValidator
 
 @PublishedApi
-internal class SingleChoiceInputFieldImpl<T>(
+internal class SingleChoiceInputFieldImpl<T : Any>(
     override val name: String,
     override val isRequired: Boolean,
-    override val label: Label = Label(name, isRequired),
+    override val label: Label,
     override val items: Collection<T>,
     override val hint: String,
     private val mapper: (T) -> Option,
-    private val value: T? = null,
+    private val value: T?,
     override val isReadonly: Boolean,
-    override val serializer: KSerializer<T>
-) : SingleChoiceInputField<T> {
+    override val serializer: KSerializer<T>,
+    validator: ((T?) -> Unit)?
+) : PlainDataField<T>(value), SingleChoiceInputField<T> {
 
-    override val data = mutableLiveOf(OutputData(value))
-
-    override val feedback = mutableLiveOf<InputFieldState>(InputFieldState.Empty)
+    override val cv: CompoundValidator<T> = CompoundValidator(
+        data, feedback,
+        RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
+        LambdaValidator(data, feedback, validator)
+    )
 
     override val selectedItem: T? get() = data.value.output
 
@@ -58,14 +64,4 @@ internal class SingleChoiceInputFieldImpl<T>(
     override fun unselect() {
         data.value = OutputData(null)
     }
-
-    override fun clear() {
-        unselect()
-    }
-
-    private val validator = RequirementValidator(data,feedback, label.capitalizedWithoutAstrix(), isRequired)
-
-    override fun validate(value: T?) = validator.validate(data.value.output)
-    override fun validateSettingInvalidsAsWarnings(value: T?) = validator.validateSettingInvalidsAsWarnings(data.value.output)
-    override fun validateSettingInvalidsAsErrors(value: T?) = validator.validateSettingInvalidsAsErrors(data.value.output)
 }

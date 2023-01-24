@@ -10,13 +10,13 @@ import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class RangeValidator<C : Comparable<C>>(
-    data: Live<Data<Range<C>>>,
-    feedback: MutableLive<InputFieldState>,
+    override val data: Live<Data<Range<C>>>,
+    override val feedback: MutableLive<InputFieldState>,
     private val isRequired: Boolean,
     private val label: String,
     private val max: C?,
     private val min: C?
-) : AbstractValidator<Range<C>>(data, feedback) {
+) : AbstractValidator<Range<C>>(feedback) {
 
     override fun validate(value: Range<C>?) = validate(value?.start, value?.end)
 

@@ -8,14 +8,14 @@ import presenters.internal.utils.DataTransformer
 
 @PublishedApi
 internal class IntegerInputFieldImpl(
-    name: String,
-    isRequired: Boolean = false,
-    label: Label = Label(name, isRequired),
-    hint: String = label.text,
-    isReadonly: Boolean = false,
-    max: Int? = null,
-    min: Int? = null,
-    step: Int? = null,
+    override val name: String,
+    override val isRequired: Boolean = false,
+    override val label: Label = Label(name, isRequired),
+    override val hint: String = label.text,
+    override val isReadonly: Boolean = false,
+    override val max: Int? = null,
+    override val min: Int? = null,
+    override val step: Int? = null,
     formatter: Formatter<Int>? = null,
     value: Int? = null,
     validator: ((Int?) -> Unit)? = null

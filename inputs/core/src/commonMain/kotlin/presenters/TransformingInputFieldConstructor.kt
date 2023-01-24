@@ -21,7 +21,7 @@ inline fun <I : Any, reified O : Any> TransformingInputField(
     label = Label(label, isRequired),
     hint = hint,
     value = value,
-    transformer = transformer,
+    trnsfrmr = transformer,
     serializer = serializer,
     isReadonly = isReadonly,
     isRequired = isRequired,
@@ -45,7 +45,7 @@ inline fun <I : Any, reified O : Any> Fields.transform(
 }
 
 inline fun <I : Any, reified O : Any> Fields.transform(
-    name: KProperty<*>,
+    name: KProperty<O?>,
     label: String = name.name,
     hint: String = label,
     value: O? = null,

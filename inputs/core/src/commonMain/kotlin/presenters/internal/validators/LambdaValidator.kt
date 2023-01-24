@@ -9,10 +9,10 @@ import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class LambdaValidator<T>(
-    data: Live<Data<T>>,
-    feedback: MutableLive<InputFieldState>,
+    override val data: Live<Data<T>>,
+    override val feedback: MutableLive<InputFieldState>,
     private val lambda: ((T?) -> Unit)?
-) : AbstractValidator<T>(data, feedback) {
+) : AbstractValidator<T>(feedback) {
     override fun validate(value: T?): ValidationResult = try {
         lambda?.invoke(value)
         Valid

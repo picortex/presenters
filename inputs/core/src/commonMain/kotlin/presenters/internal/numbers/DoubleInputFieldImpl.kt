@@ -8,14 +8,14 @@ import presenters.internal.utils.DataTransformer
 
 @PublishedApi
 internal class DoubleInputFieldImpl(
-    name: String,
-    isRequired: Boolean = false,
-    label: Label = Label(name, isRequired),
-    hint: String = label.text,
-    isReadonly: Boolean = false,
-    max: Double? = null,
-    min: Double? = null,
-    step: Double? = null,
+    override val name: String,
+    override val isRequired: Boolean = false,
+    override val label: Label = Label(name, isRequired),
+    override val hint: String = label.text,
+    override val isReadonly: Boolean = false,
+    override val max: Double? = null,
+    override val min: Double? = null,
+    override val step: Double? = null,
     formatter: Formatter<Double>? = null,
     value: Double? = null,
     validator: ((Double?) -> Unit)? = null

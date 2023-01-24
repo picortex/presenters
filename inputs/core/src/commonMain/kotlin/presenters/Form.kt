@@ -54,7 +54,7 @@ open class Form<out F : Fields, P, out R>(
 
     fun exit() = cancel()
 
-    private fun Collection<SerializableLiveData<*>>.errorTable() = simpleTableOf(this) {
+    private fun Collection<SerializableLiveData<out Any?>>.errorTable() = simpleTableOf(this) {
         column("Field") {
             (it.item as? Labeled)?.label?.capitalizedWithAstrix() ?: it.item.name
         }
@@ -62,7 +62,7 @@ open class Form<out F : Fields, P, out R>(
             it.item.data.value.output.toString()
         }
         column("Reason") {
-            (it.item as? Validateable<*>)?.feedback?.value?.asError?.message ?: "Unknown"
+            (it.item as? Validateable<Any?>)?.feedback?.value?.asError?.message ?: "Unknown"
         }
     }.renderToString()
 

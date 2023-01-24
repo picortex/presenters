@@ -46,7 +46,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.state).toHaveGoneThrough2<Executing, Success<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Success<Any?>>()
         expect(confirmed).toBe(true)
     }
 
@@ -72,7 +72,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.state).toHaveGoneThrough2<Executing, Failure<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Failure<Any?>>()
         expect(cancelled).toBe(false)
         expect(confirmed).toBe(true)
     }
@@ -120,7 +120,7 @@ class ConfirmationBoxTest {
         expect(confirmed).toBe(false)
 
         box.confirm()
-        expect(box.state).toHaveGoneThrough2<Executing, Failure<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Failure<Any?>>()
         expect(cancelled).toBe(false)
         expect(confirmed).toBe(true)
     }
@@ -143,7 +143,7 @@ class ConfirmationBoxTest {
             println("Error: ${it.message}")
         }
         println("after catching")
-        expect(box.state).toHaveGoneThrough2<Executing, Failure<*>>()
+        expect(box.state).toHaveGoneThrough2<Executing, Failure<Any?>>()
         expect(caught).toBe(true)
     }
 }

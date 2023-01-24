@@ -41,7 +41,7 @@ inline fun Fields.password(
 }
 
 inline fun Fields.password(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     label: String = name.name,
     hint: String = label,
     value: String? = null,

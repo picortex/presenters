@@ -14,7 +14,7 @@ import kotlin.test.Test
 
 class SelectorTest {
 
-    fun Selected<*>.prettyString() = when (this) {
+    fun Selected<Any?>.prettyString() = when (this) {
         is SelectedNone -> "None"
         is SelectedItem -> "Selected(page=${page.number},row=${row.number},item=${row.number})"
         is SelectedItems -> "SelectedItems{${page.joinToString(" , ") { "Page ${it.key.number} -> Rows ${it.value.map { it.number }}" }}}"

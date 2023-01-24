@@ -60,7 +60,7 @@ class FormWithManyInputsTest {
             color.selectItem(Color.Red)
         }
         form.submit()
-        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
+        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<Any?>>()
         expect(params?.name).toBe("Andy")
         expect(params?.dob).toBe(LocalDate(2022, 1, 1))
         expect(params?.color).toBe(Color.Red)

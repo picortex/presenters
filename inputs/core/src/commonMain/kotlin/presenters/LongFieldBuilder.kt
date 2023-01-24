@@ -46,7 +46,7 @@ inline fun Fields.long(
 }
 
 inline fun Fields.long(
-    property: KProperty<*>,
+    property: KProperty<Long?>,
     label: String = property.name,
     hint: String? = label,
     value: Long? = null,

@@ -42,7 +42,7 @@ inline fun Fields.phone(
 }
 
 inline fun Fields.phone(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     label: String = name.name,
     hint: String = label,
     value: String? = null,

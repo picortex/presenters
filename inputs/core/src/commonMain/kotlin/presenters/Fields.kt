@@ -24,11 +24,11 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
 
     internal val allInvalid
         get() = valuesToBeSubmitted.filter {
-            it is Validateable<*> && it.feedback.value is InputFieldState.Error
+            it is Validateable<out Any?> && it.feedback.value is InputFieldState.Error
         }
 
     internal val valuesToBeSubmitted
-        get() = all.filterIsInstance<SerializableLiveData<*>>().filterNot {
+        get() = all.filterIsInstance<SerializableLiveData<out Any?>>().filterNot {
             if (it is Requireble) {
                 !it.isRequired && (it.data.value.output == null || it.data.value.output.toString().isBlank())
             } else {
@@ -37,7 +37,7 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
         }
 
     fun validate() {
-        all.filterIsInstance<Validateable<*>>().forEach {
+        all.filterIsInstance<Validateable<out Any?>>().forEach {
             it.validateSettingInvalidsAsErrors()
         }
     }

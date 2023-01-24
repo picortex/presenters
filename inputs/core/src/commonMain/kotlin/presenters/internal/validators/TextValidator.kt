@@ -9,13 +9,13 @@ import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class TextValidator(
-    data: Live<Data<String>>,
-    feedback: MutableLive<InputFieldState>,
+    override val data: Live<Data<String>>,
+    override val feedback: MutableLive<InputFieldState>,
     private val label: String,
     private val isRequired: Boolean,
     private val maxLength: Int?,
     private val minLength: Int?
-) : AbstractValidator<String>(data, feedback) {
+) : AbstractValidator<String>(feedback) {
     override fun validate(value: String?): ValidationResult {
         if (isRequired && value.isNullOrBlank()) {
             return Invalid(IllegalArgumentException("$label is required"))

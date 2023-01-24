@@ -56,7 +56,7 @@ inline fun Fields.money(
 }
 
 inline fun Fields.money(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     isRequired: Boolean = false,
     label: String = name.name,
     hint: String = label,

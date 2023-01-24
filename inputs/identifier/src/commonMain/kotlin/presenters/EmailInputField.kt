@@ -42,7 +42,7 @@ inline fun Fields.email(
 }
 
 inline fun Fields.email(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     label: String = name.name,
     hint: String = label,
     value: String? = null,

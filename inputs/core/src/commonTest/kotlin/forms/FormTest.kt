@@ -62,7 +62,7 @@ class FormTest {
             details.type("andy@lamax")
         }
         form.submit()
-        val (_, s1) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<*>>()
+        val (_, s1) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<Any?>>()
         expect(s1.message).toBe("You have 1 invalid input")
 
         form.clear()
@@ -72,7 +72,7 @@ class FormTest {
             details.type("andy@lamax")
         }
         form.submit()
-        val (_, s2) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<*>>()
+        val (_, s2) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<Any?>>()
         expect(s2.message).toBe("You have 2 invalid inputs")
 
         form.clear()
@@ -84,6 +84,6 @@ class FormTest {
         }
         form.submit()
         expect(form.fields.details.data.value.output).toBe("andy@lamax.me")
-        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
+        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<Any?>>()
     }
 }

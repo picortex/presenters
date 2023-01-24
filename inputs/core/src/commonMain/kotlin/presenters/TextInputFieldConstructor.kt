@@ -42,7 +42,7 @@ inline fun Fields.text(
 }
 
 inline fun Fields.text(
-    name: KProperty<*>,
+    name: KProperty<String?>,
     label: String = name.name,
     hint: String = label,
     value: String? = null,

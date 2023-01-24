@@ -35,7 +35,7 @@ inline fun Fields.date(
 }
 
 inline fun Fields.date(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     isRequired: Boolean = false,
     label: String = name.name,
     hint: String = label,

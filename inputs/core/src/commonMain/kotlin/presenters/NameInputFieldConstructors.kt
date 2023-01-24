@@ -23,7 +23,7 @@ inline fun Fields.name(
 ) = text(name, label, hint, value, isReadonly, isRequired, maxLength, minLength, validator)
 
 inline fun Fields.name(
-    name: KProperty<*>,
+    name: KProperty<String?>,
     label: String = name.name,
     hint: String = label,
     value: String? = null,

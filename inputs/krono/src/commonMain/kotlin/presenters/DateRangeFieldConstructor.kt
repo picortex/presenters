@@ -49,7 +49,7 @@ fun Fields.dateRange(
 }
 
 inline fun Fields.dateRange(
-    name: KProperty<*>,
+    name: KProperty<Any?>,
     label: String = name.name,
     hint: String = label,
     value: Range<LocalDate>? = null,

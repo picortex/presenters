@@ -69,7 +69,7 @@ class FormWithManyInputsTest {
             colors.addSelectedItem(Color.Blue)
         }
         form.submit()
-        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
+        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<Any?>>()
         expect(params?.name).toBe("Andy")
         expect(params?.email).toBe("andy@lamax.com")
         expect(params?.phone).toBe("0752748674")

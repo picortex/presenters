@@ -59,7 +59,7 @@ class FormWithDateRangeTest {
             range.setStart("andy@lamax")
         }
         form.submit()
-        val (_, s1) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<*>>()
+        val (_, s1) = expect(form.ui).toHaveGoneThrough2<Validating, Failure<Any?>>()
         expect(s1.message).toBe("You have 1 invalid input")
         form.ui.history.clear()
 
@@ -69,6 +69,6 @@ class FormWithDateRangeTest {
             range.setEnd("2021-01-11")
         }
         form.submit()
-        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<*>>()
+        expect(form.ui).toHaveGoneThrough3<Validating, Submitting, Success<Any?>>()
     }
 }

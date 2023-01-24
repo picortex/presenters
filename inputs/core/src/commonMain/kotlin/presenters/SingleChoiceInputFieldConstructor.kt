@@ -15,7 +15,8 @@ inline fun <reified T : Any> SingleChoiceInputField(
     hint: String = label,
     value: T? = null,
     isReadonly: Boolean = false,
-    isRequired: Boolean = false
+    isRequired: Boolean = false,
+    noinline validator: ((T?) -> Unit)? = null
 ): SingleChoiceInputField<T> = SingleChoiceInputFieldImpl(
     name = name,
     items = items.toIList(),
@@ -26,6 +27,7 @@ inline fun <reified T : Any> SingleChoiceInputField(
     serializer = serializer,
     isReadonly = isReadonly,
     isRequired = isRequired,
+    validator = validator
 )
 
 inline fun <reified T : Any> Fields.selectSingle(
@@ -37,13 +39,14 @@ inline fun <reified T : Any> Fields.selectSingle(
     hint: String = label,
     value: T? = null,
     isReadonly: Boolean = false,
-    isRequired: Boolean = false
+    isRequired: Boolean = false,
+    noinline validator: ((T?) -> Unit)? = null
 ): SingleChoiceInputField<T> = getOrCreate(name) {
-    SingleChoiceInputField(name, items, mapper, serializer, label, hint, value, isReadonly, isRequired)
+    SingleChoiceInputField(name, items, mapper, serializer, label, hint, value, isReadonly, isRequired, validator)
 }
 
 inline fun <reified T : Any> Fields.selectSingle(
-    name: KProperty<*>,
+    name: KProperty<T?>,
     items: Collection<T>,
     noinline mapper: (T) -> Option,
     serializer: KSerializer<T> = serializer(),
@@ -51,5 +54,6 @@ inline fun <reified T : Any> Fields.selectSingle(
     hint: String = label,
     value: T? = null,
     isReadonly: Boolean = false,
-    isRequired: Boolean = false
-) = selectSingle(name.name, items, mapper, serializer, label, hint, value, isReadonly, isRequired)
+    isRequired: Boolean = false,
+    noinline validator: ((T?) -> Unit)? = null
+) = selectSingle(name.name, items, mapper, serializer, label, hint, value, isReadonly, isRequired, validator)

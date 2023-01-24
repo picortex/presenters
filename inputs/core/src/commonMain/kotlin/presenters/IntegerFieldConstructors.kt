@@ -48,7 +48,7 @@ inline fun Fields.integer(
 }
 
 inline fun Fields.integer(
-    property: KProperty<*>,
+    property: KProperty<Int?>,
     label: String = property.name,
     hint: String? = label,
     value: Int? = null,

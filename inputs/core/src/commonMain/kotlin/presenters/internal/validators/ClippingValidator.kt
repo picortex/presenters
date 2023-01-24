@@ -9,12 +9,12 @@ import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 class ClippingValidator<C : Comparable<C>>(
-    data: Live<Data<C>>,
-    feedback: MutableLive<InputFieldState>,
+    override val data: Live<Data<C>>,
+    override val feedback: MutableLive<InputFieldState>,
     private val label: String,
     private val max: C?,
     private val min: C?
-) : AbstractValidator<C>(data, feedback) {
+) : AbstractValidator<C>(feedback) {
     override fun validate(value: C?): ValidationResult {
         val tag = label
 

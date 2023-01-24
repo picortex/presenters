@@ -1,3 +1,3 @@
 package presenters
 
-interface SerializableLiveFormattedData<I, O> : SerializableLiveData<O>, LiveDataFormatted<I, O>
+interface SerializableLiveFormattedData<I, O> : InputField, SerializableLiveData<O>, LiveDataFormatted<I, O>

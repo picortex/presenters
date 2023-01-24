@@ -20,7 +20,7 @@ internal class ConfirmationBoxImpl(
     override val heading: String,
     override val details: String,
     val executionMessage: String,
-    config: ScopeConfig<*>,
+    config: ScopeConfig<Any?>,
     actionsBuilder: ConfirmActionsBuilder.() -> Unit
 ) : BaseViewModel(config), ConfirmationBox {
 

@@ -48,7 +48,7 @@ inline fun Fields.double(
 }
 
 inline fun Fields.double(
-    property: KProperty<*>,
+    property: KProperty<Double?>,
     label: String = property.name,
     hint: String? = label,
     value: Double? = null,

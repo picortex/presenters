@@ -8,20 +8,20 @@ import presenters.validation.Invalid
 import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
-class RequirementValidator(
-    data: Live<Data<Any?>>,
-    feedback: MutableLive<InputFieldState>,
+class RequirementValidator<T>(
+    override val data: Live<Data<T>>,
+    override val feedback: MutableLive<InputFieldState>,
     private val label: String,
     private val isRequired: Boolean,
-) : AbstractValidator<Any?>(data, feedback) {
+) : AbstractValidator<T>(feedback) {
 
-    override fun validate(value: Any?): ValidationResult {
+    override fun validate(value: T?): ValidationResult {
         val message = IllegalArgumentException("$label is required")
         if (isRequired && value == null) {
             return Invalid(message)
         }
 
-        if (isRequired && value is Collection<*> && value.isEmpty()) {
+        if (isRequired && value is Collection<Any?> && value.isEmpty()) {
             return Invalid(message)
         }
         return Valid
