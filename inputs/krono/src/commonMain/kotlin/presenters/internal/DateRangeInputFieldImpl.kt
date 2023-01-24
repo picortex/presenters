@@ -11,6 +11,7 @@ import presenters.Label
 import presenters.Range
 import presenters.InputFieldState
 import presenters.internal.utils.Clearer
+import presenters.internal.utils.DataTransformer
 import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.LambdaValidator
 import presenters.internal.validators.RangeValidator
@@ -29,11 +30,8 @@ internal class DateRangeInputFieldImpl(
     override val max: LocalDate?,
     override val min: LocalDate?,
     validator: ((Range<LocalDate>?) -> Unit)?
-) : DateRangeInputField {
-    private val default = FormattedData<String, Range<LocalDate>>(null, "", Range.of(defaultStart, defaultEnd))
-    override val data = mutableLiveOf(default)
-    override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
-    override val transformer: (String?) -> LocalDate? = DateInputFieldImpl.DEFAULT_DATE_TRANSFORMER
+) : TransformedDataField<String, Range<LocalDate>>(Range.of(defaultStart, defaultEnd)), DateRangeInputField {
+    override val transformer: DataTransformer<String, Range<LocalDate>> get() = error("Setter should be overriden")
 
     override val start = DateInputField(
         name = "$name-start", isRequired,
@@ -57,7 +55,7 @@ internal class DateRangeInputFieldImpl(
         minDate = min
     )
 
-    private val drv = CompoundValidator(
+    override val cv = CompoundValidator(
         data, feedback,
         RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
         RangeValidator(data, feedback, isRequired, label.capitalizedWithoutAstrix(), max, min),
@@ -83,6 +81,8 @@ internal class DateRangeInputFieldImpl(
         }
     }
 
+    override fun set(value: String?) = error("Use setStart / setEnd methods")
+
     private val clearer = Clearer(default, data, feedback)
     override fun clear() {
         start.clear()
@@ -103,10 +103,6 @@ internal class DateRangeInputFieldImpl(
         val e = end.data.value.output
         update(s, e)
     }
-
-    override fun validate(value: Range<LocalDate>?) = drv.validate(value)
-    override fun validateSettingInvalidsAsErrors(value: Range<LocalDate>?) = drv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsWarnings(value: Range<LocalDate>?) = drv.validateSettingInvalidsAsWarnings(value)
 
     override val serializer: KSerializer<Range<LocalDate>> = inputSerializer
 

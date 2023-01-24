@@ -21,6 +21,7 @@ import presenters.selectSingle
 import presenters.text
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
+import kotlin.test.fail
 
 class FormWithManyInputsTest {
 

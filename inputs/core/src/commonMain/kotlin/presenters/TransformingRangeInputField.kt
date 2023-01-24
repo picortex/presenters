@@ -10,5 +10,4 @@ import kotlin.js.JsExport
 interface TransformingRangeInputField<I, O> : InputField, CommonInputProperties, SettableRange<I>, SerializableLiveFormattedData<I, Range<O>>, Validateable<Range<O>> {
     val start: SerializableLiveFormattedData<I, O>
     val end: SerializableLiveFormattedData<I, O>
-    val transformer: (I?) -> O?
 }
