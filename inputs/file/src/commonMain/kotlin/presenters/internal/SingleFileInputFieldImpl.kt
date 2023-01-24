@@ -23,24 +23,11 @@ internal class SingleFileInputFieldImpl(
     override val isReadonly: Boolean,
     override val isRequired: Boolean,
     private val validator: ((FileBlob?) -> Unit)?
-) : SingleFileInputField {
-    private val default = OutputData(value)
-    override val data = mutableLiveOf(default)
+) : PlainDataField<FileBlob>(value), SingleFileInputField {
     override val serializer: KSerializer<FileBlob> = FileBlobSerializer
-    override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
-
-    private val sfv = CompoundValidator(
+    override val cv = CompoundValidator(
         data, feedback,
         RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
         LambdaValidator(data, feedback, validator)
     )
-    private val setter = OutputSetter(data, feedback, sfv)
-    override fun set(value: FileBlob?) = setter.set(value)
-
-    private val clearer = Clearer(default, data, feedback)
-    override fun clear() = clearer.clear()
-
-    override fun validate(value: FileBlob?) = sfv.validate(value)
-    override fun validateSettingInvalidsAsErrors(value: FileBlob?) = sfv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsWarnings(value: FileBlob?) = sfv.validateSettingInvalidsAsWarnings(value)
 }

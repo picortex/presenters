@@ -1,7 +1,9 @@
 package presenters
 
+import kollections.List
 import kollections.iEmptyList
 import kollections.serializers.ListSerializer
+import kollections.toIList
 import kotlinx.serialization.serializer
 import presenters.internal.ListInputFieldImpl
 import kotlin.reflect.KProperty
@@ -14,17 +16,19 @@ inline fun <reified E> ListInputField(
     isRequired: Boolean = true,
     isReadonly: Boolean = false,
     maxItems: Int? = null,
-    minItems: Int? = null
+    minItems: Int? = null,
+    noinline validator: ((List<E>) -> Unit)? = null
 ): ListInputField<E> = ListInputFieldImpl(
     name = name,
     label = Label(label, isRequired),
     hint = hint,
-    value = value ?: iEmptyList(),
+    value = value?.toIList() ?: iEmptyList(),
     isReadonly = isReadonly,
     isRequired = isRequired,
     maxItems = maxItems,
     minItems = minItems,
-    serializer = ListSerializer(serializer())
+    serializer = ListSerializer(serializer()),
+    validator = validator
 )
 
 inline fun <reified E> Fields.list(
@@ -35,18 +39,20 @@ inline fun <reified E> Fields.list(
     isRequired: Boolean = true,
     isReadonly: Boolean = false,
     maxItems: Int? = null,
-    minItems: Int? = null
+    minItems: Int? = null,
+    noinline validator: ((List<E>) -> Unit)? = null
 ): ListInputField<E> = getOrCreate(name) {
-    ListInputField(name, label, hint, value, isRequired, isReadonly, maxItems, minItems)
+    ListInputField(name, label, hint, value, isRequired, isReadonly, maxItems, minItems, validator)
 }
 
 inline fun <reified E> Fields.list(
-    name: KProperty<Any?>,
+    name: KProperty<Collection<E>?>,
     label: String = name.name,
     hint: String = label,
     value: Collection<E>? = null,
     isRequired: Boolean = true,
     isReadonly: Boolean = false,
     maxItems: Int? = null,
-    minItems: Int? = null
-) = list(name.name, label, hint, value, isRequired, isReadonly, maxItems, minItems)
+    minItems: Int? = null,
+    noinline validator: ((List<E>) -> Unit)? = null
+) = list(name.name, label, hint, value, isRequired, isReadonly, maxItems, minItems, validator)

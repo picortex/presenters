@@ -6,11 +6,11 @@ import presenters.InputFieldState
 import presenters.Data
 
 class PhoneValidator(
-    data: MutableLive<Data<String>>,
+    override val data: MutableLive<Data<String>>,
     feedback: MutableLive<InputFieldState>,
     label: String,
     isRequired: Boolean,
-) : IdentifierValidator(data, feedback, label, isRequired) {
+) : IdentifierValidator(feedback, label, isRequired) {
     override fun validate(value: String?) = purifyThen(value) {
         Phone(it)
     }

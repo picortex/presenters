@@ -9,17 +9,17 @@ import presenters.validators.EmailValidator
 
 @PublishedApi
 internal class EmailInputFieldImpl(
-    name: String,
-    isRequired: Boolean = false,
-    label: Label = Label(name, isRequired),
-    hint: String = label.capitalizedWithAstrix(),
-    isReadonly: Boolean = false,
+    override val name: String,
+    override val isRequired: Boolean = false,
+    override val label: Label = Label(name, isRequired),
+    override val hint: String = label.capitalizedWithAstrix(),
+    override val isReadonly: Boolean = false,
     maxLength: Int? = null,
     minLength: Int? = null,
     value: String? = null,
     validator: ((String?) -> Unit)? = null,
-) : AbstractBasicTextInputField(name, isRequired, label, hint, isReadonly, maxLength, minLength, value) {
-    override val tv = CompoundValidator(
+) : AbstractBasicTextInputField(value) {
+    override val cv = CompoundValidator(
         data, feedback,
         RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
         TextValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired, maxLength, minLength),

@@ -11,7 +11,7 @@ import presenters.internal.utils.Clearer
 import presenters.internal.utils.OutputSetter
 import presenters.properties.Settable
 
-abstract class PlainDataListField<O : Any>(value: Collection<O>?) : CompoundValidateableInputField<List<O>>(), LiveDataList<O>, Settable<List<O>>, CommonInputProperties {
+abstract class PlainDataListField<O>(value: Collection<O>?) : CompoundValidateableInputField<List<O>>(), LiveDataList<O>, Settable<List<O>>, CommonInputProperties {
     protected val default = OutputList(value)
     override val data = mutableLiveOf(default)
 

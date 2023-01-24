@@ -9,11 +9,10 @@ import presenters.validation.Valid
 import presenters.validation.ValidationResult
 
 abstract class IdentifierValidator(
-    data: MutableLive<Data<String>>,
     feedback: MutableLive<InputFieldState>,
     private val label: String,
     private val isRequired: Boolean,
-) : AbstractValidator<String>(data, feedback) {
+) : AbstractValidator<String>(feedback) {
 
     fun purifyThen(value: String?, block: (String) -> Unit): ValidationResult {
         if (isRequired && value == null) return Invalid(IllegalArgumentException("$label is Required"))

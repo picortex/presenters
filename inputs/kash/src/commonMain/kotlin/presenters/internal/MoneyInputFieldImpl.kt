@@ -17,6 +17,7 @@ import presenters.InputFieldState
 import presenters.LongInputField
 import presenters.SingleChoiceInputField
 import presenters.internal.utils.Clearer
+import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.Typer
 import presenters.internal.validators.ClippingValidator
 import presenters.internal.validators.CompoundValidator
@@ -40,10 +41,9 @@ internal class MoneyInputFieldImpl(
     private val minAmount: Double?,
     private val stepAmount: Double?,
     private val validator: ((Money?) -> Unit)?
-) : MoneyInputField {
-    private val default = FormattedData<String, Money>(null, "", value)
-    override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
-    override val data = mutableLiveOf(default)
+) : TransformedDataField<String, Money>(value), MoneyInputField {
+
+    override val transformer: DataTransformer<String, Money> get() = error("Don't transform directly")
 
     private val theCurrency = fixedCurrency ?: value?.currency
 
@@ -78,7 +78,7 @@ internal class MoneyInputFieldImpl(
         return Money.of(a, cur)
     }
 
-    private val mv = CompoundValidator(
+    override val cv = CompoundValidator(
         data, feedback,
         RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
         ClippingValidator(data, feedback, label.capitalizedWithoutAstrix(), money(maxAmount), money(minAmount)),
@@ -100,7 +100,7 @@ internal class MoneyInputFieldImpl(
         ).forEach { res ->
             if (res is Invalid) return res
         }
-        return mv.validate(value)
+        return super.validate(value)
     }
 
 
@@ -112,16 +112,11 @@ internal class MoneyInputFieldImpl(
 
     override val serializer: KSerializer<Money> = Money.serializer()
 
-    private val clearer = Clearer(default, data, feedback)
     override fun clear() {
         currency.clear()
         amount.clear()
-        clearer.clear()
+        super.clear()
     }
-
-    override fun validateSettingInvalidsAsErrors(value: Money?) = mv.validateSettingInvalidsAsErrors(value)
-
-    override fun validateSettingInvalidsAsWarnings(value: Money?) = mv.validateSettingInvalidsAsWarnings(value)
 
     override fun setAmount(value: String) = amount.set(value)
 

@@ -1,16 +1,11 @@
 package presenters.internal
 
+import kollections.Collection
 import kollections.List
 import kollections.toIList
 import kotlinx.serialization.KSerializer
-import live.MutableLive
-import live.mutableLiveOf
-import presenters.InputFieldState
 import presenters.Label
 import presenters.ListInputField
-import presenters.Data
-import presenters.internal.utils.Clearer
-import presenters.internal.utils.OutputSetter
 import presenters.internal.validators.CompoundValidator
 import presenters.internal.validators.RequirementValidator
 
@@ -24,19 +19,14 @@ internal class ListInputFieldImpl<E>(
     override val isRequired: Boolean,
     override val maxItems: Int?,
     override val minItems: Int?,
-    override val serializer: KSerializer<List<E>>
-) : ListInputField<E> {
-    private val default = OutputList(value)
-    override val data = mutableLiveOf(default)
-    override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
+    override val serializer: KSerializer<List<E>>,
+    val validator: ((List<E>) -> Unit)?
+) : PlainDataListField<E>(value), ListInputField<E> {
 
-    private val lv = CompoundValidator(
+    override val cv = CompoundValidator(
         data, feedback,
         RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired)
     )
-
-    private val setter = OutputSetter(data as MutableLive<Data<List<E>>>, feedback, lv)
-    override fun set(value: List<E>?) = setter.set(value)
 
     private val output get() = data.value.output
     override fun add(item: E) = set((output + item).toIList())
@@ -54,11 +44,4 @@ internal class ListInputFieldImpl<E>(
         list.add(idx, updater())
         setter.set(list.toIList())
     }
-
-    private val clearer = Clearer(default, data, feedback)
-    override fun clear() = clearer.clear()
-
-    override fun validate(value: List<E>?) = lv.validate(value)
-    override fun validateSettingInvalidsAsErrors(value: List<E>?) = lv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsWarnings(value: List<E>?) = lv.validateSettingInvalidsAsWarnings(value)
 }

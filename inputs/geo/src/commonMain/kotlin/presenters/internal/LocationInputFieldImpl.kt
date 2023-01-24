@@ -24,30 +24,17 @@ internal class LocationInputFieldImpl(
     private val value: GeoLocation?,
     override val isReadonly: Boolean,
     private val validator: ((GeoLocation?) -> Unit)?
-) : LocationInputField {
-    private val default = FormattedData<String, GeoLocation>(null, "", value)
-    override val data = mutableLiveOf(default)
-    override val serializer: KSerializer<GeoLocation> = GeoLocation.serializer()
-    override val feedback: MutableLive<InputFieldState> = mutableLiveOf(InputFieldState.Empty)
-    private val transformer = DataTransformer<String, GeoLocation>({ it.toString() }, { googleParser.parseOrNull(it) })
+) : TransformedDataField<String, GeoLocation>(value), LocationInputField {
+    override val serializer = GeoLocation.serializer()
+    override val transformer = DataTransformer<String, GeoLocation>({ it.toString() }, { googleParser.parseOrNull(it) })
 
-    private val lv = CompoundValidator(
+    override val cv = CompoundValidator(
         data, feedback,
         RequirementValidator(data, feedback, label.capitalizedWithoutAstrix(), isRequired),
         LambdaValidator(data, feedback, validator)
     )
 
-    private val setter = FormattedOutputSetter(data, feedback, transformer, lv)
-    override fun set(value: String?) = setter.set(value)
-
     override fun type(text: String) = Typer(data.value.input, setter).type(text)
-
-    private val clearer = Clearer(default, data, feedback)
-    override fun clear() = clearer.clear()
-
-    override fun validate(value: GeoLocation?) = lv.validate(value)
-    override fun validateSettingInvalidsAsErrors(value: GeoLocation?) = lv.validateSettingInvalidsAsErrors(value)
-    override fun validateSettingInvalidsAsWarnings(value: GeoLocation?) = lv.validateSettingInvalidsAsWarnings(value)
 
     private companion object {
         val googleParser: GooglePlacesApiParser = GooglePlacesApiParser()
