@@ -48,8 +48,8 @@ inline fun Fields.double(
 }
 
 inline fun Fields.double(
-    property: KProperty<Double?>,
-    label: String = property.name,
+    name: KProperty<Double?>,
+    label: String = name.name,
     hint: String? = label,
     value: Double? = null,
     isReadonly: Boolean = false,
@@ -59,4 +59,4 @@ inline fun Fields.double(
     min: Double? = null,
     step: Double? = 0.1,
     noinline validator: ((Double?) -> Unit)? = null
-) = double(property.name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)
+) = double(name.name, label, hint, value, isReadonly, isRequired, formatter, max, min, step, validator)
