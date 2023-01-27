@@ -5,6 +5,7 @@ package presenters.confirmations
 
 import actions.MutableAction0
 import kase.ExecutorState
+import koncurrent.Later
 import koncurrent.Thenable
 import live.Live
 import presenters.confirmations.internal.ConfirmationBoxImpl
@@ -19,6 +20,6 @@ interface ConfirmationBox {
 
     val cancelAction: MutableAction0<Unit>
 
-    fun cancel(): Thenable<Any?>
-    fun confirm(): Thenable<Any?>
+    fun cancel()
+    fun confirm(): Later<Any?>
 }

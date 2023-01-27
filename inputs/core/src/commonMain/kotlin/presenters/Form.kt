@@ -13,6 +13,7 @@ import kase.Success
 import kase.Validating
 import kollections.toIList
 import koncurrent.FailedLater
+import koncurrent.Later
 import koncurrent.Thenable
 import presenters.collections.*
 import presenters.exceptions.FormValidationException
@@ -42,7 +43,7 @@ open class Form<out F : Fields, P, out R>(
         handler()
     }
 
-    private val submitAction: Action1<P, R> = builtActions.submitAction
+    private val submitAction: Action1<P, Later<R>> = builtActions.submitAction
 
     private val codec = config.codec
 
@@ -52,7 +53,10 @@ open class Form<out F : Fields, P, out R>(
         ui.value = Failure(err)
     }
 
-    fun exit() = cancel()
+    fun exit() {
+        ui.value = Pending
+        cancel()
+    }
 
     private fun Collection<SerializableLiveData<out Any?>>.errorTable() = simpleTableOf(this) {
         column("Field") {
@@ -67,8 +71,7 @@ open class Form<out F : Fields, P, out R>(
     }.renderToString()
 
     fun validate(): ValidationResult {
-        fields.validate()
-        val invalids = fields.allInvalid
+        val invalids = fields.validate()
         if (invalids.isNotEmpty()) {
             val size = invalids.size
             val terminator = "input" + if (size > 1) "s" else ""
@@ -90,14 +93,14 @@ open class Form<out F : Fields, P, out R>(
         ui.history.clear()
     }
 
-    fun submit(): Thenable<R> = try {
+    fun submit(): Later<R> = try {
         ui.value = Validating
         validate().throwIfInvalid()
         val values = fields.encodedValuesToJson(codec)
         ui.value = Submitting(values)
         submitAction.invoke(codec.decodeFromString(config.serializer, values)).then {
             ui.value = Success(it)
-            if (config.exitOnSubmitted) cancel()
+            if (config.exitOnSubmitted) exit()
             it
         }.catch {
             ui.value = Failure(it) { onRetry { submit() } }

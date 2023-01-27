@@ -15,34 +15,33 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
 
     internal val all get() = cache.values
 
-    internal fun encodedValuesToJson(codec: StringFormat): String = valuesToBeSubmitted.associateBy {
+    internal fun encodedValuesToJson(codec: StringFormat): String = valuesToBeSubmitted().associateBy {
         it.name
     }.toList().joinToString(prefix = "{", postfix = "\n}") { (key, field) ->
         val serializer = field.serializer as KSerializer<Any>
         """${"\n"}    "$key": ${codec.encodeToString(serializer.nullable, field.data.value.output)}"""
     }
 
-    internal val allInvalid
-        get() = valuesToBeSubmitted.filter {
-            it is Validateable<out Any?> && it.feedback.value is InputFieldState.Error
+    private fun valuesToBeSubmitted() = all.filterIsInstance<SerializableLiveData<out Any?>>().filterNot {
+        if (it is Requireble) {
+            !it.isRequired && (it.data.value.output == null || it.data.value.output.toString().isBlank())
+        } else {
+            false
         }
+    }
 
-    internal val valuesToBeSubmitted
-        get() = all.filterIsInstance<SerializableLiveData<out Any?>>().filterNot {
-            if (it is Requireble) {
-                !it.isRequired && (it.data.value.output == null || it.data.value.output.toString().isBlank())
-            } else {
-                false
-            }
-        }
-
-    fun validate() {
+    /**
+     * @return a [List] of invalid [InputField]s
+     * Not if this is list is empty, it is safe to assume that all inputs are valid
+     */
+    fun validate(): List<SerializableLiveData<out Any?>> {
         all.filterIsInstance<Validateable<out Any?>>().forEach {
             it.validateSettingInvalidsAsErrors()
         }
+        return valuesToBeSubmitted().filter {
+            it is Validateable<out Any?> && it.feedback.value is InputFieldState.Error
+        }
     }
 
-    fun clearAll() {
-        all.filterIsInstance<Clearable>().forEach { it.clear() }
-    }
+    fun clearAll() = all.filterIsInstance<Clearable>().onEach { it.clear() }
 }
