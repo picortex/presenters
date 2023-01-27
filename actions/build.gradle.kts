@@ -14,7 +14,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentLaterCore)
-                api(asoft.kotlinx.collections.interoperable)
             }
         }
     }
