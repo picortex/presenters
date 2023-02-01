@@ -3,6 +3,7 @@ package presenters.internal
 import kash.Currency
 import kash.CurrencySerializer
 import kash.Money
+import kash.serializers.MoneySerializer
 import kollections.toIList
 import kotlinx.serialization.KSerializer
 import live.MutableLive
@@ -75,7 +76,7 @@ internal class MoneyInputFieldImpl(
     private fun money(amount: Double?): Money? {
         val cur = theCurrency ?: return null
         val a = amount ?: return null
-        return Money.of(a, cur)
+        return Money(a, cur)
     }
 
     override val cv = CompoundValidator(
@@ -89,7 +90,7 @@ internal class MoneyInputFieldImpl(
         watch(this.currency.data, this.amount.data) { cur, amm ->
             val c = cur.output ?: return@watch
             val a = amm.output ?: return@watch
-            data.value = FormattedData("${c.name} $a", "${c.name} $a", Money.of(a, c))
+            data.value = FormattedData("${c.name} $a", "${c.name} $a", Money(a, c))
         }
     }
 
@@ -110,7 +111,7 @@ internal class MoneyInputFieldImpl(
 
     override fun setAmount(number: Int) = amount.set(number)
 
-    override val serializer: KSerializer<Money> = Money.serializer()
+    override val serializer: KSerializer<Money> = MoneySerializer
 
     override fun clear() {
         currency.clear()
