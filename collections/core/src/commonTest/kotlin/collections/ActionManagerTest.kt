@@ -10,6 +10,7 @@ import presenters.collections.actionsOf
 import presenters.collections.renderToConsole
 import presenters.collections.tableOf
 import kotlin.test.Test
+import kotlin.test.fail
 
 class ActionManagerTest {
 
@@ -92,6 +93,32 @@ class ActionManagerTest {
             acts.remove("Create")
         }
         sel.select(row = 1, page = 1)
+        expect(actions.current.value).toBeOfSize(1)
+    }
+
+    @Test
+    fun should_only_display_current_multi_actions() {
+        val pag = CollectionPaginator(Person.List)
+        val sel = SelectionManager(pag)
+        val actions = actionsOf(sel) {
+            primary {
+                onAdd { println("Add Person") }
+            }
+            multi {
+                onDeleteAll { println("Delete ${it.size}") }
+            }
+        }
+        pag.loadFirstPage()
+        val table = tableOf(pag, sel, actions, Person.columns())
+        expect(actions.current.value).toBeOfSize(1)
+        sel.addSelection(1)
+        sel.addSelection(2)
+        expect(actions.current.value).toBeOfSize(2)
+        sel.addSelection(3)
+        sel.addSelection(4)
+        expect(actions.current.value).toBeOfSize(2)
+        actions.remove("Add")
+        sel.addSelection(5)
         expect(actions.current.value).toBeOfSize(1)
     }
 }
