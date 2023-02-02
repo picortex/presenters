@@ -13,6 +13,8 @@ import kase.LazyState
 import kase.Loading
 import kase.Pending
 import kase.Success
+import kase.toLazyState
+import koncurrent.later.finally
 
 @PublishedApi
 internal class PaginationManagerImpl<T>(
@@ -24,7 +26,9 @@ internal class PaginationManagerImpl<T>(
 
     override val current: MutableLive<LazyState<Page<T>>> = mutableLiveOf(Pending)
 
-    override val hasMore: Boolean get() = current.value.data?.hasMore == true
+    override val currentPageOrNull get() = current.value.data
+
+    override val hasMore: Boolean get() = currentPageOrNull?.hasMore == true
 
     override val continuous
         get() = buildList {
@@ -80,11 +84,9 @@ internal class PaginationManagerImpl<T>(
         } catch (err: Throwable) {
             FailedLater(err)
         }.then {
-            current.value = Success(cache.save(it))
-            it
-        }.catch {
-            current.value = Failure(it, data = memorizedPage)
-            throw it
+            cache.save(it)
+        }.finally {
+            current.value = it.toLazyState(memorizedPage)
         }
     }
 

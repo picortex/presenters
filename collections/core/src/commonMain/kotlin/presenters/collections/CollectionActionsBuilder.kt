@@ -3,7 +3,7 @@
 package presenters.collections
 
 import actions.Action0
-import actions.builders.Action0I1RBuilder
+import actions.builders.Actions0Builder
 import kollections.List
 import kollections.toIList
 
@@ -16,39 +16,39 @@ class CollectionActionsBuilder<T> @PublishedApi internal constructor(
     internal val filters: MutableSet<String> = mutableSetOf()
 ) {
     @PublishedApi
-    internal val primaryActions = Action0I1RBuilder(primary)
+    internal val primaryActions = Actions0Builder(primary)
 
     @PublishedApi
-    internal val singleActions = Action0I1RBuilder(single)
+    internal val singleActions = Actions0Builder(single)
 
     @PublishedApi
-    internal val singleActionsContainer = mutableListOf<Action0I1RBuilder<Unit>.(T) -> Unit>()
+    internal val singleActionsContainer = mutableListOf<Actions0Builder<Unit>.(T) -> Unit>()
 
     @PublishedApi
-    internal val multiActionsBuilder = Action0I1RBuilder(multi)
+    internal val multiActionsBuilder = Actions0Builder(multi)
 
     @PublishedApi
-    internal val multiActionsContainer = mutableListOf<Action0I1RBuilder<Unit>.(List<T>) -> Unit>()
+    internal val multiActionsContainer = mutableListOf<Actions0Builder<Unit>.(List<T>) -> Unit>()
 
     @PublishedApi
-    internal val globalActions = Action0I1RBuilder(global)
+    internal val globalActions = Actions0Builder(global)
 
     @PublishedApi
-    internal val globalActionsContainer = mutableListOf<Action0I1RBuilder<Unit>.(SelectedGlobal<T>) -> Unit>()
+    internal val globalActionsContainer = mutableListOf<Actions0Builder<Unit>.(SelectedGlobal<T>) -> Unit>()
 
-    inline fun primary(builder: Action0I1RBuilder<Unit>.() -> Unit) {
+    inline fun primary(builder: Actions0Builder<Unit>.() -> Unit) {
         primaryActions.apply(builder)
     }
 
-    inline fun single(noinline builder: Action0I1RBuilder<Unit>.(T) -> Unit) {
+    inline fun single(noinline builder: Actions0Builder<Unit>.(T) -> Unit) {
         singleActionsContainer.add(builder)
     }
 
-    inline fun multi(noinline builder: Action0I1RBuilder<Unit>.(List<T>) -> Unit) {
+    inline fun multi(noinline builder: Actions0Builder<Unit>.(List<T>) -> Unit) {
         multiActionsContainer.add(builder)
     }
 
-    inline fun global(noinline builder: Action0I1RBuilder<Unit>.(SelectedGlobal<T>) -> Unit) {
+    inline fun global(noinline builder: Actions0Builder<Unit>.(SelectedGlobal<T>) -> Unit) {
         globalActionsContainer.add(builder)
     }
 

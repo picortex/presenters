@@ -3,18 +3,17 @@
 
 package presenters.collections
 
-import koncurrent.Later
-import kollections.List
-import live.Live
-import presenters.collections.internal.PaginationManagerImpl
 import kase.LazyState
+import kollections.List
+import koncurrent.Later
+import live.Live
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
 interface PaginationManager<T> {
     val current: Live<LazyState<Page<T>>>
     val continuous: List<Row<T>>
-    val currentPageOrNull get() = current.value.data
+    val currentPageOrNull: Page<T>?
     val capacity: Int
 
     val hasMore: Boolean

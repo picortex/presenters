@@ -14,8 +14,8 @@ import kase.Validating
 import kollections.toIList
 import koncurrent.FailedLater
 import koncurrent.Later
-import koncurrent.Thenable
-import presenters.collections.*
+import presenters.collections.renderToString
+import presenters.collections.simpleTableOf
 import presenters.exceptions.FormValidationException
 import presenters.properties.Labeled
 import presenters.validation.Invalid

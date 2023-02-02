@@ -6,10 +6,7 @@ package presenters.confirmations
 import actions.MutableAction0
 import kase.ExecutorState
 import koncurrent.Later
-import koncurrent.Thenable
 import live.Live
-import presenters.confirmations.internal.ConfirmationBoxImpl
-import viewmodel.ScopeConfig
 import kotlin.js.JsExport
 
 interface ConfirmationBox {
