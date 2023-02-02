@@ -37,6 +37,12 @@ interface Page<out T> {
      */
     val isEmpty: Boolean
 
+    val hasMore: Boolean
+
+    val isFistPage: Boolean
+
+    val isLastPage: Boolean
+
     @JsName("_ignore_map")
     fun <R> map(transformer: Function1<T, R>): Page<R>
 

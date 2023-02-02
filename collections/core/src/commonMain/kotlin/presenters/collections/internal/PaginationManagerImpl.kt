@@ -24,6 +24,8 @@ internal class PaginationManagerImpl<T>(
 
     override val current: MutableLive<LazyState<Page<T>>> = mutableLiveOf(Pending)
 
+    override val hasMore: Boolean get() = current.value.data?.hasMore == true
+
     override val continuous
         get() = buildList {
             forEachPage { page ->

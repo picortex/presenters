@@ -13,7 +13,14 @@ internal data class PageImpl<out T>(
     override val capacity: Int,
     override val number: Int
 ) : Page<T> {
-    override val isEmpty: Boolean by lazy { items.size == 0 }
+    override val isEmpty = items.size == 0
+
+    override val hasMore get() = !isLastPage
+
+    override val isFistPage = number == 1
+
+    override val isLastPage = items.size < capacity
+
     override fun <R> map(transformer: (item: T) -> R) = Page(
         items = items.map { transformer(it.item) }.toIList(), capacity, number
     )

@@ -16,6 +16,9 @@ interface PaginationManager<T> {
     val continuous: List<Row<T>>
     val currentPageOrNull get() = current.value.data
     val capacity: Int
+
+    val hasMore: Boolean
+
     fun wipeMemory()
     fun clearPages()
     fun setPageCapacity(cap: Int)
