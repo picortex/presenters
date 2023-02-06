@@ -18,7 +18,7 @@ private fun Body.renderItemsToString(gap: Int = 4) = simpleTableOf(items) {
     column("Details") { it.item.details }
     column("Quantity") { it.item.quantity.toString() }
     column("Unit rate") { "${it.item.unitRate}/${it.item.unit}" }
-    if (!items.all { it.discount <= 0L }) column("Unit discount") {
+    if (!items.all { it.unitDiscount <= 0L }) column("Unit discount") {
         it.item.unitDiscount.toString()
     }
     if (!items.all { it.taxAmount <= 0L }) column("Tax") {
@@ -28,17 +28,17 @@ private fun Body.renderItemsToString(gap: Int = 4) = simpleTableOf(items) {
 }.renderToString(gap)
 
 private fun Body.renderSummaryToString() = buildString {
-    if (discount <= 0L && taxAmount <= 0L) {
+    if (unitDiscount <= 0L && taxAmount <= 0L) {
         appendLine("Total               : $costAfterTax")
     }
 
-    if (discount > 0L) {
+    if (unitDiscount > 0L) {
         appendLine("Cost Before Discount: $costBeforeDiscount")
-        appendLine("Discount            : $discount")
+        appendLine("Discount            : $unitDiscount")
         appendLine("Cost After Discount : $costAfterDiscount")
     }
 
-    if (discount <= 0L && taxAmount > 0L) {
+    if (unitDiscount <= 0L && taxAmount > 0L) {
         appendLine("Cost Before Tax     : $costBeforeTax")
     }
 

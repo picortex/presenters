@@ -9,20 +9,12 @@ import presenters.properties.Typeable
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface MoneyInputField : TransformingInputField<String, Money>, Typeable {
+interface MoneyInputField : MonetaryValueInputField<Money> {
     val currency: SingleChoiceInputField<Currency>
-    val amount: NumberInputField<Double>
+    val amount: MonetaryInputField
 
     @JsName("setCurrencyValue")
     fun setCurrency(currency: Currency)
 
     fun setCurrency(value: String)
-
-    @JsName("setAmountString")
-    fun setAmount(value: String)
-
-    fun setAmount(number: Double)
-
-    @JsName("setAmountInt")
-    fun setAmount(number: Int)
 }

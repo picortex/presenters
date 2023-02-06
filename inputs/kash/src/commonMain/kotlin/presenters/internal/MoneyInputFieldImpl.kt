@@ -3,21 +3,17 @@ package presenters.internal
 import kash.Currency
 import kash.CurrencySerializer
 import kash.Money
+import kash.MoneyFormatter
 import kash.serializers.MoneySerializer
 import kollections.toIList
 import kotlinx.serialization.KSerializer
-import live.MutableLive
-import live.mutableLiveOf
 import live.watch
-import presenters.DoubleInputField
 import presenters.Formatter
 import presenters.Label
+import presenters.MonetaryInputField
 import presenters.MoneyInputField
 import presenters.Option
-import presenters.InputFieldState
-import presenters.LongInputField
 import presenters.SingleChoiceInputField
-import presenters.internal.utils.Clearer
 import presenters.internal.utils.DataTransformer
 import presenters.internal.utils.Typer
 import presenters.internal.validators.ClippingValidator
@@ -37,7 +33,7 @@ internal class MoneyInputFieldImpl(
     private val fixedCurrency: Currency?,
     private val selectCurrency: Boolean,
     override val isReadonly: Boolean,
-    private val formatter: Formatter<Double>?,
+    private val formatter: MoneyFormatter?,
     private val maxAmount: Double?,
     private val minAmount: Double?,
     private val stepAmount: Double?,
@@ -46,7 +42,7 @@ internal class MoneyInputFieldImpl(
 
     override val transformer: DataTransformer<String, Money> get() = error("Don't transform directly")
 
-    private val theCurrency = fixedCurrency ?: value?.currency
+    private val theCurrency get() = fixedCurrency ?: value?.currency
 
     override val currency = SingleChoiceInputField(
         name = "$name-currency",
@@ -59,17 +55,17 @@ internal class MoneyInputFieldImpl(
         value = theCurrency
     )
 
-    override val amount = DoubleInputField(
+    override val amount = MonetaryInputField(
         name = "$name-amount",
         isRequired = isRequired,
         label = "$name amount",
         hint = hint,
-        value = value?.amountAsDouble,
+        value = value?.toMonetary(),
         isReadonly = isReadonly,
         formatter = formatter,
-        max = maxAmount,
-        min = minAmount,
-        step = stepAmount,
+        maxAmount = maxAmount?.let { Money(it) },
+        minAmount = minAmount?.let { Money(it) },
+        stepAmount = stepAmount,
         validator = null
     )
 
@@ -88,16 +84,21 @@ internal class MoneyInputFieldImpl(
 
     init {
         watch(this.currency.data, this.amount.data) { cur, amm ->
-            val c = cur.output ?: return@watch
+            val c = cur.output ?: Currency.UXX
             val a = amm.output ?: return@watch
-            data.value = FormattedData("${c.name} $a", "${c.name} $a", Money(a, c))
+            val money = a.with(c)
+            val text = formatter?.format(money) ?: money.toFormattedString()
+            val fmt = formatter!!
+            println("text: $text, amm: ${amm.formatted}, clazz: ${fmt::class.simpleName}")
+            println("options: ${fmt.options}")
+            data.value = FormattedData("${c.globalSymbol} $a", text, money)
         }
     }
 
     override fun validate(value: Money?): ValidationResult {
         arrayOf(
             currency.validate(value?.currency),
-            amount.validate(value?.amountAsDouble)
+            amount.validate(value?.toMonetary())
         ).forEach { res ->
             if (res is Invalid) return res
         }
@@ -109,7 +110,7 @@ internal class MoneyInputFieldImpl(
 
     override fun set(value: String?) = amount.set(value)
 
-    override fun setAmount(number: Int) = amount.set(number)
+    override fun setAmount(number: Int?) = amount.setAmount(number)
 
     override val serializer: KSerializer<Money> = MoneySerializer
 
@@ -119,11 +120,11 @@ internal class MoneyInputFieldImpl(
         super.clear()
     }
 
-    override fun setAmount(value: String) = amount.set(value)
+    override fun setAmount(value: String?) = amount.setAmount(value)
 
     override fun setCurrency(value: String) = currency.selectValue(value)
 
     override fun setCurrency(currency: Currency) = this.currency.selectItem(currency)
 
-    override fun setAmount(number: Double) = amount.set(number)
+    override fun setAmount(number: Double?) = amount.setAmount(number)
 }

@@ -4,6 +4,8 @@ package presenters
 
 import kash.Currency
 import kash.Money
+import kash.MoneyFormatter
+import presenters.internal.DEFAULT_FORMATTER
 import presenters.internal.MoneyInputFieldImpl
 import kotlin.reflect.KProperty
 
@@ -14,7 +16,7 @@ inline fun MoneyInputField(
     hint: String = label,
     value: Money? = null,
     currency: Currency? = value?.currency,
-    formatter: Formatter<Double> = MoneyNumberFormatter,
+    formatter: MoneyFormatter? = DEFAULT_FORMATTER,
     selectCurrency: Boolean = true,
     isReadonly: Boolean = false,
     maxAmount: Double? = null,
@@ -44,7 +46,7 @@ inline fun Fields.money(
     hint: String = label,
     value: Money? = null,
     currency: Currency? = value?.currency,
-    formatter: Formatter<Double> = MoneyNumberFormatter,
+    formatter: MoneyFormatter? = DEFAULT_FORMATTER,
     selectCurrency: Boolean = true,
     isReadonly: Boolean = false,
     maxAmount: Double? = null,
@@ -62,7 +64,7 @@ inline fun Fields.money(
     hint: String = label,
     value: Money? = null,
     currency: Currency? = value?.currency,
-    formatter: Formatter<Double> = MoneyNumberFormatter,
+    formatter: MoneyFormatter? = DEFAULT_FORMATTER,
     selectCurrency: Boolean = true,
     isReadonly: Boolean = false,
     maxAmount: Double? = null,

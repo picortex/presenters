@@ -1,5 +1,6 @@
 package presenters
 
+import formatter.NumberFormatter
 import presenters.internal.numbers.LongInputFieldImpl
 import kotlin.reflect.KProperty
 
@@ -10,7 +11,7 @@ inline fun LongInputField(
     value: Long? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Long>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Long? = null,
     min: Long? = null,
     step: Long? = 1,
@@ -36,7 +37,7 @@ inline fun Fields.long(
     value: Long? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Long>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Long? = null,
     min: Long? = null,
     step: Long? = 1,
@@ -52,7 +53,7 @@ inline fun Fields.long(
     value: Long? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Long>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Long? = null,
     min: Long? = null,
     step: Long? = 1,

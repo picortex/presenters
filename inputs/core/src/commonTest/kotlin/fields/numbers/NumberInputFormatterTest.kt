@@ -20,20 +20,19 @@ class NumberInputFormatterTest {
     @Test
     fun should_be_able_to_format_thousands_as_they_are_typed_in() {
         val number = IntegerInputField(
-            name = "price",
-            formatter = { it?.toString()?.toCharArray()?.joinToString(",") }
+            name = "price"
         )
         number.type("1000")
         with(number.data.value) {
             expect(input).toBe("1000")
-            expect(formatted).toBe("1,0,0,0")
+            expect(formatted).toBe("1,000")
             expect(output).toBe(1000)
         }
 
         number.type("0")
         with(number.data.value) {
             expect(input).toBe("10000")
-            expect(formatted).toBe("1,0,0,0,0")
+            expect(formatted).toBe("10,000")
             expect(output).toBe(10_000)
         }
     }

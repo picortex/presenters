@@ -54,7 +54,7 @@ class FormWithManyInputsTest {
             heading = "The god form",
             details = "A form to test things out",
             fields = AllFields(),
-            config = ViewModelConfig().toFormConfig()
+            config = ViewModelConfig().toFormConfig(exitOnSubmitted = false)
         ) {
             onSubmit {
                 params = it

@@ -1,25 +1,27 @@
 import expect.expect
 import kash.Currency
+import kash.Monetary
 import kash.Money
 import koncurrent.Later
 import kotlinx.serialization.Serializable
 import presenters.Fields
 import presenters.Form
 import presenters.FormActionsBuildingBlock
+import presenters.monetary
 import presenters.money
 import presenters.name
 import presenters.toFormConfig
 import viewmodel.ViewModelConfig
 import kotlin.test.Test
 
-class FormWithMoneyInputFieldTest {
+class FormWithMonetaryInputFieldTest {
     @Serializable
-    data class TestParams(val name: String, val price: Money)
+    data class TestParams(val name: String, val price: Monetary)
+
     class TestFields(currency: Currency?) : Fields() {
         val name = name()
-        val price = money(
-            name = TestParams::price,
-            currency = currency
+        val price = monetary(
+            name = TestParams::price
         )
     }
 
@@ -35,29 +37,7 @@ class FormWithMoneyInputFieldTest {
     )
 
     @Test
-    fun should_submit_from_a_form_with_a_null_currency_value() {
-        var params: TestParams? = null
-        val form = TestForm(null) {
-            onCancel { println("Cancelled") }
-            onSubmit {
-                params = it
-                Later(it)
-            }
-        }
-
-        with(form.fields) {
-            name.type("Lamax")
-            price.setCurrency("TZS")
-            price.setAmount(200)
-            expect(price.data.value.output?.amountAsDouble).toBe(200.0)
-        }
-        form.submit()
-
-        expect(params?.price?.amountAsDouble).toBe(200.0)
-    }
-
-    @Test
-    fun should_submit_from_a_form_with_a_non_null_currency_value() {
+    fun should_submit_from_a_form_with_a_monetary_value() {
         var params: TestParams? = null
         val form = TestForm(Currency.TZS) {
             onCancel { println("Cancelled") }

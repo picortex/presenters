@@ -2,6 +2,7 @@
 
 package presenters
 
+import formatter.NumberFormatter
 import presenters.internal.numbers.IntegerInputFieldImpl
 import kotlin.reflect.KProperty
 
@@ -12,7 +13,7 @@ inline fun IntegerInputField(
     value: Int? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Int>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Int? = null,
     min: Int? = null,
     step: Int = 1,
@@ -38,7 +39,7 @@ inline fun Fields.integer(
     value: Int? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Int>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Int? = null,
     min: Int? = null,
     step: Int = 1,
@@ -54,7 +55,7 @@ inline fun Fields.integer(
     value: Int? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Int>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Int? = null,
     min: Int? = null,
     step: Int = 1,

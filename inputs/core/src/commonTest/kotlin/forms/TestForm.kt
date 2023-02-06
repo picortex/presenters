@@ -13,6 +13,6 @@ class TestForm<F : Fields>(
     heading = "Test Form",
     details = "This is a form for testing",
     fields = fields,
-    config = ViewModelConfig().toFormConfig(),
+    config = ViewModelConfig().toFormConfig(exitOnSubmitted = false),
     builder
 )

@@ -13,11 +13,12 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.actionsCore)
-                api(projects.kaseBuilders)
-                api(projects.presentersCollectionsRenderersString)
-                api(projects.viewmodelCore)
-                api(kotlinx.serialization.json)
+                api(projects.actionsCore) // because forms needs submit actions
+                api(projects.kaseBuilders) // becuase forms has states
+                api(projects.presentersCollectionsRenderersString) // because form needs to print the table
+                api(projects.viewmodelCore) // because a form is a viewmodel
+                api(kotlinx.serialization.json) // because forms need to serialize
+                api(projects.formatterCore) // because number inputs might need to be formatted
             }
         }
 

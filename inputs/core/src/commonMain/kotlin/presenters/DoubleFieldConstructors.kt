@@ -2,6 +2,7 @@
 
 package presenters
 
+import formatter.NumberFormatter
 import presenters.internal.numbers.DoubleInputFieldImpl
 import kotlin.reflect.KProperty
 
@@ -12,7 +13,7 @@ inline fun DoubleInputField(
     value: Double? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Double>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Double? = null,
     min: Double? = null,
     step: Double? = 0.1,
@@ -38,7 +39,7 @@ inline fun Fields.double(
     value: Double? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Double>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Double? = null,
     min: Double? = null,
     step: Double? = 0.1,
@@ -54,7 +55,7 @@ inline fun Fields.double(
     value: Double? = null,
     isReadonly: Boolean = false,
     isRequired: Boolean = false,
-    formatter: Formatter<Double>? = null,
+    formatter: NumberFormatter? = NumberFormatter(),
     max: Double? = null,
     min: Double? = null,
     step: Double? = 0.1,
