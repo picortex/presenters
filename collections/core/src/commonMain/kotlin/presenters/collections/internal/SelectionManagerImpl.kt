@@ -89,13 +89,15 @@ class SelectionManagerImpl<T>(
         return readjustSelectedItems(map)
     }
 
-    private fun readjustSelectedItems(map: Map<Page<T>, Set<Row<T>>>): Selected<T> {
-        return if (map.size == 1 && map.entries.first().value.size == 1) {
+    private fun readjustSelectedItems(map: Map<Page<T>, Set<Row<T>>>): Selected<T> = when {
+        map.isEmpty() -> SelectedNone
+
+        map.size == 1 && map.entries.first().value.size == 1 -> {
             val entry = map.entries.first()
             SelectedItem(entry.key, entry.value.first())
-        } else {
-            SelectedItems(map.mapValues { it.value.toISet() }.toIMap())
         }
+
+        else -> SelectedItems(map.mapValues { it.value.toISet() }.toIMap())
     }
 
     override fun unSelectRowFromPage(row: Int, page: Int?) {

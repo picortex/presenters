@@ -19,7 +19,7 @@ interface ActionsManager<T> {
 
     fun addMulti(name: String, handler: (List<T>) -> Unit): ActionsManager<T>
 
-    fun remove(name: String): ActionsManager<T>
+    fun remove(key: String): ActionsManager<T>
 
     fun of(item: T): List<Action0<Unit>>
 }

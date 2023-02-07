@@ -9,8 +9,12 @@ import presenters.collections.SelectedItem
 import presenters.collections.SelectedItems
 import presenters.collections.SelectedNone
 import presenters.collections.SelectionManager
+import presenters.collections.actionsOf
 import presenters.collections.internal.SelectionManagerImpl
+import presenters.collections.renderToConsole
+import presenters.collections.tableOf
 import kotlin.test.Test
+import kotlin.test.fail
 
 class SelectorTest {
 
@@ -239,5 +243,24 @@ class SelectorTest {
         expect(selector.isRowSelectedOnPage(row = 4, page = 1)).toBe(true, "Row 4 / Page 1: was supposed to be selected")
 
         expect(selector.selected.value).toBe<SelectedItem<Person>>()
+    }
+
+    @Test
+    fun should_have_zero_actions_after_all_rows_in_page_have_been_unselected() {
+        val paginator = CollectionPaginator(Person.List, capacity = 5)
+        val selector = SelectionManagerImpl(paginator)
+
+        paginator.loadFirstPage()
+        repeat(4) {
+            selector.addSelection(row = it + 1)
+        }
+
+        repeat(4) {
+            expect(selector.isRowSelectedOnPage(row = it + 1, page = 1)).toBe(true, "Row ${it + 1} / Page 1: was supposed to be selected")
+        }
+
+        selector.unSelectAllItemsInTheCurrentPage()
+
+        expect(selector.selected.value).toBe<SelectedNone>()
     }
 }

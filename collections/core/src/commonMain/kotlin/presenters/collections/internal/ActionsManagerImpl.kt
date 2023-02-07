@@ -17,7 +17,7 @@ internal class ActionsManagerImpl<T>(
     override fun get() = current.value
 
     override fun add(name: String, handler: () -> Unit): ActionsManager<T> {
-        builder.primary { on(name, handler) }
+        builder.primary { on(name, handler = handler) }
         return this
     }
 
@@ -31,8 +31,8 @@ internal class ActionsManagerImpl<T>(
         return this
     }
 
-    override fun remove(name: String): ActionsManager<T> {
-        builder.filters.add(name.lowercase())
+    override fun remove(key: String): ActionsManager<T> {
+        builder.filters.add(key.lowercase())
         return this
     }
 

@@ -53,7 +53,7 @@ class CollectionActionsBuilder<T> @PublishedApi internal constructor(
     }
 
     private inline fun Collection<Action0<Unit>>.applyFilters() = associateBy {
-        it.name
+        it.key
     }.filterKeys {
         !filters.contains(it.lowercase())
     }.values.toIList()

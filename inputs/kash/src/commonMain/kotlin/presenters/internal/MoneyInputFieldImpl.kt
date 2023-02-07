@@ -8,7 +8,6 @@ import kash.serializers.MoneySerializer
 import kollections.toIList
 import kotlinx.serialization.KSerializer
 import live.watch
-import presenters.Formatter
 import presenters.Label
 import presenters.MonetaryInputField
 import presenters.MoneyInputField
@@ -88,9 +87,6 @@ internal class MoneyInputFieldImpl(
             val a = amm.output ?: return@watch
             val money = a.with(c)
             val text = formatter?.format(money) ?: money.toFormattedString()
-            val fmt = formatter!!
-            println("text: $text, amm: ${amm.formatted}, clazz: ${fmt::class.simpleName}")
-            println("options: ${fmt.options}")
             data.value = FormattedData("${c.globalSymbol} $a", text, money)
         }
     }
