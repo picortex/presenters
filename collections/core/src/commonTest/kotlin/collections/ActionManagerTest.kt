@@ -105,7 +105,7 @@ class ActionManagerTest {
                 onAdd { println("Add Person") }
             }
             multi {
-                onDeleteAll { println("Delete ${it.size}") }
+                onDeleteAll(it) { println("Delete ${it.size}") }
             }
         }
         pag.loadFirstPage()
