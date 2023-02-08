@@ -40,6 +40,7 @@ internal class ListInputFieldImpl<E>(
     override fun update(item: E, updater: () -> E) {
         val list = output.toMutableList()
         val idx = list.indexOf(item)
+        if (idx == -1) return
         list.remove(item)
         list.add(idx, updater())
         setter.set(list.toIList())

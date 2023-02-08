@@ -22,7 +22,7 @@ internal class ColumnsManagerImpl<D>(
     }
 
     override fun add(name: String, accessor: (Row<D>) -> String): ColumnsManager<D> {
-        builder.column(name, accessor)
+        builder.column(name, accessor = accessor)
         return this
     }
 

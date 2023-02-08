@@ -37,8 +37,12 @@ class ColumnsBuilder<D> @PublishedApi internal constructor(internal val columns:
         columns.add(Column.Select(name))
     }
 
-    fun column(name: String, accessor: (Row<D>) -> String) = update {
-        columns.add(Column.Data(name, accessor))
+//    fun column(name: String, accessor: (Row<D>) -> String) = update {
+//        columns.add(Column.Data(name, accessor))
+//    }
+
+    fun column(name: String, default: String = "N/A", accessor: (Row<D>) -> Any?) = update {
+        columns.add(Column.Data(name) { accessor(it)?.toString() ?: default })
     }
 
     fun action(name: String) = update {
