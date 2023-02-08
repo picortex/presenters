@@ -16,7 +16,7 @@ import kotlin.jvm.JvmSynthetic
 fun <D> columnsOf(
     columns: Collection<Column<D>> = setOf(),
     block: ColumnsBuilder<D>.() -> Unit
-): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder(columns.toIMutableSet()).apply(block))
+): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder(columns).apply(block))
 
 @JvmSynthetic
-inline fun <D> columnsOf(): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder(iMutableSetOf()))
+inline fun <D> columnsOf(): ColumnsManager<D> = ColumnsManagerImpl(ColumnsBuilder())

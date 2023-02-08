@@ -4,7 +4,7 @@ import kotlin.math.max
 
 private fun <D> Table<D>.text(row: Row<D>, col: Column<D>) = when (col) {
     is Column.Select -> if (isRowSelectedOnCurrentPage(row.number)) "[x]" else "[ ]"
-    is Column.Data -> col.accessor(row)
+    is Column.Data -> col.resolve(row)
     is Column.Action -> actions.of(row.item).joinToString(separator = "|") { it.name }
 }
 

@@ -6,6 +6,7 @@ import live.watch
 import presenters.collections.Column
 import presenters.collections.columnsOf
 import kotlin.test.Test
+import kotlin.test.fail
 
 class ColumnsManagerTest {
     @Test
@@ -53,7 +54,18 @@ class ColumnsManagerTest {
 
     @Test
     fun columns_should_print_their_names_in_a_to_string_operation() {
-        val col = Column.Data<Int>("test") { it.toString() }
+        val col = Column.Data<Int>("test", "test", "N/A") { it.toString() }
         expect(col.toString()).toBe("test")
+    }
+
+    @Test
+    fun should_be_able_to_repeatedly_add_column_with_the_same_name() {
+        val columns = columnsOf<Int> {
+            selectable()
+            column("Value") { it.item.toString() }
+        }
+        columns.add("test") { "test" }
+        columns.add("test") { "test" }
+        expect(columns.current.value).toBeOfSize(3)
     }
 }

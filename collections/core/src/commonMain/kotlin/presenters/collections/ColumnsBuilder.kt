@@ -5,12 +5,13 @@ import kollections.toISet
 import live.MutableLiveSet
 import live.mutableLiveSetOf
 
-class ColumnsBuilder<D> @PublishedApi internal constructor(internal val columns: MutableSet<Column<D>>) {
+class ColumnsBuilder<D> @PublishedApi internal constructor(internal val columns: MutableMap<String, Column<D>>) {
+    constructor(columns: Collection<Column<D>>) : this(columns.associateBy { it.key }.toMutableMap())
+    constructor() : this(mutableMapOf())
 
     internal val current: MutableLiveSet<Column<D>> = mutableLiveSetOf()
-
-    internal val hidden = mutableSetOf<String>()
-    internal val removed = mutableSetOf<String>()
+    private val hidden = mutableSetOf<String>()
+    private val removed = mutableSetOf<String>()
 
     fun hide(name: String) {
         val n = name.lowercase()
@@ -33,34 +34,26 @@ class ColumnsBuilder<D> @PublishedApi internal constructor(internal val columns:
         update { removed.add(n) }
     }
 
-    fun selectable(name: String = "Select") = update {
-        columns.add(Column.Select(name))
+    fun selectable(name: String = "Select", key: String = name) = update {
+        columns[key.lowercase()] = Column.Select(name, key)
     }
 
-//    fun column(name: String, accessor: (Row<D>) -> String) = update {
-//        columns.add(Column.Data(name, accessor))
-//    }
-
-    fun column(name: String, default: String = "N/A", accessor: (Row<D>) -> Any?) = update {
-        columns.add(Column.Data(name) { accessor(it)?.toString() ?: default })
+    fun column(name: String, key: String = name, default: String = "N/A", accessor: (Row<D>) -> Any?) = update {
+        columns[key.lowercase()] = Column.Data(name, key, default, accessor)
     }
 
-    fun action(name: String) = update {
-        columns.add(Column.Action(name))
+    fun action(name: String, key: String) = update {
+        columns[key.lowercase()] = Column.Action(name, key)
     }
 
     fun all(includingRemoved: Boolean): Set<Column<D>> = if (includingRemoved) {
-        columns.toISet()
+        columns.values.toISet()
     } else {
-        columns.filter { !removed.contains(it.name.lowercase()) }.toISet()
+        columns.values.filter { !removed.contains(it.name.lowercase()) }.toISet()
     }
 
     private fun update(block: () -> Unit) {
         block()
         current.value = all(includingRemoved = false).filter { !hidden.contains(it.name.lowercase()) }.toISet()
-    }
-
-    private fun Collection<Column<D>>.contains(name: String) = any {
-        it.name.contentEquals(name, ignoreCase = true)
     }
 }
