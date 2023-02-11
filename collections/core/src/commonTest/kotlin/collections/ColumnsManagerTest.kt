@@ -54,7 +54,7 @@ class ColumnsManagerTest {
 
     @Test
     fun columns_should_print_their_names_in_a_to_string_operation() {
-        val col = Column.Data<Int>("test", "test", "N/A") { it.toString() }
+        val col = Column.Data<Int>("test", "test", 0, "N/A") { it.toString() }
         expect(col.toString()).toBe("test")
     }
 

@@ -14,43 +14,51 @@ class ColumnsBuilder<D> @PublishedApi internal constructor(internal val columns:
     private val removed = mutableSetOf<String>()
 
     fun hide(name: String) {
-        val n = name.lowercase()
-        if (!columns.contains(n)) return
-        if (hidden.contains(n)) return
-        update { hidden.add(n) }
+        val col = find(name) ?: return
+        if (hidden.contains(col.key.lowercase())) return
+        update { hidden.add(col.key.lowercase()) }
     }
 
     fun show(name: String) {
-        val n = name.lowercase()
-        if (!columns.contains(n)) return
-        if (!hidden.contains(n)) return
-        update { hidden.remove(n) }
+        val col = find(name) ?: return
+        if (!hidden.contains(col.key.lowercase())) return
+        update { hidden.remove(col.key.lowercase()) }
     }
 
     fun remove(name: String) {
-        val n = name.lowercase()
-        if (!columns.contains(n)) return
-        if (removed.contains(n)) return
-        update { removed.add(n) }
+        val col = find(name) ?: return
+        if (removed.contains(col.key.lowercase())) return
+        update { removed.add(col.key.lowercase()) }
     }
 
-    fun selectable(name: String = "Select", key: String = name) = update {
-        columns[key.lowercase()] = Column.Select(name, key)
+    fun index(name: String, idx: Int) = set(find(name)?.copy(index = idx))
+
+    fun selectable(name: String = "Select", key: String = name) {
+        set(Column.Select(name, key, columns.size))
     }
 
-    fun column(name: String, key: String = name, default: String = "N/A", accessor: (Row<D>) -> Any?) = update {
-        columns[key.lowercase()] = Column.Data(name, key, default, accessor)
+    fun column(name: String, key: String = name, default: String = "N/A", accessor: (Row<D>) -> Any?) {
+        set(Column.Data(name, key, columns.size, default, accessor))
     }
 
-    fun action(name: String, key: String) = update {
-        columns[key.lowercase()] = Column.Action(name, key)
+    fun rename(prev: String, curr: String) = set(find(prev)?.copy(curr))
+
+    fun action(name: String, key: String) = set(Column.Action(name, key, columns.size))
+
+    private fun set(col: Column<D>?) {
+        if (col == null) return
+        update { columns[col.key.lowercase()] = col }
     }
 
     fun all(includingRemoved: Boolean): Set<Column<D>> = if (includingRemoved) {
-        columns.values.toISet()
+        columns.values
     } else {
-        columns.values.filter { !removed.contains(it.name.lowercase()) }.toISet()
-    }
+        columns.values.filter { !removed.contains(it.name.lowercase()) }
+    }.sortedBy {
+        it.index
+    }.toISet()
+
+    private fun find(name: String) = all(includingRemoved = true).find { it.name == name }
 
     private fun update(block: () -> Unit) {
         block()

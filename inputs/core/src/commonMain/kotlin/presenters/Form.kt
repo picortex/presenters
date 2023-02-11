@@ -11,9 +11,11 @@ import kase.Pending
 import kase.Submitting
 import kase.Success
 import kase.Validating
+import kase.toFormState
 import kollections.toIList
 import koncurrent.FailedLater
 import koncurrent.Later
+import koncurrent.later.finally
 import presenters.collections.renderToString
 import presenters.collections.simpleTableOf
 import presenters.exceptions.FormValidationException
@@ -46,6 +48,8 @@ open class Form<out F : Fields, P, out R>(
     private val submitAction: Action1<P, Later<R>> = builtActions.submitAction
 
     private val codec = config.codec
+
+    val exitOnSubmitted = config.exitOnSubmitted
 
     fun cancel() = try {
         cancelAction.invoke()
@@ -98,13 +102,9 @@ open class Form<out F : Fields, P, out R>(
         validate().throwIfInvalid()
         val values = fields.encodedValuesToJson(codec)
         ui.value = Submitting(values)
-        submitAction.invoke(codec.decodeFromString(config.serializer, values)).then {
-            ui.value = Success(it)
-            if (config.exitOnSubmitted) exit()
-            it
-        }.catch {
-            ui.value = Failure(it) { onRetry { submit() } }
-            throw it
+        submitAction.invoke(codec.decodeFromString(config.serializer, values)).finally {
+            ui.value = it.toFormState { onRetry { submit() } }
+            if (exitOnSubmitted) exit()
         }
     } catch (err: Throwable) {
         ui.value = Failure(err) { onRetry { submit() } }

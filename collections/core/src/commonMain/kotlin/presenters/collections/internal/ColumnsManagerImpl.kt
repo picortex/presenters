@@ -35,4 +35,14 @@ internal class ColumnsManagerImpl<D>(
         builder.show(name)
         return this
     }
+
+    override fun index(name: String, idx: Int): ColumnsManager<D> {
+        builder.index(name,idx)
+        return this
+    }
+
+    override fun rename(prev: String, curr: String): ColumnsManager<D> {
+        builder.rename(prev, curr)
+        return this
+    }
 }
