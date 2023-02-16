@@ -5,7 +5,6 @@ package presenters
 
 import kash.Currency
 import kash.Money
-import presenters.properties.Typeable
 import kotlin.js.JsExport
 import kotlin.js.JsName
 

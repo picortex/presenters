@@ -3,6 +3,7 @@ package presenters.internal
 import kash.Currency
 import kash.CurrencySerializer
 import kash.Money
+import kash.Monetary
 import kash.MoneyFormatter
 import kash.serializers.MoneySerializer
 import kollections.toIList
@@ -62,8 +63,8 @@ internal class MoneyInputFieldImpl(
         value = value?.toMonetary(),
         isReadonly = isReadonly,
         formatter = formatter,
-        maxAmount = maxAmount?.let { Money(it) },
-        minAmount = minAmount?.let { Money(it) },
+        maxAmount = maxAmount?.let { Monetary(it) },
+        minAmount = minAmount?.let { Monetary(it) },
         stepAmount = stepAmount,
         validator = null
     )

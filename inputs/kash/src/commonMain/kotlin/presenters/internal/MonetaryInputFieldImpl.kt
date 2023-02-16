@@ -2,7 +2,6 @@ package presenters.internal
 
 import formatter.NumberFormatter
 import kash.Monetary
-import kash.Money
 import kash.serializers.MonetarySerializer
 import kotlinx.serialization.KSerializer
 import presenters.Formatter
@@ -44,7 +43,7 @@ internal class MonetaryInputFieldImpl(
             fmt.format(l.amountAsDouble)
         },
         transformer = { amount: String? ->
-            amount?.replace(",", "")?.toDoubleOrNull()?.let { Money(it) }
+            amount?.replace(",", "")?.toDoubleOrNull()?.let { Monetary(it) }
         }
     )
 

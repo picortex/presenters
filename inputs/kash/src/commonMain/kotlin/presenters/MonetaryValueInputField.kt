@@ -3,12 +3,12 @@
 
 package presenters
 
-import kash.MonetaryValue
+import kash.Money
 import presenters.properties.Typeable
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
-interface MonetaryValueInputField<V : MonetaryValue> : TransformingInputField<String, V>, Typeable {
+interface MonetaryValueInputField<V : Money> : TransformingInputField<String, V>, Typeable {
     @JsName("setAmountString")
     fun setAmount(value: String?)
 
