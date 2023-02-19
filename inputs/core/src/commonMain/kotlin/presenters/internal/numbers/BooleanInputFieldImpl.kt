@@ -18,12 +18,12 @@ import presenters.internal.validators.RequirementValidator
 @PublishedApi
 internal class BooleanInputFieldImpl(
     override val name: String,
-    override val isRequired: Boolean = false,
-    override val label: Label = Label(name, isRequired),
-    override val hint: String = label.capitalizedWithAstrix(),
-    override val isReadonly: Boolean = false,
-    value: Boolean? = null,
-    validator: ((Boolean?) -> Unit)? = null,
+    override val isRequired: Boolean,
+    override val label: Label,
+    override val hint: String,
+    override val isReadonly: Boolean,
+    value: Boolean?,
+    validator: ((Boolean?) -> Unit)?,
 ) : PlainDataField<Boolean>(value), BooleanInputField {
     override val serializer: KSerializer<Boolean> = Boolean.serializer()
 

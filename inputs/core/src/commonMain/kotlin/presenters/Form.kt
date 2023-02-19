@@ -9,7 +9,6 @@ import kase.Failure
 import kase.FormState
 import kase.Pending
 import kase.Submitting
-import kase.Success
 import kase.Validating
 import kase.toFormState
 import kollections.toIList
@@ -76,19 +75,19 @@ open class Form<out F : Fields, out P, out R>(
 
     fun validate(): ValidationResult {
         val invalids = fields.validate()
-        if (invalids.isNotEmpty()) {
-            val size = invalids.size
-            val terminator = "input" + if (size > 1) "s" else ""
-            val exception = FormValidationException(
-                message = "You have $size invalid $terminator",
-                errors = invalids.errorTable(),
-                fields = invalids.toIList()
-            )
-            logger.error(exception.message)
-            logger.error(exception.errors)
-            return Invalid(exception)
-        }
-        return Valid
+
+        if (invalids.isEmpty()) return Valid
+
+        val size = invalids.size
+        val terminator = "input" + if (size > 1) "s" else ""
+        val exception = FormValidationException(
+            message = "You have $size invalid $terminator",
+            errors = invalids.errorTable(),
+            fields = invalids.toIList()
+        )
+        logger.error(exception.message)
+        logger.error(exception.errors)
+        return Invalid(exception)
     }
 
     fun clear() {

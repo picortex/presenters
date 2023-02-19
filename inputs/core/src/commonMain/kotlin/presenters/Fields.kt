@@ -32,7 +32,8 @@ open class Fields(@PublishedApi internal val cache: MutableMap<String, InputFiel
 
     /**
      * @return a [List] of invalid [InputField]s
-     * Not if this is list is empty, it is safe to assume that all inputs are valid
+     *
+     * Note that if this is list is empty, it is safe to assume that all inputs are valid
      */
     fun validate(): List<SerializableLiveData<out Any?>> {
         all.filterIsInstance<Validateable<out Any?>>().forEach {
