@@ -10,5 +10,5 @@ import presenters.internal.forms.FormConfigImpl.DEFAULT
 inline fun <reified P> ViewModelConfig.toFormConfig(
     exitOnSubmitted: Boolean = DEFAULT.exitOnSubmitted
 ): FormConfig<P> = FormConfigImpl(
-    serializer(), executor, logger, codec, cache, workManager, exitOnSubmitted
+    Unit, serializer(), executor, logger, codec, cache, workManager, exitOnSubmitted
 )

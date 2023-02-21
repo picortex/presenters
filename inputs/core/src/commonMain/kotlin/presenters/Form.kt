@@ -46,9 +46,9 @@ open class Form<out F : Fields, out P, out R>(
 
     private val submitAction: Action1<P, Later<R>> = builtActions.submitAction
 
-    private val codec = config.codec
+    private val codec get() = config.codec
 
-    val exitOnSubmitted = config.exitOnSubmitted
+    val exitOnSubmitted get() = config.exitOnSubmitted
 
     fun cancel() = try {
         cancelAction.invoke()

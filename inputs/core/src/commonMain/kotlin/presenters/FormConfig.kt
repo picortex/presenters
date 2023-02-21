@@ -4,10 +4,10 @@
 package presenters
 
 import kotlinx.serialization.KSerializer
-import viewmodel.ViewModelConfig
+import viewmodel.ScopeConfig
 import kotlin.js.JsExport
 
-interface FormConfig<P> : ViewModelConfig {
+interface FormConfig<P> : ScopeConfig<Unit> {
     val serializer: KSerializer<P>
     val exitOnSubmitted: Boolean
 }
