@@ -94,5 +94,7 @@ interface SelectionManager<T> {
      */
     fun unSelectRowInPage(row: Int, page: Int)
 
+    fun unSelect(item: T)
+
     fun <R> map(transform: (T) -> R): SelectionManager<R>
 }

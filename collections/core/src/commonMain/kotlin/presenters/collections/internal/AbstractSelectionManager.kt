@@ -50,6 +50,11 @@ abstract class AbstractSelectionManager<T>(
 
     abstract fun unSelectRowFromPage(row: Int, page: Int?)
 
+    override fun unSelect(item: T) {
+        val pos = paginator.find(item) ?: return
+        unSelectRowInPage(pos.row.number, pos.page.number)
+    }
+
     override fun isRowSelectedOnCurrentPage(row: Int) = isRowItemSelected(row, currentLoadedPage?.number)
 
     override fun isRowSelectedOnPage(row: Int, page: Int) = isRowItemSelected(row, page)
@@ -72,7 +77,8 @@ abstract class AbstractSelectionManager<T>(
 
     override fun toggleSelectionOfRowInPage(row: Int, page: Int) = toggleRowSelection(row, page)
 
-    private fun toggleRowSelection(row: Int, page: Int?) = if (isRowItemSelected(row, page)) unSelectRowFromPage(row, page) else select(row)
+    private fun toggleRowSelection(row: Int, page: Int?) =
+        if (isRowItemSelected(row, page)) unSelectRowFromPage(row, page) else select(row)
 
     override fun toggleSelectionOfCurrentPage() = toggleSelectionOfANullablePage(currentLoadedPage?.number)
 
