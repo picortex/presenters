@@ -8,7 +8,6 @@ import kost.InvoiceHeader
 import kost.LineItem
 import kost.Subject
 import kost.Tax
-import krono.LocalDateTime
 import krono.Now
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmOverloads
@@ -46,7 +45,7 @@ object TestUtils {
         header = InvoiceHeader(
             customer = makeSubject(address = address),
             currency = Currency.TZS,
-            createdOn = Now()
+            issueDate = Now()
         ),
         body = makeBody()
     )
@@ -56,7 +55,7 @@ object TestUtils {
         header = BillHeader(
             supplier = makeSubject(address = address),
             currency = Currency.TZS,
-            createdOn = Now()
+            issueDate = Now()
         ),
         body = makeBody()
     )

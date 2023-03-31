@@ -6,7 +6,7 @@ import kost.Header
 internal fun Header.renderCommonInfoToString(address: Address) = buildString {
     appendLine("Address  : $address")
     appendLine("Currency : ${currency.details} ($currency)")
-    appendLine("Created  : $createdOn")
-    appendLine("Due      : $dueOn")
+    appendLine("Created  : $issueDate")
+    appendLine("Due      : $dueDate")
     appendLine("Vendor   : ${vendor.name}")
 }
