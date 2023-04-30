@@ -13,22 +13,22 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.actionsCore) // because forms needs submit actions
-                api(projects.kaseBuilders) // becuase forms has states
-                api(projects.presentersCollectionsRenderersString) // because form needs to print the table
-                api(projects.viewmodelCore) // because a form is a viewmodel
+                api(projects.kevlarCore) // because forms needs submit actions
+                // api(projects.kaseBuilders) // becuase forms has states
+                // api(projects.symphonyCollectionsRenderersString) // because form needs to print the table
+                api(projects.cinematicSceneCore) // because a form is a viewmodel
                 api(kotlinx.serialization.json) // because forms need to serialize
-                api(projects.formatterCore) // because number inputs might need to be formatted
+                api(projects.liquidNumber) // because number inputs might need to be formatted
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.presentersCollectionsRenderersConsole)
-                implementation(projects.expectCoroutines)
+                implementation(projects.symphonyCollectionsRenderersConsole)
+                implementation(projects.kommanderCoroutines)
                 implementation(projects.koncurrentLaterCoroutines)
-                implementation(projects.koncurrentPrimitivesMock)
-                implementation(projects.liveTest)
+                implementation(projects.koncurrentExecutorsMock)
+                implementation(projects.cinematicLiveTest)
             }
         }
     }

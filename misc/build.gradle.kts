@@ -13,19 +13,19 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.actionsCore)
-                api(projects.viewmodelCore)
+                api(projects.kevlarCore)
+                api(projects.cinematicSceneCore)
                 api(projects.identifierCore)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
+                implementation(projects.kommanderCoroutines)
                 implementation(projects.koncurrentLaterCoroutines)
-                implementation(projects.koncurrentPrimitivesMock)
-                implementation(projects.liveTest)
-//                implementation(projects.presentersMock)
+                implementation(projects.koncurrentExecutorsMock)
+                implementation(projects.cinematicLiveTest)
+//                implementation(projects.symphonyMock)
             }
         }
     }

@@ -14,13 +14,13 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.kostCore)
-                implementation(projects.presentersCollectionsRenderersString)
+                implementation(projects.symphonyCollectionsRenderersString)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCore)
+                implementation(projects.kommanderCore)
             }
         }
     }

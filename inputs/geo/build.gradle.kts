@@ -13,14 +13,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.presentersInputsCore)
+                // api(projects.symphonyInputsCore)
                 api(projects.geoCore)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCore)
+                implementation(projects.kommanderCore)
             }
         }
     }
